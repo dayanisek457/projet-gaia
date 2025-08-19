@@ -19,7 +19,8 @@ import {
   Video, 
   File,
   RefreshCw,
-  ExternalLink
+  ExternalLink,
+  Edit
 } from 'lucide-react';
 
 interface S3File {
@@ -80,6 +81,33 @@ const S3Dashboard = () => {
     } catch (error) {
       console.error('Error uploading file:', error);
       alert('Erreur lors de l\'upload du fichier');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleFileReplace = async (existingKey: string, event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!confirm(`Remplacer le fichier "${existingKey}" par "${file.name}" ?`)) return;
+
+    try {
+      setUploading(true);
+      
+      // Upload the new file with the same key (this replaces the existing file)
+      const command = new PutObjectCommand({
+        Bucket: s3Config.bucketName,
+        Key: existingKey,
+        Body: file
+      });
+      await s3Client.send(command);
+
+      alert('Fichier remplacé avec succès');
+      fetchFiles();
+    } catch (error) {
+      console.error('Error replacing file:', error);
+      alert('Erreur lors du remplacement du fichier');
     } finally {
       setUploading(false);
     }
@@ -236,6 +264,24 @@ const S3Dashboard = () => {
                     >
                       <Download className="h-3 w-3" />
                     </Button>
+                    <label className="cursor-pointer">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                        asChild
+                      >
+                        <span>
+                          <Edit className="h-3 w-3" />
+                        </span>
+                      </Button>
+                      <input
+                        type="file"
+                        className="hidden"
+                        onChange={(e) => handleFileReplace(file.Key, e)}
+                        disabled={uploading}
+                      />
+                    </label>
                     <Button
                       onClick={() => handleFileDelete(file.Key)}
                       size="sm"

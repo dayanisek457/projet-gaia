@@ -1,22 +1,21 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import AdminLogin from '@/components/AdminLogin';
 import S3Dashboard from '@/components/S3Dashboard';
 import { supabase } from '@/lib/supabase';
 import { LogOut, Shield, Settings, Database } from 'lucide-react';
 
 const Admin = () => {
   const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Get initial session
+    // Get initial session - user is guaranteed to be authenticated here due to ProtectedRoute
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
-      setLoading(false);
     });
 
     // Listen for auth changes
@@ -24,18 +23,26 @@ const Admin = () => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
-      setLoading(false);
+      if (!session) {
+        navigate('/login', { replace: true });
+      }
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [navigate]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    setUser(null);
+    // Navigation will be handled by the auth state change listener
   };
 
-  if (loading) {
+  const tabs = [
+    { id: 'dashboard', label: 'Dashboard', icon: Settings },
+    { id: 's3', label: 'Gestion S3', icon: Database },
+  ];
+
+  // Show loading if user data is not yet loaded
+  if (!user) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
         <div className="text-center">
@@ -45,15 +52,6 @@ const Admin = () => {
       </div>
     );
   }
-
-  if (!user) {
-    return <AdminLogin onLogin={setUser} />;
-  }
-
-  const tabs = [
-    { id: 'dashboard', label: 'Dashboard', icon: Settings },
-    { id: 's3', label: 'Gestion S3', icon: Database },
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5">
