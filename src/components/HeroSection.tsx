@@ -38,11 +38,19 @@ const HeroSection = () => {
           </div>
 
           <div className="animate-fade-in-up flex flex-col sm:flex-row gap-4 justify-center" style={{ animationDelay: '0.4s' }}>
-            <Button size="lg" variant="secondary" className="group">
+            <Button 
+              size="lg" 
+              variant="secondary" 
+              className="group bg-white text-primary hover:bg-white/90 font-semibold px-8 py-3 shadow-lg hover:shadow-xl transition-all duration-300"
+            >
               Découvrir le projet
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button size="lg" variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white/20">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm font-semibold px-8 py-3 shadow-lg hover:shadow-xl transition-all duration-300"
+            >
               <span className="mr-2">👥</span>
               Devenir Sponsor
             </Button>

@@ -94,11 +94,19 @@ const ContactSection = () => {
                 et valoriser votre engagement environnemental.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
-                <Button variant="secondary" size="lg" className="group">
+                <Button 
+                  variant="secondary" 
+                  size="lg" 
+                  className="group bg-white text-primary hover:bg-white/90 font-semibold px-6 py-3 shadow-lg hover:shadow-xl transition-all duration-300"
+                >
                   <span className="mr-2">📋</span>
                   Télécharger le Cahier des Charges
                 </Button>
-                <Button variant="outline" size="lg" className="bg-white/10 border-white/30 text-white hover:bg-white/20 group">
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className="bg-white/10 border-white/30 text-white hover:bg-white/20 group backdrop-blur-sm font-semibold px-6 py-3 shadow-lg hover:shadow-xl transition-all duration-300"
+                >
                   <span className="mr-2">🤝</span>
                   Devenir Partenaire
                 </Button>
