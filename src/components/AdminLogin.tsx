@@ -96,7 +96,7 @@ const AdminLogin = ({ onLogin }: AdminLoginProps) => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="admin@projetgaia.com"
+                  placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-10"
