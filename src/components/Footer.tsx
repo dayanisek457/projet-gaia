@@ -1,5 +1,6 @@
 
 import { Heart } from 'lucide-react';
+import AdminAccess from './AdminAccess';
 
 const Footer = () => {
   return (
@@ -68,8 +69,11 @@ const Footer = () => {
                 <Heart className="h-4 w-4 text-red-400" />
                 <span>par l'équipe GAIA</span>
               </div>
-              <div className="text-sm text-background/80">
-                © 2025 Projet GAIA - Tous droits réservés
+              <div className="flex items-center space-x-4">
+                <AdminAccess />
+                <div className="text-sm text-background/80">
+                  © 2025 Projet GAIA - Tous droits réservés
+                </div>
               </div>
             </div>
           </div>
