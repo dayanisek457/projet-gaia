@@ -62,10 +62,6 @@ const ContactSection = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Budget maximum</span>
-                  <span className="font-semibold">300 €</span>
-                </div>
-                <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">Début du projet</span>
                   <span className="font-semibold">Juin 2025</span>
                 </div>

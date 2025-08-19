@@ -33,7 +33,6 @@ const ProjectSection = () => {
   const projectData = [
     { label: "Début", value: "Juin 2025", icon: "🚀" },
     { label: "Fin", value: "Juin 2026", icon: "🎯" },
-    { label: "Budget", value: "300 €", icon: "💰" },
     { label: "Équipe", value: "5 étudiants", icon: "👥" }
   ];
 
