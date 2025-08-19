@@ -65,18 +65,24 @@ const RoadmapForm = ({ entry, onSuccess, onCancel }: RoadmapFormProps) => {
   const uploadToS3 = async (file: File, prefix: string = 'roadmap'): Promise<string> => {
     const fileKey = `${prefix}/${Date.now()}-${file.name}`;
     
-    // Convert File to ArrayBuffer for proper S3 upload
-    const fileBuffer = await file.arrayBuffer();
-    
-    const command = new PutObjectCommand({
-      Bucket: s3Config.bucketName,
-      Key: fileKey,
-      Body: new Uint8Array(fileBuffer),
-      ContentType: file.type
-    });
+    try {
+      // Convert File to ArrayBuffer for proper S3 upload
+      const fileBuffer = await file.arrayBuffer();
+      
+      const command = new PutObjectCommand({
+        Bucket: s3Config.bucketName,
+        Key: fileKey,
+        Body: new Uint8Array(fileBuffer),
+        ContentType: file.type
+      });
 
-    await s3Client.send(command);
-    return `https://${s3Config.bucketName}.${s3Config.endpoint}/${fileKey}`;
+      await s3Client.send(command);
+      return `https://${s3Config.endpoint}/${s3Config.bucketName}/${fileKey}`;
+    } catch (error: any) {
+      console.error('S3 upload failed:', error);
+      // Re-throw the error to be handled by the calling function
+      throw new Error(`Upload S3 échoué: ${error.message}`);
+    }
   };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,23 +123,33 @@ const RoadmapForm = ({ entry, onSuccess, onCancel }: RoadmapFormProps) => {
       
       // Upload new image if provided
       if (imageFile) {
-        imageUrl = await uploadToS3(imageFile, 'roadmap/images');
+        try {
+          imageUrl = await uploadToS3(imageFile, 'roadmap/images');
+        } catch (uploadError: any) {
+          console.error('Image upload failed:', uploadError);
+          setError(`Attention: L'upload de l'image a échoué (${uploadError.message}), mais l'entrée sera créée sans image.`);
+          imageUrl = existingImageUrl; // Keep existing image or null
+        }
       }
 
       // Upload new attached files
       if (attachedFiles.length > 0) {
-        const newFileUploads = await Promise.all(
-          attachedFiles.map(async (file) => {
+        const successfulUploads = [];
+        for (const file of attachedFiles) {
+          try {
             const url = await uploadToS3(file, 'roadmap/files');
-            return {
+            successfulUploads.push({
               name: file.name,
               url: url,
               type: file.type,
               size: file.size
-            };
-          })
-        );
-        uploadedFiles = [...uploadedFiles, ...newFileUploads];
+            });
+          } catch (uploadError: any) {
+            console.error(`File upload failed for ${file.name}:`, uploadError);
+            setError(prev => prev + `\nAttention: L'upload du fichier "${file.name}" a échoué mais l'entrée sera créée sans ce fichier.`);
+          }
+        }
+        uploadedFiles = [...uploadedFiles, ...successfulUploads];
       }
 
       setUploading(false);
@@ -169,7 +185,11 @@ const RoadmapForm = ({ entry, onSuccess, onCancel }: RoadmapFormProps) => {
       alert(`Entrée ${entry ? 'mise à jour' : 'créée'} avec succès!`);
     } catch (error: any) {
       console.error('Error saving roadmap entry:', error);
-      setError(`Erreur lors de la ${entry ? 'mise à jour' : 'création'}: ${error.message}`);
+      if (error.message.includes('Failed to fetch')) {
+        setError(`Erreur de connectivité: Impossible de contacter le serveur. Vérifiez votre connexion internet et la configuration S3.`);
+      } else {
+        setError(`Erreur lors de la ${entry ? 'mise à jour' : 'création'}: ${error.message}`);
+      }
     } finally {
       setLoading(false);
       setUploading(false);
