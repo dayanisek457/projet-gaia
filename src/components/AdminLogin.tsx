@@ -23,21 +23,42 @@ const AdminLogin = ({ onLogin }: AdminLoginProps) => {
     
     try {
       setLoading(true);
+      
+      // Log configuration for debugging
+      console.log('Supabase URL:', import.meta.env.VITE_SUPABASE_URL);
+      console.log('Supabase Key (first 10 chars):', import.meta.env.VITE_SUPABASE_ANON_KEY?.substring(0, 10));
+      
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
       });
 
       if (error) {
+        console.error('Supabase auth error:', error);
         throw error;
       }
 
       if (data.user) {
+        console.log('Login successful:', data.user.email);
         onLogin(data.user);
       }
     } catch (error: any) {
       console.error('Error logging in:', error);
-      setError(error.message || 'Erreur de connexion. Vérifiez vos identifiants.');
+      
+      // Provide more detailed error messages
+      let errorMessage = 'Erreur de connexion. ';
+      
+      if (error.message?.includes('Failed to fetch')) {
+        errorMessage += 'Impossible de se connecter au serveur Supabase. Vérifiez la configuration API.';
+      } else if (error.message?.includes('Invalid login credentials')) {
+        errorMessage += 'Identifiants incorrects.';
+      } else if (error.code === 'invalid_credentials') {
+        errorMessage += 'Email ou mot de passe incorrect.';
+      } else {
+        errorMessage += error.message || 'Erreur inconnue.';
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
