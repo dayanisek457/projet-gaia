@@ -18,12 +18,6 @@ const RisksAndFutureSection = () => {
       title: "Équilibrage de l'aéronef",
       description: "Risque de dysfonctionnement en vol nécessitant des tests approfondis",
       mitigation: "Tests de stabilité et simulations aérodynamiques"
-    },
-    {
-      icon: Shield,
-      title: "Contraintes budgétaires",
-      description: "Budget initial de 300€ nécessitant une gestion optimisée",
-      mitigation: "Recherche active de sponsors et partenaires"
     }
   ];
 

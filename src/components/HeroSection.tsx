@@ -57,7 +57,7 @@ const HeroSection = () => {
           </div>
 
           {/* Key stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mt-16 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
             <div className="text-center group">
               <div className="text-3xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">100%</div>
               <div className="text-white/80">100% Électrique</div>
@@ -65,10 +65,6 @@ const HeroSection = () => {
             <div className="text-center group">
               <div className="text-3xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">0</div>
               <div className="text-white/80">Émission CO²</div>
-            </div>
-            <div className="text-center group">
-              <div className="text-3xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">300€</div>
-              <div className="text-white/80">Budget Initial</div>
             </div>
             <div className="text-center group">
               <div className="text-3xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">∞</div>

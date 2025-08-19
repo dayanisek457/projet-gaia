@@ -68,8 +68,16 @@ const Footer = () => {
                 <Heart className="h-4 w-4 text-red-400" />
                 <span>par l'équipe GAIA</span>
               </div>
-              <div className="text-sm text-background/80">
-                © 2025 Projet GAIA - Tous droits réservés
+              <div className="flex items-center space-x-4">
+                <a 
+                  href="/admin" 
+                  className="text-xs text-background/60 hover:text-background/80 transition-colors underline"
+                >
+                  Accès Admin
+                </a>
+                <div className="text-sm text-background/80">
+                  © 2025 Projet GAIA - Tous droits réservés
+                </div>
               </div>
             </div>
           </div>

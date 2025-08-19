@@ -159,12 +159,7 @@ const SponsorsSection = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="relative z-10">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                <div className="space-y-2">
-                  <div className="text-3xl font-bold text-white">300€</div>
-                  <div className="text-white/90">Budget Initial</div>
-                  <div className="text-white/70 text-sm">Investment minimal, impact maximal</div>
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
                 <div className="space-y-2">
                   <div className="text-3xl font-bold text-white">1 An</div>
                   <div className="text-white/90">Durée Projet</div>
