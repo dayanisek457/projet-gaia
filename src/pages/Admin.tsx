@@ -171,7 +171,7 @@ const Admin = () => {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>Provider:</span>
-                      <Badge variant="outline">Google</Badge>
+                      <Badge variant="outline">Email</Badge>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span>Status:</span>
