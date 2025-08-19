@@ -15,5 +15,9 @@ export const s3Client = new S3Client({
     accessKeyId: s3Config.accessKeyId,
     secretAccessKey: s3Config.secretAccessKey
   },
-  forcePathStyle: true
+  forcePathStyle: true,
+  requestHandler: {
+    requestTimeout: 30000, // 30 seconds timeout
+    httpsAgent: undefined
+  }
 });
