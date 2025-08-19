@@ -8,13 +8,13 @@ const ContactSection = () => {
     <section id="contact" className="py-20">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-section-title mb-6">
               Contact & Informations
             </h2>
             <p className="text-body max-w-2xl mx-auto">
               Intéressé par notre projet GAIA ? Contactez-nous pour en savoir plus 
-              sur notre solution de reforestation innovante.
+              sur notre solution de reforestation innovante et les opportunités de partenariat.
             </p>
           </div>
 
@@ -82,22 +82,36 @@ const ContactSection = () => {
           </div>
 
           {/* Call to Action */}
-          <Card className="bg-gradient-primary text-white text-center">
+          <Card className="bg-gradient-primary text-white text-center animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
             <CardHeader>
-              <CardTitle className="text-white text-2xl">Rejoignez la Mission GAIA</CardTitle>
+              <CardTitle className="text-white text-2xl mb-2">Rejoignez la Mission GAIA</CardTitle>
+              <p className="text-white/80">Partenaires, sponsors et organisations engagées</p>
             </CardHeader>
             <CardContent>
               <p className="text-white/90 text-lg mb-6">
                 Ensemble, construisons un avenir plus vert pour notre planète. 
-                Découvrez comment GAIA peut transformer la reforestation mondiale.
+                Découvrez comment GAIA peut transformer la reforestation mondiale 
+                et valoriser votre engagement environnemental.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button variant="secondary" size="lg">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+                <Button variant="secondary" size="lg" className="group">
+                  <span className="mr-2">📋</span>
                   Télécharger le Cahier des Charges
                 </Button>
-                <Button variant="outline" size="lg" className="bg-white/10 border-white/30 text-white hover:bg-white/20">
-                  Documentation Technique
+                <Button variant="outline" size="lg" className="bg-white/10 border-white/30 text-white hover:bg-white/20 group">
+                  <span className="mr-2">🤝</span>
+                  Devenir Partenaire
                 </Button>
+              </div>
+              
+              {/* Contact CTA */}
+              <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
+                <p className="text-white/90 text-sm mb-2">
+                  <strong>Contact Direct :</strong> Nathan LIENARD - Chef de Projet
+                </p>
+                <p className="text-white/70 text-sm">
+                  Lycée Saint-Joseph Dijon | Projet SI Terminale 2025-2026
+                </p>
               </div>
             </CardContent>
           </Card>
