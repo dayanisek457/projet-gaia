@@ -4,8 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import S3Dashboard from '@/components/S3Dashboard';
+import RoadmapManagement from '@/components/RoadmapManagement';
 import { supabase } from '@/lib/supabase';
-import { LogOut, Shield, Settings, Database } from 'lucide-react';
+import { LogOut, Shield, Settings, Database, Map } from 'lucide-react';
 
 const Admin = () => {
   const [user, setUser] = useState<any>(null);
@@ -39,6 +40,7 @@ const Admin = () => {
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: Settings },
     { id: 's3', label: 'Gestion S3', icon: Database },
+    { id: 'roadmap', label: 'Roadmap', icon: Map },
   ];
 
   // Show loading if user data is not yet loaded
@@ -160,6 +162,37 @@ const Admin = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
+                    <Map className="h-5 w-5" />
+                    <span>Roadmap</span>
+                  </CardTitle>
+                  <CardDescription>
+                    Gestion des entrées de roadmap
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Fonctionnalité:</span>
+                      <Badge variant="default">Nouveau</Badge>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Intégration:</span>
+                      <Badge variant="outline">S3 + Supabase</Badge>
+                    </div>
+                  </div>
+                  <Button 
+                    onClick={() => setActiveTab('roadmap')} 
+                    className="w-full mt-4"
+                    size="sm"
+                  >
+                    Gérer la roadmap
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
                     <Shield className="h-5 w-5" />
                     <span>Authentification</span>
                   </CardTitle>
@@ -208,6 +241,7 @@ const Admin = () => {
         )}
 
         {activeTab === 's3' && <S3Dashboard />}
+        {activeTab === 'roadmap' && <RoadmapManagement />}
       </main>
     </div>
   );

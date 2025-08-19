@@ -4,6 +4,7 @@ import HeroSection from '@/components/HeroSection';
 import ProjectSection from '@/components/ProjectSection';
 import SolutionSection from '@/components/SolutionSection';
 import RisksAndFutureSection from '@/components/RisksAndFutureSection';
+import RoadmapView from '@/components/RoadmapView';
 import SponsorsSection from '@/components/SponsorsSection';
 import TeamSection from '@/components/TeamSection';
 import ContactSection from '@/components/ContactSection';
@@ -18,6 +19,7 @@ const Index = () => {
         <ProjectSection />
         <SolutionSection />
         <RisksAndFutureSection />
+        <RoadmapView />
         <SponsorsSection />
         <TeamSection />
         <ContactSection />
