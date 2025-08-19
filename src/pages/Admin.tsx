@@ -16,15 +16,15 @@ const Admin = () => {
   useEffect(() => {
     // Get initial session - user is guaranteed to be authenticated here due to ProtectedRoute
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
+      setUser(session?.user ?? { email: 'demo@projetgaia.com' }); // Demo user fallback
     });
 
     // Listen for auth changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (!session) {
+      setUser(session?.user ?? { email: 'demo@projetgaia.com' }); // Demo user fallback
+      if (!session && import.meta.env.MODE !== 'development') {
         navigate('/login', { replace: true });
       }
     });

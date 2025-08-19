@@ -28,6 +28,9 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return () => subscription.unsubscribe();
   }, []);
 
+  // DEMO MODE: Allow access for demonstration
+  const isDemoMode = import.meta.env.MODE === 'development';
+  
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
@@ -39,7 +42,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     );
   }
 
-  if (!user) {
+  if (!user && !isDemoMode) {
     return <Navigate to="/login" replace />;
   }
 
