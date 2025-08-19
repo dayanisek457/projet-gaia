@@ -31,18 +31,26 @@ const HeroSection = () => {
           
           <div className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             <p className="text-body text-white/80 mb-8 max-w-2xl mx-auto">
-              Un drone électrique autonome alimenté par l'énergie solaire pour accélérer 
+              Un drone électrique autonome et intelligent pour accélérer 
               la reforestation mondiale et restaurer durablement nos écosystèmes face 
               à l'urgence climatique. <strong className="text-white">Solution innovante du Lycée Saint-Joseph Dijon.</strong>
             </p>
           </div>
 
           <div className="animate-fade-in-up flex flex-col sm:flex-row gap-4 justify-center" style={{ animationDelay: '0.4s' }}>
-            <Button size="lg" variant="secondary" className="group">
+            <Button 
+              size="lg" 
+              variant="secondary" 
+              className="group bg-white text-primary hover:bg-white/90 font-semibold px-8 py-3 shadow-lg hover:shadow-xl transition-all duration-300"
+            >
               Découvrir le projet
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button size="lg" variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white/20">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm font-semibold px-8 py-3 shadow-lg hover:shadow-xl transition-all duration-300"
+            >
               <span className="mr-2">👥</span>
               Devenir Sponsor
             </Button>
@@ -52,7 +60,7 @@ const HeroSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mt-16 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
             <div className="text-center group">
               <div className="text-3xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">100%</div>
-              <div className="text-white/80">Électrique & Solaire</div>
+              <div className="text-white/80">100% Électrique</div>
             </div>
             <div className="text-center group">
               <div className="text-3xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">0</div>

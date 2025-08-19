@@ -1,17 +1,10 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Battery, Package, Radio, Plane, Sun, Waves } from 'lucide-react';
+import { Battery, Package, Radio, Plane, Zap, Waves } from 'lucide-react';
 
 const SolutionSection = () => {
   const technicalSolutions = [
-    {
-      function: "Capter le rayonnement",
-      block: "Captage",
-      solution: "Panneaux Solaires",
-      icon: Sun,
-      color: "bg-yellow-500"
-    },
     {
       function: "Voler",
       block: "Motorisation", 
@@ -34,9 +27,9 @@ const SolutionSection = () => {
       color: "bg-purple-500"
     },
     {
-      function: "Distribuer l'énergie",
-      block: "Distribution",
-      solution: "Système de batterie",
+      function: "Alimenter",
+      block: "Énergie",
+      solution: "Système de batterie avancé",
       icon: Battery,
       color: "bg-orange-500"
     },
@@ -58,51 +51,51 @@ const SolutionSection = () => {
               Notre Solution : GAIA
             </h2>
             <p className="text-body max-w-3xl mx-auto">
-              Un avion 100% électrique et rechargeable grâce à un système de panneaux solaires, 
+              Un avion 100% électrique intelligent avec batterie haute capacité, 
               muni d'une soute pour larguer des Seedballs. Une solution écologique, économique 
               et sécurisée pour accélérer la reforestation mondiale.
             </p>
           </div>
 
           {/* Key Benefits */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-            <Card className="text-center border-primary/20 hover:border-primary/40 transition-colors animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              <CardHeader>
-                <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Sun className="h-6 w-6 text-primary" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <Card className="text-center border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-gradient-to-br from-white to-primary/5 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+              <CardHeader className="pb-4">
+                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center mb-4 shadow-lg">
+                  <Zap className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle className="text-primary">100% Écologique</CardTitle>
+                <CardTitle className="text-primary text-xl font-bold">100% Écologique</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">
-                  Zéro émission de gaz à effet de serre grâce à l'alimentation solaire
+                <p className="text-muted-foreground leading-relaxed">
+                  Zéro émission de gaz à effet de serre grâce à la motorisation électrique
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="text-center border-secondary/20 hover:border-secondary/40 transition-colors animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-              <CardHeader>
-                <div className="mx-auto w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-4">
-                  <Package className="h-6 w-6 text-secondary" />
+            <Card className="text-center border-secondary/20 hover:border-secondary/40 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-gradient-to-br from-white to-secondary/5 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+              <CardHeader className="pb-4">
+                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-full flex items-center justify-center mb-4 shadow-lg">
+                  <Package className="h-8 w-8 text-secondary" />
                 </div>
-                <CardTitle className="text-secondary">Autonome</CardTitle>
+                <CardTitle className="text-secondary text-xl font-bold">Autonome</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground leading-relaxed">
                   Pas de risque humain, pilotage à distance et fonctionnement automatisé
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="text-center border-accent/20 hover:border-accent/40 transition-colors animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-              <CardHeader>
-                <div className="mx-auto w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mb-4">
-                  <Plane className="h-6 w-6 text-accent" />
+            <Card className="text-center border-accent/20 hover:border-accent/40 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-gradient-to-br from-white to-accent/5 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+              <CardHeader className="pb-4">
+                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-accent/20 to-accent/10 rounded-full flex items-center justify-center mb-4 shadow-lg">
+                  <Plane className="h-8 w-8 text-accent" />
                 </div>
-                <CardTitle className="text-accent">Économique</CardTitle>
+                <CardTitle className="text-accent text-xl font-bold">Économique</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground leading-relaxed">
                   Alternative abordable aux hélicoptères et avions traditionnels
                 </p>
               </CardContent>
@@ -111,25 +104,25 @@ const SolutionSection = () => {
 
           {/* Technical Solutions Table */}
           <div className="mb-12">
-            <h3 className="text-subsection text-center mb-8">Solutions Techniques</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <h3 className="text-subsection text-center mb-8 font-bold">Solutions Techniques</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {technicalSolutions.map((item, index) => (
-                <Card key={index} className="group hover:shadow-lg transition-all duration-300">
+                <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 border-transparent hover:border-primary/20 bg-gradient-to-br from-white to-gray-50">
                   <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-3">
-                      <div className={`p-2 rounded-lg ${item.color} bg-opacity-10`}>
-                        <item.icon className={`h-5 w-5 ${item.color.replace('bg-', 'text-')}`} />
+                    <div className="flex items-center space-x-4">
+                      <div className={`p-3 rounded-xl ${item.color} bg-opacity-15 shadow-lg group-hover:shadow-xl transition-all duration-300`}>
+                        <item.icon className={`h-6 w-6 ${item.color.replace('bg-', 'text-')}`} />
                       </div>
                       <div>
-                        <CardTitle className="text-sm font-medium">{item.function}</CardTitle>
-                        <Badge variant="outline" className="text-xs mt-1">
+                        <CardTitle className="text-base font-semibold text-gray-900">{item.function}</CardTitle>
+                        <Badge variant="outline" className="text-xs mt-1 bg-primary/10 text-primary border-primary/30 font-medium">
                           {item.block}
                         </Badge>
                       </div>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm font-semibold text-primary">{item.solution}</p>
+                    <p className="text-sm font-semibold text-primary bg-primary/5 px-3 py-2 rounded-lg">{item.solution}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -137,11 +130,12 @@ const SolutionSection = () => {
           </div>
 
           {/* Future Vision */}
-          <Card className="bg-gradient-primary text-white">
-            <CardHeader>
-              <CardTitle className="text-center text-white text-2xl">Vision d'Avenir</CardTitle>
+          <Card className="bg-gradient-primary text-white shadow-2xl border-0 overflow-hidden relative">
+            <div className="absolute inset-0 bg-black/20"></div>
+            <CardHeader className="relative z-10">
+              <CardTitle className="text-center text-white text-2xl font-bold">Vision d'Avenir</CardTitle>
             </CardHeader>
-            <CardContent className="text-center">
+            <CardContent className="text-center relative z-10">
               <p className="text-white/90 text-lg leading-relaxed">
                 Avec les progrès de l'aéronautique, GAIA pourra être produit à grande échelle 
                 tout en restant écologique, notamment grâce aux futures technologies à hydrogène. 

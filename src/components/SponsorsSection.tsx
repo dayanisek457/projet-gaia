@@ -189,11 +189,18 @@ const SponsorsSection = () => {
               et découvrir comment GAIA peut valoriser votre engagement environnemental.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="group relative overflow-hidden">
+              <Button 
+                size="lg" 
+                className="group relative overflow-hidden bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-4 shadow-xl hover:shadow-2xl transition-all duration-300"
+              >
                 <span className="relative z-10">Devenir Partenaire</span>
                 <div className="absolute inset-0 bg-white/20 transform translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300"></div>
               </Button>
-              <Button variant="outline" size="lg" className="group">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="group border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
+              >
                 Télécharger le Dossier Sponsor
                 <Award className="ml-2 h-4 w-4 group-hover:scale-110 transition-transform duration-300" />
               </Button>
