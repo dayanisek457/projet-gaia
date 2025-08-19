@@ -65,10 +65,13 @@ const RoadmapForm = ({ entry, onSuccess, onCancel }: RoadmapFormProps) => {
   const uploadToS3 = async (file: File, prefix: string = 'roadmap'): Promise<string> => {
     const fileKey = `${prefix}/${Date.now()}-${file.name}`;
     
+    // Convert File to ArrayBuffer for proper S3 upload
+    const fileBuffer = await file.arrayBuffer();
+    
     const command = new PutObjectCommand({
       Bucket: s3Config.bucketName,
       Key: fileKey,
-      Body: file,
+      Body: new Uint8Array(fileBuffer),
       ContentType: file.type
     });
 
