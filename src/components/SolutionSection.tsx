@@ -1,17 +1,10 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Battery, Package, Radio, Plane, Sun, Waves } from 'lucide-react';
+import { Battery, Package, Radio, Plane, Zap, Waves } from 'lucide-react';
 
 const SolutionSection = () => {
   const technicalSolutions = [
-    {
-      function: "Capter le rayonnement",
-      block: "Captage",
-      solution: "Panneaux Solaires",
-      icon: Sun,
-      color: "bg-yellow-500"
-    },
     {
       function: "Voler",
       block: "Motorisation", 
@@ -34,9 +27,9 @@ const SolutionSection = () => {
       color: "bg-purple-500"
     },
     {
-      function: "Distribuer l'énergie",
-      block: "Distribution",
-      solution: "Système de batterie",
+      function: "Alimenter",
+      block: "Énergie",
+      solution: "Système de batterie avancé",
       icon: Battery,
       color: "bg-orange-500"
     },
@@ -58,7 +51,7 @@ const SolutionSection = () => {
               Notre Solution : GAIA
             </h2>
             <p className="text-body max-w-3xl mx-auto">
-              Un avion 100% électrique et rechargeable grâce à un système de panneaux solaires, 
+              Un avion 100% électrique intelligent avec batterie haute capacité, 
               muni d'une soute pour larguer des Seedballs. Une solution écologique, économique 
               et sécurisée pour accélérer la reforestation mondiale.
             </p>
@@ -69,13 +62,13 @@ const SolutionSection = () => {
             <Card className="text-center border-primary/20 hover:border-primary/40 transition-colors animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               <CardHeader>
                 <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Sun className="h-6 w-6 text-primary" />
+                  <Zap className="h-6 w-6 text-primary" />
                 </div>
                 <CardTitle className="text-primary">100% Écologique</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Zéro émission de gaz à effet de serre grâce à l'alimentation solaire
+                  Zéro émission de gaz à effet de serre grâce à la motorisation électrique
                 </p>
               </CardContent>
             </Card>

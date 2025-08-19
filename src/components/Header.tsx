@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Leaf, Plane } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,10 +21,11 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <div className="relative">
-              <Leaf className="h-8 w-8 text-primary" />
-              <Plane className="h-4 w-4 text-secondary absolute -top-1 -right-1" />
-            </div>
+            <img 
+              src="/favicon.ico" 
+              alt="GAIA Logo" 
+              className="h-8 w-8 object-contain" 
+            />
             <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
               GAIA
             </span>

@@ -31,7 +31,7 @@ const HeroSection = () => {
           
           <div className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             <p className="text-body text-white/80 mb-8 max-w-2xl mx-auto">
-              Un drone électrique autonome alimenté par l'énergie solaire pour accélérer 
+              Un drone électrique autonome et intelligent pour accélérer 
               la reforestation mondiale et restaurer durablement nos écosystèmes face 
               à l'urgence climatique. <strong className="text-white">Solution innovante du Lycée Saint-Joseph Dijon.</strong>
             </p>
@@ -52,7 +52,7 @@ const HeroSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mt-16 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
             <div className="text-center group">
               <div className="text-3xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">100%</div>
-              <div className="text-white/80">Électrique & Solaire</div>
+              <div className="text-white/80">100% Électrique</div>
             </div>
             <div className="text-center group">
               <div className="text-3xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">0</div>

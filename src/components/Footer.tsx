@@ -1,5 +1,5 @@
 
-import { Leaf, Plane, Heart } from 'lucide-react';
+import { Heart } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -11,10 +11,11 @@ const Footer = () => {
             {/* Logo and Description */}
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
-                <div className="relative">
-                  <Leaf className="h-8 w-8 text-primary" />
-                  <Plane className="h-4 w-4 text-secondary absolute -top-1 -right-1" />
-                </div>
+                <img 
+                  src="/favicon.ico" 
+                  alt="GAIA Logo" 
+                  className="h-8 w-8 object-contain filter brightness-0 invert" 
+                />
                 <span className="text-xl font-bold">GAIA</span>
               </div>
               <p className="text-background/80 text-sm leading-relaxed">
