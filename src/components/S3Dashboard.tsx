@@ -2,7 +2,14 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { s3, s3Config } from '@/lib/s3';
+import { s3Client, s3Config } from '@/lib/s3';
+import { 
+  ListObjectsV2Command,
+  PutObjectCommand,
+  DeleteObjectCommand,
+  GetObjectCommand
+} from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { 
   Upload, 
   Download, 
@@ -30,9 +37,10 @@ const S3Dashboard = () => {
   const fetchFiles = async () => {
     try {
       setLoading(true);
-      const response = await s3.listObjects({
+      const command = new ListObjectsV2Command({
         Bucket: s3Config.bucketName
-      }).promise();
+      });
+      const response = await s3Client.send(command);
 
       if (response.Contents) {
         setFiles(response.Contents.map(file => ({
@@ -60,11 +68,12 @@ const S3Dashboard = () => {
 
     try {
       setUploading(true);
-      await s3.upload({
+      const command = new PutObjectCommand({
         Bucket: s3Config.bucketName,
         Key: file.name,
         Body: file
-      }).promise();
+      });
+      await s3Client.send(command);
 
       alert('Fichier uploadé avec succès');
       fetchFiles();
@@ -80,10 +89,11 @@ const S3Dashboard = () => {
     if (!confirm(`Êtes-vous sûr de vouloir supprimer ${key} ?`)) return;
 
     try {
-      await s3.deleteObject({
+      const command = new DeleteObjectCommand({
         Bucket: s3Config.bucketName,
         Key: key
-      }).promise();
+      });
+      await s3Client.send(command);
 
       alert('Fichier supprimé avec succès');
       fetchFiles();
@@ -95,11 +105,11 @@ const S3Dashboard = () => {
 
   const handleFileDownload = async (key: string) => {
     try {
-      const url = s3.getSignedUrl('getObject', {
+      const command = new GetObjectCommand({
         Bucket: s3Config.bucketName,
-        Key: key,
-        Expires: 300 // 5 minutes
+        Key: key
       });
+      const url = await getSignedUrl(s3Client, command, { expiresIn: 300 });
       window.open(url, '_blank');
     } catch (error) {
       console.error('Error generating download URL:', error);

@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import { S3Client } from '@aws-sdk/client-s3';
 
 export const s3Config = {
   endpoint: 's3.de.tebi.io',
@@ -8,10 +8,12 @@ export const s3Config = {
   bucketName: 'gaia'
 };
 
-export const s3 = new AWS.S3({
-  endpoint: new AWS.Endpoint(s3Config.endpoint),
+export const s3Client = new S3Client({
+  endpoint: `https://${s3Config.endpoint}`,
   region: s3Config.region,
-  accessKeyId: s3Config.accessKeyId,
-  secretAccessKey: s3Config.secretAccessKey,
-  s3ForcePathStyle: true
+  credentials: {
+    accessKeyId: s3Config.accessKeyId,
+    secretAccessKey: s3Config.secretAccessKey
+  },
+  forcePathStyle: true
 });
