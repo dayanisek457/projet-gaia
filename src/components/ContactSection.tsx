@@ -8,13 +8,13 @@ const ContactSection = () => {
     <section id="contact" className="py-20">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-section-title mb-6">
               Contact & Informations
             </h2>
             <p className="text-body max-w-2xl mx-auto">
               Intéressé par notre projet GAIA ? Contactez-nous pour en savoir plus 
-              sur notre solution de reforestation innovante.
+              sur notre solution de reforestation innovante et les opportunités de partenariat.
             </p>
           </div>
 

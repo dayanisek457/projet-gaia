@@ -41,7 +41,7 @@ const ProjectSection = () => {
     <section id="project" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-section-title mb-6">
               Face à l'urgence climatique mondiale
             </h2>

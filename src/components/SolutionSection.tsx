@@ -53,7 +53,7 @@ const SolutionSection = () => {
     <section id="solution" className="py-20">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-section-title mb-6">
               Notre Solution : GAIA
             </h2>
@@ -66,7 +66,7 @@ const SolutionSection = () => {
 
           {/* Key Benefits */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-            <Card className="text-center border-primary/20 hover:border-primary/40 transition-colors">
+            <Card className="text-center border-primary/20 hover:border-primary/40 transition-colors animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               <CardHeader>
                 <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <Sun className="h-6 w-6 text-primary" />
@@ -80,7 +80,7 @@ const SolutionSection = () => {
               </CardContent>
             </Card>
 
-            <Card className="text-center border-secondary/20 hover:border-secondary/40 transition-colors">
+            <Card className="text-center border-secondary/20 hover:border-secondary/40 transition-colors animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
               <CardHeader>
                 <div className="mx-auto w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-4">
                   <Package className="h-6 w-6 text-secondary" />
@@ -94,7 +94,7 @@ const SolutionSection = () => {
               </CardContent>
             </Card>
 
-            <Card className="text-center border-accent/20 hover:border-accent/40 transition-colors">
+            <Card className="text-center border-accent/20 hover:border-accent/40 transition-colors animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
               <CardHeader>
                 <div className="mx-auto w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mb-4">
                   <Plane className="h-6 w-6 text-accent" />

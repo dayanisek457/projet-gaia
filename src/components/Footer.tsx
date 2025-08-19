@@ -36,6 +36,9 @@ const Footer = () => {
                 <a href="#solution" className="text-background/80 hover:text-primary transition-colors text-sm">
                   Solution
                 </a>
+                <a href="#sponsors" className="text-background/80 hover:text-primary transition-colors text-sm">
+                  Sponsors
+                </a>
                 <a href="#team" className="text-background/80 hover:text-primary transition-colors text-sm">
                   Équipe
                 </a>
