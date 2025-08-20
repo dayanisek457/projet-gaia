@@ -2,14 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { s3Client, s3Config } from '@/lib/s3';
-import { 
-  ListObjectsV2Command,
-  PutObjectCommand,
-  DeleteObjectCommand,
-  GetObjectCommand
-} from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { s3Manager, type S3File } from '@/lib/s3-direct';
 import { 
   Upload, 
   Download, 
@@ -19,16 +12,9 @@ import {
   Video, 
   File,
   RefreshCw,
-  ExternalLink,
   Edit
 } from 'lucide-react';
-
-interface S3File {
-  Key: string;
-  LastModified: Date;
-  Size: number;
-  StorageClass: string;
-}
+import { toast } from 'sonner';
 
 const S3Dashboard = () => {
   const [files, setFiles] = useState<S3File[]>([]);
@@ -38,22 +24,11 @@ const S3Dashboard = () => {
   const fetchFiles = async () => {
     try {
       setLoading(true);
-      const command = new ListObjectsV2Command({
-        Bucket: s3Config.bucketName
-      });
-      const response = await s3Client.send(command);
-
-      if (response.Contents) {
-        setFiles(response.Contents.map(file => ({
-          Key: file.Key!,
-          LastModified: file.LastModified!,
-          Size: file.Size!,
-          StorageClass: file.StorageClass!
-        })));
-      }
+      const fileList = await s3Manager.listFiles();
+      setFiles(fileList);
     } catch (error) {
       console.error('Error fetching files:', error);
-      alert('Erreur lors de la récupération des fichiers');
+      toast.error('Erreur lors de la récupération des fichiers');
     } finally {
       setLoading(false);
     }
@@ -69,18 +44,14 @@ const S3Dashboard = () => {
 
     try {
       setUploading(true);
-      const command = new PutObjectCommand({
-        Bucket: s3Config.bucketName,
-        Key: file.name,
-        Body: file
-      });
-      await s3Client.send(command);
-
-      alert('Fichier uploadé avec succès');
+      await s3Manager.uploadFile(file);
+      toast.success('Fichier uploadé avec succès');
       fetchFiles();
+      // Clear the input
+      event.target.value = '';
     } catch (error) {
       console.error('Error uploading file:', error);
-      alert('Erreur lors de l\'upload du fichier');
+      toast.error('Erreur lors de l\'upload du fichier');
     } finally {
       setUploading(false);
     }
@@ -94,20 +65,14 @@ const S3Dashboard = () => {
 
     try {
       setUploading(true);
-      
-      // Upload the new file with the same key (this replaces the existing file)
-      const command = new PutObjectCommand({
-        Bucket: s3Config.bucketName,
-        Key: existingKey,
-        Body: file
-      });
-      await s3Client.send(command);
-
-      alert('Fichier remplacé avec succès');
+      await s3Manager.replaceFile(existingKey, file);
+      toast.success('Fichier remplacé avec succès');
       fetchFiles();
+      // Clear the input
+      event.target.value = '';
     } catch (error) {
       console.error('Error replacing file:', error);
-      alert('Erreur lors du remplacement du fichier');
+      toast.error('Erreur lors du remplacement du fichier');
     } finally {
       setUploading(false);
     }
@@ -117,44 +82,35 @@ const S3Dashboard = () => {
     if (!confirm(`Êtes-vous sûr de vouloir supprimer ${key} ?`)) return;
 
     try {
-      const command = new DeleteObjectCommand({
-        Bucket: s3Config.bucketName,
-        Key: key
-      });
-      await s3Client.send(command);
-
-      alert('Fichier supprimé avec succès');
+      await s3Manager.deleteFile(key);
+      toast.success('Fichier supprimé avec succès');
       fetchFiles();
     } catch (error) {
       console.error('Error deleting file:', error);
-      alert('Erreur lors de la suppression du fichier');
+      toast.error('Erreur lors de la suppression du fichier');
     }
   };
 
   const handleFileDownload = async (key: string) => {
     try {
-      const command = new GetObjectCommand({
-        Bucket: s3Config.bucketName,
-        Key: key
-      });
-      const url = await getSignedUrl(s3Client, command, { expiresIn: 300 });
+      const url = await s3Manager.getFileUrl(key);
       window.open(url, '_blank');
     } catch (error) {
       console.error('Error generating download URL:', error);
-      alert('Erreur lors de la génération du lien de téléchargement');
+      toast.error('Erreur lors de la génération du lien de téléchargement');
     }
   };
 
   const getFileIcon = (filename: string) => {
     const extension = filename.split('.').pop()?.toLowerCase();
     
-    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension || '')) {
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(extension || '')) {
       return <Image className="h-4 w-4" />;
     }
-    if (['mp4', 'avi', 'mov', 'wmv'].includes(extension || '')) {
+    if (['mp4', 'avi', 'mov', 'wmv', 'flv'].includes(extension || '')) {
       return <Video className="h-4 w-4" />;
     }
-    if (['txt', 'doc', 'docx', 'pdf'].includes(extension || '')) {
+    if (['txt', 'doc', 'docx', 'pdf', 'md'].includes(extension || '')) {
       return <FileText className="h-4 w-4" />;
     }
     return <File className="h-4 w-4" />;
@@ -173,22 +129,12 @@ const S3Dashboard = () => {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold">Gestion des fichiers S3</h2>
-          <p className="text-muted-foreground">Bucket: {s3Config.bucketName}</p>
+          <p className="text-muted-foreground">Bucket: global | Région: eu-west-3</p>
         </div>
-        <div className="flex space-x-2">
-          <Button onClick={fetchFiles} variant="outline" size="sm">
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Actualiser
-          </Button>
-          <Button 
-            onClick={() => window.open(`https://${s3Config.endpoint}`, '_blank')}
-            variant="outline" 
-            size="sm"
-          >
-            <ExternalLink className="h-4 w-4 mr-2" />
-            Supabase S3
-          </Button>
-        </div>
+        <Button onClick={fetchFiles} variant="outline" size="sm">
+          <RefreshCw className="h-4 w-4 mr-2" />
+          Actualiser
+        </Button>
       </div>
 
       {/* Upload Section */}
@@ -205,11 +151,11 @@ const S3Dashboard = () => {
               type="file"
               onChange={handleFileUpload}
               disabled={uploading}
-              className="flex-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary/80"
+              className="flex-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary/80 disabled:opacity-50"
             />
             {uploading && (
               <Badge variant="outline">
-                <Upload className="h-3 w-3 mr-1" />
+                <Upload className="h-3 w-3 mr-1 animate-spin" />
                 Upload en cours...
               </Badge>
             )}
@@ -222,73 +168,62 @@ const S3Dashboard = () => {
         <CardHeader>
           <CardTitle>Fichiers ({files.length})</CardTitle>
           <CardDescription>
-            Liste des fichiers présents dans le bucket
+            Liste des fichiers présents dans le bucket S3
           </CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="text-center py-8">
-              <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
+            <div className="flex items-center justify-center py-8">
+              <RefreshCw className="h-6 w-6 animate-spin mr-2" />
               <p>Chargement des fichiers...</p>
             </div>
           ) : files.length === 0 ? (
-            <div className="text-center py-8">
-              <File className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">Aucun fichier trouvé</p>
+            <div className="flex items-center justify-center py-8">
+              <File className="h-6 w-6 mr-2 text-muted-foreground" />
+              <p>Aucun fichier trouvé</p>
             </div>
           ) : (
             <div className="space-y-2">
-              {files.map((file, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors"
-                >
-                  <div className="flex items-center space-x-3 flex-1 min-w-0">
-                    {getFileIcon(file.Key)}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">{file.Key}</p>
-                      <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-                        <span>{formatFileSize(file.Size)}</span>
-                        <span>{new Date(file.LastModified).toLocaleString('fr-FR')}</span>
-                        <Badge variant="outline" className="text-xs">
-                          {file.StorageClass}
-                        </Badge>
-                      </div>
+              {files.map((file) => (
+                <div key={file.key} className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50">
+                  <div className="flex items-center space-x-3">
+                    {getFileIcon(file.key)}
+                    <div>
+                      <p className="font-medium">{file.key}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {formatFileSize(file.size)} • {file.lastModified.toLocaleDateString('fr-FR')}
+                      </p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex space-x-2">
                     <Button
-                      onClick={() => handleFileDownload(file.Key)}
-                      size="sm"
+                      onClick={() => handleFileDownload(file.key)}
                       variant="outline"
+                      size="sm"
                     >
-                      <Download className="h-3 w-3" />
+                      <Download className="h-3 w-3 mr-1" />
+                      Télécharger
                     </Button>
-                    <label className="cursor-pointer">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                        asChild
-                      >
-                        <span>
-                          <Edit className="h-3 w-3" />
-                        </span>
-                      </Button>
+                    <div className="relative">
                       <input
                         type="file"
-                        className="hidden"
-                        onChange={(e) => handleFileReplace(file.Key, e)}
+                        onChange={(e) => handleFileReplace(file.key, e)}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         disabled={uploading}
                       />
-                    </label>
+                      <Button variant="outline" size="sm" disabled={uploading}>
+                        <Edit className="h-3 w-3 mr-1" />
+                        Remplacer
+                      </Button>
+                    </div>
                     <Button
-                      onClick={() => handleFileDelete(file.Key)}
-                      size="sm"
+                      onClick={() => handleFileDelete(file.key)}
                       variant="outline"
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      size="sm"
+                      className="text-destructive hover:bg-destructive hover:text-destructive-foreground"
                     >
-                      <Trash2 className="h-3 w-3" />
+                      <Trash2 className="h-3 w-3 mr-1" />
+                      Supprimer
                     </Button>
                   </div>
                 </div>

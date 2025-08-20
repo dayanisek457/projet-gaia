@@ -1,59 +1,19 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import SupabaseStorageDashboard from '@/components/SupabaseStorageDashboard';
+import S3Dashboard from '@/components/S3Dashboard';
 import RoadmapCreator from '@/components/RoadmapCreator';
-import { supabase } from '@/lib/supabase';
-import { LogOut, Shield, Settings, Database } from 'lucide-react';
+import { Settings, Database, Shield } from 'lucide-react';
 
 const Admin = () => {
-  const [user, setUser] = useState<any>(null);
   const [activeTab, setActiveTab] = useState('dashboard');
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    // Get initial session - user is guaranteed to be authenticated here due to ProtectedRoute
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (!session) {
-        navigate('/login', { replace: true });
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    // Navigation will be handled by the auth state change listener
-  };
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: Settings },
     { id: 's3', label: 'Gestion S3', icon: Database },
     { id: 'roadmap', label: 'Roadmap', icon: Shield },
   ];
-
-  // Show loading if user data is not yet loaded
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p>Chargement...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5">
@@ -78,13 +38,9 @@ const Admin = () => {
             
             <div className="flex items-center space-x-4">
               <div className="text-sm">
-                <span className="text-muted-foreground">Connecté en tant que</span>
-                <p className="font-medium">{user.email}</p>
+                <span className="text-muted-foreground">Mode admin direct</span>
+                <p className="font-medium">Accès complet</p>
               </div>
-              <Button onClick={handleLogout} variant="outline" size="sm">
-                <LogOut className="h-4 w-4 mr-2" />
-                Déconnexion
-              </Button>
             </div>
           </div>
         </div>
@@ -119,7 +75,7 @@ const Admin = () => {
             <div>
               <h1 className="text-3xl font-bold mb-2">Dashboard Administrateur</h1>
               <p className="text-muted-foreground">
-                Bienvenue dans l'interface d'administration du projet GAIA
+                Interface d'administration du projet GAIA avec stockage S3 direct
               </p>
             </div>
 
@@ -131,14 +87,14 @@ const Admin = () => {
                     <span>Stockage S3</span>
                   </CardTitle>
                   <CardDescription>
-                    Gestion des fichiers sur Supabase S3
+                    Gestion directe des fichiers sur Supabase S3
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>Endpoint:</span>
-                      <code className="text-xs bg-muted px-1 rounded">supabase.co</code>
+                      <code className="text-xs bg-muted px-1 rounded">supabase.co/s3</code>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span>Bucket:</span>
@@ -163,27 +119,30 @@ const Admin = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
                     <Shield className="h-5 w-5" />
-                    <span>Authentification</span>
+                    <span>Roadmap</span>
                   </CardTitle>
                   <CardDescription>
-                    Gestion via Supabase Auth
+                    Création et gestion de la roadmap
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span>Provider:</span>
-                      <Badge variant="outline">Email</Badge>
+                      <span>Statut:</span>
+                      <Badge variant="default">Actif</Badge>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span>Status:</span>
-                      <Badge variant="default">Connecté</Badge>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span>Email:</span>
-                      <span className="text-xs">{user.email}</span>
+                      <span>Fichiers liés:</span>
+                      <span className="text-xs">S3 intégré</span>
                     </div>
                   </div>
+                  <Button 
+                    onClick={() => setActiveTab('roadmap')} 
+                    className="w-full mt-4"
+                    size="sm"
+                  >
+                    Gérer roadmap
+                  </Button>
                 </CardContent>
               </Card>
 
@@ -199,9 +158,10 @@ const Admin = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2 text-sm text-muted-foreground">
-                    <p>✅ Supabase configuré</p>
-                    <p>✅ S3/Supabase connecté</p>
+                    <p>✅ S3 configuré</p>
+                    <p>✅ Upload fonctionnel</p>
                     <p>✅ Interface admin active</p>
+                    <p>✅ Roadmap intégrée</p>
                   </div>
                 </CardContent>
               </Card>
@@ -209,14 +169,14 @@ const Admin = () => {
           </div>
         )}
 
-        {activeTab === 's3' && <SupabaseStorageDashboard />}
+        {activeTab === 's3' && <S3Dashboard />}
         
         {activeTab === 'roadmap' && (
           <div className="space-y-6">
             <div>
               <h1 className="text-3xl font-bold mb-2">Gestion Roadmap</h1>
               <p className="text-muted-foreground">
-                Créez et gérez les éléments de la roadmap du projet GAIA
+                Créez et gérez les éléments de la roadmap du projet GAIA avec fichiers S3
               </p>
             </div>
             <RoadmapCreator />

@@ -4,8 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { storageAdapter } from '@/lib/storage';
+import { s3Manager } from '@/lib/s3-direct';
 import { Upload, FileText, Image } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface RoadmapItem {
   id: string;
@@ -32,8 +33,8 @@ const RoadmapCreator = () => {
     try {
       setUploading(true);
       const uploadPromises = Array.from(files).map(async (file) => {
-        const fileName = `roadmap-${Date.now()}-${file.name}`;
-        await storageAdapter.uploadFile(file);
+        const fileName = `roadmap-${Date.now()}-${Math.random().toString(36).substr(2, 9)}-${file.name}`;
+        await s3Manager.uploadFile(file);
         return fileName;
       });
 
@@ -45,10 +46,10 @@ const RoadmapCreator = () => {
         files: newUploadedFiles
       }));
       
-      alert(`${files.length} fichier(s) uploadé(s) avec succès`);
+      toast.success(`${files.length} fichier(s) uploadé(s) avec succès`);
     } catch (error) {
       console.error('Error uploading files:', error);
-      alert('Erreur lors de l\'upload des fichiers');
+      toast.error('Erreur lors de l\'upload des fichiers');
     } finally {
       setUploading(false);
     }
@@ -58,7 +59,7 @@ const RoadmapCreator = () => {
     e.preventDefault();
     
     if (!roadmapItem.title || !roadmapItem.description) {
-      alert('Veuillez remplir tous les champs obligatoires');
+      toast.error('Veuillez remplir tous les champs obligatoires');
       return;
     }
 
@@ -71,7 +72,7 @@ const RoadmapCreator = () => {
     };
 
     console.log('Nouvel élément roadmap créé:', newRoadmapItem);
-    alert('Élément roadmap créé avec succès !');
+    toast.success('Élément roadmap créé avec succès !');
 
     // Reset form
     setRoadmapItem({
