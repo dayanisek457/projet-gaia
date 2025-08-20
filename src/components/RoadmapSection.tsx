@@ -4,36 +4,48 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, FileText, Image, ExternalLink } from 'lucide-react';
 import { s3Manager } from '@/lib/s3-direct';
+import { roadmapService, type RoadmapItem } from '@/lib/supabase-roadmap';
 import { toast } from 'sonner';
-
-interface RoadmapItem {
-  id: string;
-  title: string;
-  description: string;
-  timeline: string;
-  files: string[];
-  status: 'completed' | 'in-progress' | 'planned';
-  createdAt: string;
-}
 
 const RoadmapSection = () => {
   const [roadmapItems, setRoadmapItems] = useState<RoadmapItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Load roadmap data from localStorage or use default demo data
-    const savedRoadmap = localStorage.getItem('gaia-roadmap');
-    if (savedRoadmap) {
-      try {
-        const parsed = JSON.parse(savedRoadmap);
-        setRoadmapItems(Array.isArray(parsed) ? parsed : []);
-      } catch (error) {
-        console.error('Error parsing roadmap data:', error);
-        setRoadmapItems(getDefaultRoadmapData());
-      }
-    } else {
-      setRoadmapItems(getDefaultRoadmapData());
-    }
+    const initializeData = async () => {
+      await loadRoadmapItems();
+      
+      // Subscribe to real-time changes
+      const subscription = roadmapService.subscribeToChanges((updatedItems) => {
+        setRoadmapItems(updatedItems.length > 0 ? updatedItems : getDefaultRoadmapData());
+      });
+
+      return () => {
+        subscription?.unsubscribe();
+      };
+    };
+
+    const cleanup = initializeData();
+    
+    return () => {
+      cleanup.then(cleanupFn => cleanupFn?.());
+    };
   }, []);
+
+  const loadRoadmapItems = async () => {
+    try {
+      setLoading(true);
+      const items = await roadmapService.getAllItems();
+      // If no items exist in database, use default data for demo
+      setRoadmapItems(items.length > 0 ? items : getDefaultRoadmapData());
+    } catch (error) {
+      console.error('Error loading roadmap items:', error);
+      // Fallback to default data if Supabase fails
+      setRoadmapItems(getDefaultRoadmapData());
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleFileClick = async (fileName: string) => {
     try {
@@ -66,7 +78,8 @@ const RoadmapSection = () => {
       timeline: 'Q1 2024',
       files: [],
       status: 'completed',
-      createdAt: '2024-01-01'
+      createdAt: '2024-01-01',
+      updatedAt: '2024-01-01'
     },
     {
       id: '2',
@@ -75,7 +88,8 @@ const RoadmapSection = () => {
       timeline: 'Q2 2024',
       files: [],
       status: 'completed',
-      createdAt: '2024-04-01'
+      createdAt: '2024-04-01',
+      updatedAt: '2024-04-01'
     },
     {
       id: '3',
@@ -84,7 +98,8 @@ const RoadmapSection = () => {
       timeline: 'Q3-Q4 2024',
       files: [],
       status: 'in-progress',
-      createdAt: '2024-07-01'
+      createdAt: '2024-07-01',
+      updatedAt: '2024-07-01'
     },
     {
       id: '4',
@@ -93,7 +108,8 @@ const RoadmapSection = () => {
       timeline: 'Q1-Q2 2025',
       files: [],
       status: 'planned',
-      createdAt: '2024-10-01'
+      createdAt: '2024-10-01',
+      updatedAt: '2024-10-01'
     },
     {
       id: '5',
@@ -102,7 +118,8 @@ const RoadmapSection = () => {
       timeline: 'Q3-Q4 2025',
       files: [],
       status: 'planned',
-      createdAt: '2024-12-01'
+      createdAt: '2024-12-01',
+      updatedAt: '2024-12-01'
     }
   ];
 
@@ -144,69 +161,76 @@ const RoadmapSection = () => {
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
-          <div className="relative">
-            {/* Timeline line */}
-            <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary to-secondary"></div>
-            
-            <div className="space-y-12">
-              {roadmapItems.map((item, index) => (
-                <div key={item.id} className="relative flex">
-                  {/* Timeline dot */}
-                  <div className="absolute left-6 w-4 h-4 bg-white border-4 border-primary rounded-full z-10"></div>
-                  
-                  {/* Content */}
-                  <div className="ml-20 w-full">
-                    <Card className="shadow-lg hover:shadow-xl transition-shadow">
-                      <CardHeader>
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                          <CardTitle className="text-xl">{item.title}</CardTitle>
-                          <div className="flex items-center gap-2">
-                            <Badge className={getStatusColor(item.status)}>
-                              {getStatusText(item.status)}
-                            </Badge>
-                            <div className="flex items-center text-sm text-gray-500">
-                              <Calendar className="w-4 h-4 mr-1" />
-                              {item.timeline}
+        {loading ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
+            <span className="ml-3 text-gray-600">Chargement de la roadmap...</span>
+          </div>
+        ) : (
+          <div className="max-w-4xl mx-auto">
+            <div className="relative">
+              {/* Timeline line */}
+              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary to-secondary"></div>
+              
+              <div className="space-y-12">
+                {roadmapItems.map((item, index) => (
+                  <div key={item.id} className="relative flex">
+                    {/* Timeline dot */}
+                    <div className="absolute left-6 w-4 h-4 bg-white border-4 border-primary rounded-full z-10"></div>
+                    
+                    {/* Content */}
+                    <div className="ml-20 w-full">
+                      <Card className="shadow-lg hover:shadow-xl transition-shadow">
+                        <CardHeader>
+                          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <CardTitle className="text-xl">{item.title}</CardTitle>
+                            <div className="flex items-center gap-2">
+                              <Badge className={getStatusColor(item.status)}>
+                                {getStatusText(item.status)}
+                              </Badge>
+                              <div className="flex items-center text-sm text-gray-500">
+                                <Calendar className="w-4 h-4 mr-1" />
+                                {item.timeline}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-700 mb-4">{item.description}</p>
-                        
-                        {item.files && item.files.length > 0 && (
-                          <div className="space-y-2">
-                            <h4 className="font-semibold text-sm text-gray-900">Fichiers associés:</h4>
-                            <div className="flex flex-wrap gap-2">
-                              {item.files.map((fileName, fileIndex) => (
-                                <Button
-                                  key={fileIndex}
-                                  variant="outline"
-                                  size="sm"
-                                  className="h-8 px-3 text-xs"
-                                  onClick={() => handleFileClick(fileName)}
-                                >
-                                  {fileName.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
-                                    <Image className="w-3 h-3 mr-1" />
-                                  ) : (
-                                    <FileText className="w-3 h-3 mr-1" />
-                                  )}
-                                  {fileName.split('-').pop() || fileName}
-                                  <ExternalLink className="w-3 h-3 ml-1" />
-                                </Button>
-                              ))}
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-gray-700 mb-4">{item.description}</p>
+                          
+                          {item.files && item.files.length > 0 && (
+                            <div className="space-y-2">
+                              <h4 className="font-semibold text-sm text-gray-900">Fichiers associés:</h4>
+                              <div className="flex flex-wrap gap-2">
+                                {item.files.map((fileName, fileIndex) => (
+                                  <Button
+                                    key={fileIndex}
+                                    variant="outline"
+                                    size="sm"
+                                    className="h-8 px-3 text-xs"
+                                    onClick={() => handleFileClick(fileName)}
+                                  >
+                                    {fileName.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                                      <Image className="w-3 h-3 mr-1" />
+                                    ) : (
+                                      <FileText className="w-3 h-3 mr-1" />
+                                    )}
+                                    {fileName.split('-').pop() || fileName}
+                                    <ExternalLink className="w-3 h-3 ml-1" />
+                                  </Button>
+                                ))}
+                              </div>
                             </div>
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
