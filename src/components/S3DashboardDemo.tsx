@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { s3Manager, type S3File } from '@/lib/s3-direct';
+import { mockS3Manager, type S3File } from '@/lib/s3-mock';
 import { 
   Upload, 
   Download, 
@@ -12,11 +12,12 @@ import {
   Video, 
   File,
   RefreshCw,
-  Edit
+  Edit,
+  ExternalLink
 } from 'lucide-react';
 import { toast } from 'sonner';
 
-const S3Dashboard = () => {
+const S3DashboardDemo = () => {
   const [files, setFiles] = useState<S3File[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -24,7 +25,7 @@ const S3Dashboard = () => {
   const fetchFiles = async () => {
     try {
       setLoading(true);
-      const fileList = await s3Manager.listFiles();
+      const fileList = await mockS3Manager.listFiles();
       setFiles(fileList);
     } catch (error) {
       console.error('Error fetching files:', error);
@@ -44,7 +45,7 @@ const S3Dashboard = () => {
 
     try {
       setUploading(true);
-      await s3Manager.uploadFile(file);
+      await mockS3Manager.uploadFile(file);
       toast.success('Fichier uploadé avec succès');
       fetchFiles();
       // Clear the input
@@ -65,7 +66,7 @@ const S3Dashboard = () => {
 
     try {
       setUploading(true);
-      await s3Manager.replaceFile(existingKey, file);
+      await mockS3Manager.replaceFile(existingKey, file);
       toast.success('Fichier remplacé avec succès');
       fetchFiles();
       // Clear the input
@@ -82,7 +83,7 @@ const S3Dashboard = () => {
     if (!confirm(`Êtes-vous sûr de vouloir supprimer ${key} ?`)) return;
 
     try {
-      await s3Manager.deleteFile(key);
+      await mockS3Manager.deleteFile(key);
       toast.success('Fichier supprimé avec succès');
       fetchFiles();
     } catch (error) {
@@ -93,8 +94,9 @@ const S3Dashboard = () => {
 
   const handleFileDownload = async (key: string) => {
     try {
-      const url = await s3Manager.getFileUrl(key);
+      const url = await mockS3Manager.getFileUrl(key);
       window.open(url, '_blank');
+      toast.success('Lien de téléchargement généré');
     } catch (error) {
       console.error('Error generating download URL:', error);
       toast.error('Erreur lors de la génération du lien de téléchargement');
@@ -105,15 +107,15 @@ const S3Dashboard = () => {
     const extension = filename.split('.').pop()?.toLowerCase();
     
     if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(extension || '')) {
-      return <Image className="h-4 w-4" />;
+      return <Image className="h-4 w-4 text-green-600" />;
     }
     if (['mp4', 'avi', 'mov', 'wmv', 'flv'].includes(extension || '')) {
-      return <Video className="h-4 w-4" />;
+      return <Video className="h-4 w-4 text-purple-600" />;
     }
     if (['txt', 'doc', 'docx', 'pdf', 'md'].includes(extension || '')) {
-      return <FileText className="h-4 w-4" />;
+      return <FileText className="h-4 w-4 text-blue-600" />;
     }
-    return <File className="h-4 w-4" />;
+    return <File className="h-4 w-4 text-gray-600" />;
   };
 
   const formatFileSize = (bytes: number) => {
@@ -128,13 +130,19 @@ const S3Dashboard = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">Gestion des fichiers S3</h2>
-          <p className="text-muted-foreground">Bucket: global | Région: eu-west-3</p>
+          <h2 className="text-2xl font-bold">Gestion des fichiers S3 (DEMO)</h2>
+          <p className="text-muted-foreground">Bucket: global | Région: eu-west-3 | Mode démonstration</p>
         </div>
-        <Button onClick={fetchFiles} variant="outline" size="sm">
-          <RefreshCw className="h-4 w-4 mr-2" />
-          Actualiser
-        </Button>
+        <div className="flex space-x-2">
+          <Button onClick={fetchFiles} variant="outline" size="sm">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Actualiser
+          </Button>
+          <Badge variant="secondary">
+            <ExternalLink className="h-3 w-3 mr-1" />
+            Mode DEMO
+          </Badge>
+        </div>
       </div>
 
       {/* Upload Section */}
@@ -142,7 +150,7 @@ const S3Dashboard = () => {
         <CardHeader>
           <CardTitle>Upload de fichiers</CardTitle>
           <CardDescription>
-            Sélectionnez un fichier à uploader sur le bucket S3
+            Sélectionnez un fichier à uploader sur le bucket S3 (simulation)
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -168,7 +176,7 @@ const S3Dashboard = () => {
         <CardHeader>
           <CardTitle>Fichiers ({files.length})</CardTitle>
           <CardDescription>
-            Liste des fichiers présents dans le bucket S3
+            Liste des fichiers présents dans le bucket S3 (simulation avec données mockées)
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -185,7 +193,7 @@ const S3Dashboard = () => {
           ) : (
             <div className="space-y-2">
               {files.map((file) => (
-                <div key={file.key} className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50">
+                <div key={file.key} className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 transition-colors">
                   <div className="flex items-center space-x-3">
                     {getFileIcon(file.key)}
                     <div>
@@ -236,4 +244,4 @@ const S3Dashboard = () => {
   );
 };
 
-export default S3Dashboard;
+export default S3DashboardDemo;
