@@ -2,14 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { s3Client, s3Config } from '@/lib/s3';
-import { 
-  ListObjectsV2Command,
-  PutObjectCommand,
-  DeleteObjectCommand,
-  GetObjectCommand
-} from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { storageAdapter, type StorageFile } from '@/lib/storage';
 import { 
   Upload, 
   Download, 
@@ -23,34 +16,16 @@ import {
   Edit
 } from 'lucide-react';
 
-interface S3File {
-  Key: string;
-  LastModified: Date;
-  Size: number;
-  StorageClass: string;
-}
-
-const S3Dashboard = () => {
-  const [files, setFiles] = useState<S3File[]>([]);
+const SupabaseStorageDashboard = () => {
+  const [files, setFiles] = useState<StorageFile[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
 
   const fetchFiles = async () => {
     try {
       setLoading(true);
-      const command = new ListObjectsV2Command({
-        Bucket: s3Config.bucketName
-      });
-      const response = await s3Client.send(command);
-
-      if (response.Contents) {
-        setFiles(response.Contents.map(file => ({
-          Key: file.Key!,
-          LastModified: file.LastModified!,
-          Size: file.Size!,
-          StorageClass: file.StorageClass!
-        })));
-      }
+      const fileList = await storageAdapter.listFiles();
+      setFiles(fileList);
     } catch (error) {
       console.error('Error fetching files:', error);
       alert('Erreur lors de la récupération des fichiers');
@@ -69,13 +44,7 @@ const S3Dashboard = () => {
 
     try {
       setUploading(true);
-      const command = new PutObjectCommand({
-        Bucket: s3Config.bucketName,
-        Key: file.name,
-        Body: file
-      });
-      await s3Client.send(command);
-
+      await storageAdapter.uploadFile(file);
       alert('Fichier uploadé avec succès');
       fetchFiles();
     } catch (error) {
@@ -94,15 +63,7 @@ const S3Dashboard = () => {
 
     try {
       setUploading(true);
-      
-      // Upload the new file with the same key (this replaces the existing file)
-      const command = new PutObjectCommand({
-        Bucket: s3Config.bucketName,
-        Key: existingKey,
-        Body: file
-      });
-      await s3Client.send(command);
-
+      await storageAdapter.replaceFile(existingKey, file);
       alert('Fichier remplacé avec succès');
       fetchFiles();
     } catch (error) {
@@ -117,12 +78,7 @@ const S3Dashboard = () => {
     if (!confirm(`Êtes-vous sûr de vouloir supprimer ${key} ?`)) return;
 
     try {
-      const command = new DeleteObjectCommand({
-        Bucket: s3Config.bucketName,
-        Key: key
-      });
-      await s3Client.send(command);
-
+      await storageAdapter.deleteFile(key);
       alert('Fichier supprimé avec succès');
       fetchFiles();
     } catch (error) {
@@ -133,11 +89,7 @@ const S3Dashboard = () => {
 
   const handleFileDownload = async (key: string) => {
     try {
-      const command = new GetObjectCommand({
-        Bucket: s3Config.bucketName,
-        Key: key
-      });
-      const url = await getSignedUrl(s3Client, command, { expiresIn: 300 });
+      const url = await storageAdapter.getDownloadUrl(key);
       window.open(url, '_blank');
     } catch (error) {
       console.error('Error generating download URL:', error);
@@ -172,8 +124,8 @@ const S3Dashboard = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">Gestion des fichiers S3</h2>
-          <p className="text-muted-foreground">Bucket: {s3Config.bucketName}</p>
+          <h2 className="text-2xl font-bold">Gestion des fichiers Supabase Storage</h2>
+          <p className="text-muted-foreground">Bucket: global</p>
         </div>
         <div className="flex space-x-2">
           <Button onClick={fetchFiles} variant="outline" size="sm">
@@ -181,12 +133,12 @@ const S3Dashboard = () => {
             Actualiser
           </Button>
           <Button 
-            onClick={() => window.open(`https://${s3Config.endpoint}`, '_blank')}
+            onClick={() => window.open(`https://mvtlxvxywbdjkzcouyrn.supabase.co/dashboard/project/mvtlxvxywbdjkzcouyrn/storage/buckets`, '_blank')}
             variant="outline" 
             size="sm"
           >
             <ExternalLink className="h-4 w-4 mr-2" />
-            Supabase S3
+            Supabase Dashboard
           </Button>
         </div>
       </div>
@@ -196,7 +148,7 @@ const S3Dashboard = () => {
         <CardHeader>
           <CardTitle>Upload de fichiers</CardTitle>
           <CardDescription>
-            Sélectionnez un fichier à uploader sur le bucket S3
+            Sélectionnez un fichier à uploader sur le bucket Supabase Storage
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -227,68 +179,57 @@ const S3Dashboard = () => {
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="text-center py-8">
-              <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
+            <div className="flex items-center justify-center py-8">
+              <RefreshCw className="h-6 w-6 animate-spin mr-2" />
               <p>Chargement des fichiers...</p>
             </div>
           ) : files.length === 0 ? (
-            <div className="text-center py-8">
-              <File className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">Aucun fichier trouvé</p>
+            <div className="flex items-center justify-center py-8">
+              <File className="h-6 w-6 mr-2 text-muted-foreground" />
+              <p>Aucun fichier trouvé</p>
             </div>
           ) : (
             <div className="space-y-2">
-              {files.map((file, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors"
-                >
-                  <div className="flex items-center space-x-3 flex-1 min-w-0">
+              {files.map((file) => (
+                <div key={file.Key} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div className="flex items-center space-x-3">
                     {getFileIcon(file.Key)}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">{file.Key}</p>
-                      <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-                        <span>{formatFileSize(file.Size)}</span>
-                        <span>{new Date(file.LastModified).toLocaleString('fr-FR')}</span>
-                        <Badge variant="outline" className="text-xs">
-                          {file.StorageClass}
-                        </Badge>
-                      </div>
+                    <div>
+                      <p className="font-medium">{file.Key}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {formatFileSize(file.Size)} • {file.LastModified.toLocaleDateString()}
+                      </p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex space-x-2">
                     <Button
                       onClick={() => handleFileDownload(file.Key)}
-                      size="sm"
                       variant="outline"
+                      size="sm"
                     >
-                      <Download className="h-3 w-3" />
+                      <Download className="h-3 w-3 mr-1" />
+                      Télécharger
                     </Button>
-                    <label className="cursor-pointer">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                        asChild
-                      >
-                        <span>
-                          <Edit className="h-3 w-3" />
-                        </span>
-                      </Button>
+                    <div className="relative">
                       <input
                         type="file"
-                        className="hidden"
                         onChange={(e) => handleFileReplace(file.Key, e)}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         disabled={uploading}
                       />
-                    </label>
+                      <Button variant="outline" size="sm" disabled={uploading}>
+                        <Edit className="h-3 w-3 mr-1" />
+                        Remplacer
+                      </Button>
+                    </div>
                     <Button
                       onClick={() => handleFileDelete(file.Key)}
-                      size="sm"
                       variant="outline"
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      size="sm"
+                      className="text-destructive hover:bg-destructive hover:text-destructive-foreground"
                     >
-                      <Trash2 className="h-3 w-3" />
+                      <Trash2 className="h-3 w-3 mr-1" />
+                      Supprimer
                     </Button>
                   </div>
                 </div>
@@ -301,4 +242,4 @@ const S3Dashboard = () => {
   );
 };
 
-export default S3Dashboard;
+export default SupabaseStorageDashboard;

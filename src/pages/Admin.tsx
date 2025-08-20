@@ -129,22 +129,22 @@ const Admin = () => {
                     <span>Stockage S3</span>
                   </CardTitle>
                   <CardDescription>
-                    Gestion des fichiers sur Tebi.io
+                    Gestion des fichiers sur Supabase S3
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>Endpoint:</span>
-                      <code className="text-xs bg-muted px-1 rounded">s3.de.tebi.io</code>
+                      <code className="text-xs bg-muted px-1 rounded">supabase.co</code>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span>Bucket:</span>
-                      <code className="text-xs bg-muted px-1 rounded">gaia</code>
+                      <code className="text-xs bg-muted px-1 rounded">global</code>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span>Region:</span>
-                      <code className="text-xs bg-muted px-1 rounded">us-east-1</code>
+                      <code className="text-xs bg-muted px-1 rounded">eu-west-3</code>
                     </div>
                   </div>
                   <Button 
@@ -198,7 +198,7 @@ const Admin = () => {
                 <CardContent>
                   <div className="space-y-2 text-sm text-muted-foreground">
                     <p>✅ Supabase configuré</p>
-                    <p>✅ S3/Tebi.io connecté</p>
+                    <p>✅ S3/Supabase connecté</p>
                     <p>✅ Interface admin active</p>
                   </div>
                 </CardContent>
