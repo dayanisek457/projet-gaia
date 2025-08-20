@@ -1,15 +1,59 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import S3Dashboard from '@/components/S3Dashboard';
 import S3DashboardDemo from '@/components/S3DashboardDemo';
-import RoadmapCreator from '@/components/RoadmapCreator';
-import { Settings, Database, Shield, TestTube } from 'lucide-react';
+import RoadmapManager from '@/components/RoadmapManager';
+import Login from '@/components/Login';
+import { Settings, Database, Shield, TestTube, LogOut } from 'lucide-react';
+import { toast } from 'sonner';
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [useDemoMode, setUseDemoMode] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState<{ email: string } | null>(null);
+
+  useEffect(() => {
+    // Check if user is already authenticated
+    const authData = localStorage.getItem('gaia-auth');
+    if (authData) {
+      try {
+        const parsed = JSON.parse(authData);
+        const hoursSinceAuth = (Date.now() - parsed.timestamp) / (1000 * 60 * 60);
+        
+        if (parsed.authenticated && hoursSinceAuth < 24) { // 24 hours session
+          setIsAuthenticated(true);
+          setCurrentUser({ email: parsed.email });
+        } else {
+          // Session expired
+          localStorage.removeItem('gaia-auth');
+        }
+      } catch (error) {
+        console.error('Error parsing auth data:', error);
+        localStorage.removeItem('gaia-auth');
+      }
+    }
+  }, []);
+
+  const handleLogin = (credentials: { email: string; password: string }) => {
+    setIsAuthenticated(true);
+    setCurrentUser({ email: credentials.email });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('gaia-auth');
+    setIsAuthenticated(false);
+    setCurrentUser(null);
+    setActiveTab('dashboard');
+    toast.success('Déconnexion réussie');
+  };
+
+  // Show login if not authenticated
+  if (!isAuthenticated) {
+    return <Login onLogin={handleLogin} />;
+  }
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: Settings },
@@ -48,10 +92,19 @@ const Admin = () => {
                 <TestTube className="h-4 w-4" />
                 <span>{useDemoMode ? 'Mode Réel' : 'Mode Demo'}</span>
               </Button>
-              <div className="text-sm">
-                <span className="text-muted-foreground">Mode admin direct</span>
-                <p className="font-medium">Accès complet</p>
+              <div className="text-sm text-right">
+                <span className="text-muted-foreground">Connecté en tant que:</span>
+                <p className="font-medium">{currentUser?.email}</p>
               </div>
+              <Button 
+                onClick={handleLogout}
+                variant="outline" 
+                size="sm"
+                className="flex items-center space-x-2 text-red-600 hover:text-red-700"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Déconnexion</span>
+              </Button>
             </div>
           </div>
         </div>
@@ -230,15 +283,7 @@ const Admin = () => {
         )}
         
         {activeTab === 'roadmap' && (
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">Gestion Roadmap</h1>
-              <p className="text-muted-foreground">
-                Créez et gérez les éléments de la roadmap du projet GAIA avec fichiers S3
-              </p>
-            </div>
-            <RoadmapCreator />
-          </div>
+          <RoadmapManager />
         )}
       </main>
     </div>
