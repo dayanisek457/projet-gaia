@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, FileText, Image, ExternalLink } from 'lucide-react';
+import { s3Manager } from '@/lib/s3-direct';
+import { toast } from 'sonner';
 
 interface RoadmapItem {
   id: string;
@@ -32,6 +34,29 @@ const RoadmapSection = () => {
       setRoadmapItems(getDefaultRoadmapData());
     }
   }, []);
+
+  const handleFileClick = async (fileName: string) => {
+    try {
+      // Generate signed URL for the file
+      const fileUrl = await s3Manager.getFileUrl(fileName);
+      
+      // Open file in new tab
+      window.open(fileUrl, '_blank');
+      
+      toast.success(`Ouverture du fichier: ${fileName.split('-').pop() || fileName}`);
+    } catch (error) {
+      console.error('Error opening file:', error);
+      
+      // Fallback: try to construct direct URL (for demo purposes)
+      try {
+        const fallbackUrl = `https://mvtlxvxywbdjkzcouyrn.supabase.co/storage/v1/object/public/global/${fileName}`;
+        window.open(fallbackUrl, '_blank');
+        toast.success(`Ouverture du fichier: ${fileName.split('-').pop() || fileName}`);
+      } catch (fallbackError) {
+        toast.error('Impossible d\'ouvrir le fichier. Le fichier n\'existe peut-être pas sur le serveur.');
+      }
+    }
+  };
 
   const getDefaultRoadmapData = (): RoadmapItem[] => [
     {
@@ -160,6 +185,7 @@ const RoadmapSection = () => {
                                   variant="outline"
                                   size="sm"
                                   className="h-8 px-3 text-xs"
+                                  onClick={() => handleFileClick(fileName)}
                                 >
                                   {fileName.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
                                     <Image className="w-3 h-3 mr-1" />
