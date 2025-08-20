@@ -41,9 +41,9 @@ export class S3Manager {
     }
   }
 
-  async uploadFile(file: File): Promise<void> {
+  async uploadFile(file: File, customFileName?: string): Promise<string> {
     try {
-      const fileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}-${file.name}`;
+      const fileName = customFileName || `${Date.now()}-${Math.random().toString(36).substr(2, 9)}-${file.name}`;
       
       const { error } = await supabase.storage
         .from(this.bucketName)
@@ -53,6 +53,7 @@ export class S3Manager {
         });
 
       if (error) throw error;
+      return fileName;
     } catch (error) {
       console.error('Error uploading file:', error);
       throw error;

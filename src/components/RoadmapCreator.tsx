@@ -34,8 +34,8 @@ const RoadmapCreator = () => {
       setUploading(true);
       const uploadPromises = Array.from(files).map(async (file) => {
         const fileName = `roadmap-${Date.now()}-${Math.random().toString(36).substr(2, 9)}-${file.name}`;
-        await s3Manager.uploadFile(file);
-        return fileName;
+        const actualFileName = await s3Manager.uploadFile(file, fileName);
+        return actualFileName;
       });
 
       const fileNames = await Promise.all(uploadPromises);
