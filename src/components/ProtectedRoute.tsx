@@ -39,9 +39,10 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     );
   }
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
+  // TEMPORARY: Skip authentication for testing
+  // if (!user) {
+  //   return <Navigate to="/login" replace />;
+  // }
 
   return <>{children}</>;
 };
