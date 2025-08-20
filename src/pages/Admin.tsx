@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import S3Dashboard from '@/components/S3Dashboard';
+import SupabaseStorageDashboard from '@/components/SupabaseStorageDashboard';
+import RoadmapCreator from '@/components/RoadmapCreator';
 import { supabase } from '@/lib/supabase';
 import { LogOut, Shield, Settings, Database } from 'lucide-react';
 
@@ -39,6 +40,7 @@ const Admin = () => {
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: Settings },
     { id: 's3', label: 'Gestion S3', icon: Database },
+    { id: 'roadmap', label: 'Roadmap', icon: Shield },
   ];
 
   // Show loading if user data is not yet loaded
@@ -207,7 +209,19 @@ const Admin = () => {
           </div>
         )}
 
-        {activeTab === 's3' && <S3Dashboard />}
+        {activeTab === 's3' && <SupabaseStorageDashboard />}
+        
+        {activeTab === 'roadmap' && (
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-3xl font-bold mb-2">Gestion Roadmap</h1>
+              <p className="text-muted-foreground">
+                Créez et gérez les éléments de la roadmap du projet GAIA
+              </p>
+            </div>
+            <RoadmapCreator />
+          </div>
+        )}
       </main>
     </div>
   );

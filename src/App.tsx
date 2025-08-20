@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import S3Test from "./pages/S3Test";
+import RoadmapTest from "./pages/RoadmapTest";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./pages/NotFound";
 
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/s3test" element={<S3Test />} />
+          <Route path="/roadmaptest" element={<RoadmapTest />} />
           <Route path="/admin" element={
             <ProtectedRoute>
               <Admin />
