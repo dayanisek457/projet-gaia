@@ -9,19 +9,9 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { s3Manager } from '@/lib/s3-direct';
+import { roadmapService, type RoadmapItem } from '@/lib/supabase-roadmap';
 import { Upload, FileText, Image, Edit, Trash2, Plus, Calendar, Eye } from 'lucide-react';
 import { toast } from 'sonner';
-
-interface RoadmapItem {
-  id: string;
-  title: string;
-  description: string;
-  timeline: string;
-  files: string[];
-  status: 'completed' | 'in-progress' | 'planned';
-  createdAt: string;
-  updatedAt: string;
-}
 
 interface FormDialogProps {
   isEdit: boolean;
@@ -160,7 +150,7 @@ const FormDialog = ({
               <Label htmlFor="status">Statut</Label>
               <Select
                 value={formData.status}
-                onValueChange={(value) => setFormData(prev => ({ ...prev, status: value as any }))}
+                onValueChange={(value) => setFormData(prev => ({ ...prev, status: value as 'completed' | 'in-progress' | 'planned' }))}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Sélectionner un statut" />
@@ -199,6 +189,7 @@ const RoadmapManager = () => {
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [formData, setFormData] = useState<Partial<RoadmapItem>>({
     title: '',
@@ -210,24 +201,28 @@ const RoadmapManager = () => {
 
   useEffect(() => {
     loadRoadmapItems();
+    
+    // Subscribe to real-time changes
+    const subscription = roadmapService.subscribeToChanges((updatedItems) => {
+      setRoadmapItems(updatedItems);
+    });
+
+    return () => {
+      subscription?.unsubscribe();
+    };
   }, []);
 
-  const loadRoadmapItems = () => {
-    const saved = localStorage.getItem('gaia-roadmap');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setRoadmapItems(Array.isArray(parsed) ? parsed : []);
-      } catch (error) {
-        console.error('Error loading roadmap:', error);
-        setRoadmapItems([]);
-      }
+  const loadRoadmapItems = async () => {
+    try {
+      setLoading(true);
+      const items = await roadmapService.getAllItems();
+      setRoadmapItems(items);
+    } catch (error) {
+      console.error('Error loading roadmap items:', error);
+      toast.error('Erreur lors du chargement de la roadmap');
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const saveRoadmapItems = (items: RoadmapItem[]) => {
-    localStorage.setItem('gaia-roadmap', JSON.stringify(items));
-    setRoadmapItems(items);
   };
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -262,62 +257,63 @@ const RoadmapManager = () => {
     toast.success('Fichier retiré');
   };
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     if (!formData.title || !formData.description) {
       toast.error('Veuillez remplir tous les champs obligatoires');
       return;
     }
 
-    const newItem: RoadmapItem = {
-      id: Date.now().toString(),
-      title: formData.title,
-      description: formData.description,
-      timeline: formData.timeline || 'Non spécifié',
-      status: formData.status || 'planned',
-      files: formData.files || [],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
+    try {
+      const newItem = await roadmapService.createItem({
+        title: formData.title,
+        description: formData.description,
+        timeline: formData.timeline || 'Non spécifié',
+        status: formData.status || 'planned',
+        files: formData.files || []
+      });
 
-    const newItems = [...roadmapItems, newItem];
-    saveRoadmapItems(newItems);
-    
-    setShowCreateDialog(false);
-    resetForm();
-    toast.success('Élément roadmap créé avec succès !');
+      setShowCreateDialog(false);
+      resetForm();
+      toast.success('Élément roadmap créé avec succès !');
+    } catch (error) {
+      console.error('Error creating roadmap item:', error);
+      toast.error('Erreur lors de la création de l\'élément');
+    }
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     if (!editingItem || !formData.title || !formData.description) {
       toast.error('Veuillez remplir tous les champs obligatoires');
       return;
     }
 
-    const updatedItem: RoadmapItem = {
-      ...editingItem,
-      title: formData.title,
-      description: formData.description,
-      timeline: formData.timeline || 'Non spécifié',
-      status: formData.status || 'planned',
-      files: formData.files || [],
-      updatedAt: new Date().toISOString()
-    };
+    try {
+      await roadmapService.updateItem(editingItem.id, {
+        title: formData.title,
+        description: formData.description,
+        timeline: formData.timeline || 'Non spécifié',
+        status: formData.status || 'planned',
+        files: formData.files || []
+      });
 
-    const newItems = roadmapItems.map(item => 
-      item.id === editingItem.id ? updatedItem : item
-    );
-    saveRoadmapItems(newItems);
-    
-    setShowEditDialog(false);
-    setEditingItem(null);
-    resetForm();
-    toast.success('Élément roadmap mis à jour avec succès !');
+      setShowEditDialog(false);
+      setEditingItem(null);
+      resetForm();
+      toast.success('Élément roadmap mis à jour avec succès !');
+    } catch (error) {
+      console.error('Error updating roadmap item:', error);
+      toast.error('Erreur lors de la mise à jour de l\'élément');
+    }
   };
 
-  const handleDelete = (itemId: string) => {
-    const newItems = roadmapItems.filter(item => item.id !== itemId);
-    saveRoadmapItems(newItems);
-    toast.success('Élément roadmap supprimé');
+  const handleDelete = async (itemId: string) => {
+    try {
+      await roadmapService.deleteItem(itemId);
+      toast.success('Élément roadmap supprimé');
+    } catch (error) {
+      console.error('Error deleting roadmap item:', error);
+      toast.error('Erreur lors de la suppression de l\'élément');
+    }
   };
 
   const openEditDialog = (item: RoadmapItem) => {
@@ -388,7 +384,14 @@ const RoadmapManager = () => {
         </Button>
       </div>
 
-      {roadmapItems.length === 0 ? (
+      {loading ? (
+        <Card>
+          <CardContent className="py-12 text-center">
+            <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
+            <p className="text-gray-600">Chargement de la roadmap...</p>
+          </CardContent>
+        </Card>
+      ) : roadmapItems.length === 0 ? (
         <Card>
           <CardContent className="py-12 text-center">
             <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
