@@ -1,7 +1,7 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Battery, Package, Radio, Plane, Zap, Waves } from 'lucide-react';
+import { Battery, Package, Radio, Plane, Zap, Waves, Leaf, Wind, Sparkles } from 'lucide-react';
 
 const SolutionSection = () => {
   const technicalSolutions = [
@@ -42,107 +42,129 @@ const SolutionSection = () => {
     }
   ];
 
+  const keyBenefits = [
+    {
+      icon: Zap,
+      title: "100% Écologique",
+      description: "Zéro émission de gaz à effet de serre grâce à la motorisation électrique",
+      gradient: "from-primary/20 to-primary/10",
+      color: "text-primary",
+      border: "border-primary/30"
+    },
+    {
+      icon: Wind,
+      title: "Autonome",
+      description: "Pas de risque humain, pilotage à distance et fonctionnement automatisé",
+      gradient: "from-secondary/20 to-secondary/10",
+      color: "text-secondary",
+      border: "border-secondary/30"
+    },
+    {
+      icon: Leaf,
+      title: "Économique",
+      description: "Alternative abordable aux hélicoptères et avions traditionnels",
+      gradient: "from-accent/20 to-accent/10",
+      color: "text-accent",
+      border: "border-accent/30"
+    }
+  ];
+
   return (
-    <section id="solution" className="py-20">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-section-title mb-6">
+    <section id="solution" className="py-32 bg-gradient-to-b from-background to-muted/30 relative">
+      {/* Background decoration */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-20 right-20 animate-float-slow">
+          <Sparkles className="h-24 w-24 text-primary/10" />
+        </div>
+        <div className="absolute bottom-32 left-16 animate-float">
+          <Wind className="h-20 w-20 text-accent/15" />
+        </div>
+      </div>
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20 animate-fade-in-up">
+            <h2 className="text-section-title mb-8 font-display">
               Notre Solution : GAIA
             </h2>
-            <p className="text-body max-w-3xl mx-auto">
+            <p className="text-body-large max-w-4xl mx-auto leading-relaxed">
               Un avion 100% électrique intelligent avec batterie haute capacité, 
               muni d'une soute pour larguer des Seedballs. Une solution écologique, économique 
               et sécurisée pour accélérer la reforestation mondiale.
             </p>
           </div>
 
-          {/* Key Benefits */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <Card className="text-center border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-gradient-to-br from-white to-primary/5 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              <CardHeader className="pb-4">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center mb-4 shadow-lg">
-                  <Zap className="h-8 w-8 text-primary" />
+          {/* Premium Key Benefits */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+            {keyBenefits.map((benefit, index) => (
+              <div 
+                key={index}
+                className="card-premium group text-center p-8 cinematic-glow animate-fade-in-up" 
+                style={{ animationDelay: `${index * 0.2}s` }}
+              >
+                <div className={`mx-auto w-20 h-20 bg-gradient-to-br ${benefit.gradient} rounded-2xl flex items-center justify-center mb-6 shadow-xl group-hover:scale-110 transition-all duration-500`}>
+                  <benefit.icon className={`h-10 w-10 ${benefit.color}`} />
                 </div>
-                <CardTitle className="text-primary text-xl font-bold">100% Écologique</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  Zéro émission de gaz à effet de serre grâce à la motorisation électrique
+                <h3 className={`text-2xl font-display font-bold mb-4 ${benefit.color}`}>
+                  {benefit.title}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed text-lg">
+                  {benefit.description}
                 </p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center border-secondary/20 hover:border-secondary/40 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-gradient-to-br from-white to-secondary/5 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-              <CardHeader className="pb-4">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-full flex items-center justify-center mb-4 shadow-lg">
-                  <Package className="h-8 w-8 text-secondary" />
-                </div>
-                <CardTitle className="text-secondary text-xl font-bold">Autonome</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  Pas de risque humain, pilotage à distance et fonctionnement automatisé
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center border-accent/20 hover:border-accent/40 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-gradient-to-br from-white to-accent/5 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-              <CardHeader className="pb-4">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-accent/20 to-accent/10 rounded-full flex items-center justify-center mb-4 shadow-lg">
-                  <Plane className="h-8 w-8 text-accent" />
-                </div>
-                <CardTitle className="text-accent text-xl font-bold">Économique</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  Alternative abordable aux hélicoptères et avions traditionnels
-                </p>
-              </CardContent>
-            </Card>
+              </div>
+            ))}
           </div>
 
-          {/* Technical Solutions Table */}
-          <div className="mb-12">
-            <h3 className="text-subsection text-center mb-8 font-bold">Solutions Techniques</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Premium Technical Solutions */}
+          <div className="mb-20 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+            <h3 className="text-subsection text-center mb-12 font-display">Solutions Techniques</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {technicalSolutions.map((item, index) => (
-                <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 border-transparent hover:border-primary/20 bg-gradient-to-br from-white to-gray-50">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-4">
-                      <div className={`p-3 rounded-xl ${item.color} bg-opacity-15 shadow-lg group-hover:shadow-xl transition-all duration-300`}>
-                        <item.icon className={`h-6 w-6 ${item.color.replace('bg-', 'text-')}`} />
-                      </div>
-                      <div>
-                        <CardTitle className="text-base font-semibold text-gray-900">{item.function}</CardTitle>
-                        <Badge variant="outline" className="text-xs mt-1 bg-primary/10 text-primary border-primary/30 font-medium">
+                <div 
+                  key={index} 
+                  className="card-premium group p-8 cinematic-glow hover:scale-105 transition-all duration-500"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <div className="flex items-center space-x-4 mb-6">
+                    <div className={`p-4 rounded-2xl ${item.color} bg-opacity-15 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110`}>
+                      <item.icon className={`h-8 w-8 ${item.color.replace('bg-', 'text-')}`} />
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-display font-bold text-foreground">{item.function}</h4>
+                      <div className="mt-2">
+                        <span className="text-sm font-display font-medium text-primary bg-primary/15 px-3 py-1 rounded-xl border border-primary/20">
                           {item.block}
-                        </Badge>
+                        </span>
                       </div>
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm font-semibold text-primary bg-primary/5 px-3 py-2 rounded-lg">{item.solution}</p>
-                  </CardContent>
-                </Card>
+                  </div>
+                  <p className="text-lg font-display font-semibold text-accent bg-accent/10 px-4 py-3 rounded-xl border border-accent/20">
+                    {item.solution}
+                  </p>
+                </div>
               ))}
             </div>
           </div>
 
-          {/* Future Vision */}
-          <Card className="bg-gradient-primary text-white shadow-2xl border-0 overflow-hidden relative">
-            <div className="absolute inset-0 bg-black/20"></div>
-            <CardHeader className="relative z-10">
-              <CardTitle className="text-center text-white text-2xl font-bold">Vision d'Avenir</CardTitle>
-            </CardHeader>
-            <CardContent className="text-center relative z-10">
-              <p className="text-white/90 text-lg leading-relaxed">
-                Avec les progrès de l'aéronautique, GAIA pourra être produit à grande échelle 
-                tout en restant écologique, notamment grâce aux futures technologies à hydrogène. 
-                Une solution scalable pour un impact environnemental mondial.
-              </p>
-            </CardContent>
-          </Card>
+          {/* Premium Future Vision */}
+          <div className="animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
+            <div className="card-premium bg-gradient-hero text-white p-12 cinematic-glow relative overflow-hidden">
+              <div className="absolute inset-0 bg-black/10"></div>
+              <div className="relative z-10 text-center">
+                <div className="flex justify-center mb-6">
+                  <div className="p-4 bg-white/20 rounded-2xl backdrop-blur-sm">
+                    <Sparkles className="h-12 w-12 text-white" />
+                  </div>
+                </div>
+                <h3 className="text-3xl font-display font-bold text-white mb-6">Vision d'Avenir</h3>
+                <p className="text-white/95 text-xl leading-relaxed max-w-4xl mx-auto">
+                  Avec les progrès de l'aéronautique, GAIA pourra être produit à grande échelle 
+                  tout en restant écologique, notamment grâce aux futures technologies à hydrogène. 
+                  Une solution scalable pour un impact environnemental mondial.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
