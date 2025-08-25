@@ -37,74 +37,77 @@ const ProjectSection = () => {
   ];
 
   return (
-    <section id="project" className="py-20 bg-muted/30">
-      <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-section-title mb-6">
+    <section id="project" className="py-32 bg-muted/20 relative">
+      <div className="absolute inset-0 bg-gradient-cinematic opacity-50"></div>
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20 animate-fade-in-up">
+            <h2 className="text-section-title mb-8 font-display">
               Face à l'urgence climatique mondiale
             </h2>
-            <p className="text-body max-w-2xl mx-auto">
+            <p className="text-body-large max-w-4xl mx-auto leading-relaxed">
               Notre projet GAIA répond aux défis environnementaux majeurs de notre époque 
               par une approche technologique innovante et durable.
             </p>
           </div>
 
-          {/* Project Overview */}
-          <Card className="mb-12 border-primary/20 bg-gradient-to-r from-primary/5 to-secondary/5">
-            <CardHeader>
-              <CardTitle className="text-2xl text-center">Problématique</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-body text-center leading-relaxed">
+          {/* Enhanced Project Overview */}
+          <div className="mb-20 animate-fade-in-up">
+            <div className="card-premium bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 p-12 text-center cinematic-glow">
+              <h3 className="text-subsection mb-6 font-display text-primary">Problématique</h3>
+              <p className="text-body-large leading-relaxed max-w-5xl mx-auto">
                 Comment utiliser les technologies aériennes pour accélérer la reforestation 
                 et restaurer durablement les écosystèmes dégradés face à l'urgence climatique mondiale ?
               </p>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
-          {/* Challenges Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          {/* Premium Challenges Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
             {challenges.map((challenge, index) => (
-              <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:border-primary/40 animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                        <challenge.icon className="h-6 w-6 text-primary" />
+              <div 
+                key={index} 
+                className="card-premium group hover:scale-[1.02] transition-all duration-500 animate-fade-in-up cinematic-glow" 
+                style={{ animationDelay: `${index * 0.15}s` }}
+              >
+                <div className="p-8">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-4">
+                      <div className="p-4 rounded-2xl bg-primary/10 group-hover:bg-primary/20 transition-all duration-300 group-hover:scale-110">
+                        <challenge.icon className="h-8 w-8 text-primary" />
                       </div>
-                      <CardTitle className="text-lg">{challenge.title}</CardTitle>
+                      <h3 className="text-xl font-display font-bold text-foreground">{challenge.title}</h3>
                     </div>
-                    <div className="text-sm font-bold text-primary bg-primary/10 px-2 py-1 rounded">
+                    <div className="text-sm font-display font-bold text-primary bg-primary/15 px-4 py-2 rounded-xl border border-primary/20">
                       {challenge.stats}
                     </div>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{challenge.description}</p>
-                </CardContent>
-              </Card>
+                  <p className="text-muted-foreground leading-relaxed text-lg">{challenge.description}</p>
+                </div>
+              </div>
             ))}
           </div>
 
-          {/* Project Timeline */}
-          <Card className="bg-gradient-earth-sky text-white animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-            <CardHeader>
-              <CardTitle className="text-center text-white text-2xl mb-2">Informations Projet</CardTitle>
-              <p className="text-white/80 text-center">Lycée Saint-Joseph Dijon - Terminale Sciences de l'Ingénieur</p>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {projectData.map((item, index) => (
-                  <div key={index} className="text-center p-4 bg-white/10 rounded-lg backdrop-blur-sm">
-                    <div className="text-2xl mb-2">{item.icon}</div>
-                    <div className="text-xl font-bold mb-1">{item.value}</div>
-                    <div className="text-white/90 text-sm">{item.label}</div>
-                  </div>
-                ))}
+          {/* Premium Project Timeline */}
+          <div className="animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+            <div className="card-premium bg-gradient-hero text-white p-12 cinematic-glow relative overflow-hidden">
+              <div className="relative z-10">
+                <div className="text-center mb-12">
+                  <h3 className="text-3xl font-display font-bold text-white mb-4">Informations Projet</h3>
+                  <p className="text-white/90 text-xl font-display">Lycée Saint-Joseph Dijon - Terminale Sciences de l'Ingénieur</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                  {projectData.map((item, index) => (
+                    <div key={index} className="text-center p-8 glass rounded-2xl hover:scale-105 transition-all duration-300">
+                      <div className="text-4xl mb-4">{item.icon}</div>
+                      <div className="text-2xl font-display font-bold mb-2">{item.value}</div>
+                      <div className="text-white/90 text-lg font-display font-medium">{item.label}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </section>

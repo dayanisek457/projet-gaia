@@ -11,7 +11,9 @@ import {
   Heart,
   Lightbulb,
   Target,
-  Globe
+  Globe,
+  Sparkles,
+  Star
 } from 'lucide-react';
 
 const SponsorsSection = () => {
@@ -88,116 +90,131 @@ const SponsorsSection = () => {
   ];
 
   return (
-    <section id="sponsors" className="py-20 bg-gradient-to-br from-muted/30 to-background relative overflow-hidden">
-      {/* Background Decoration */}
+    <section id="sponsors" className="py-32 bg-gradient-to-br from-muted/40 to-background relative overflow-hidden">
+      {/* Premium Background Decoration */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 -left-10 w-32 h-32 bg-primary/5 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-20 -right-10 w-24 h-24 bg-secondary/5 rounded-full animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-20 right-20 animate-float-slow">
+          <Star className="h-32 w-32 text-primary/8" />
+        </div>
+        <div className="absolute bottom-32 left-16 animate-float">
+          <Sparkles className="h-24 w-24 text-accent/10" />
+        </div>
+        <div className="absolute top-1/2 right-1/4 animate-float-delayed">
+          <Globe className="h-20 w-20 text-secondary/8" />
+        </div>
+        <div className="absolute inset-0 bg-gradient-cinematic opacity-30"></div>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-6xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-section-title mb-6">
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-7xl mx-auto">
+          {/* Premium Header */}
+          <div className="text-center mb-20 animate-fade-in-up">
+            <h2 className="text-section-title mb-8 font-display">
               Rejoignez l'Aventure GAIA
             </h2>
-            <p className="text-body max-w-3xl mx-auto mb-8">
+            <p className="text-body-large max-w-4xl mx-auto mb-8 leading-relaxed">
               Découvrez comment votre organisation peut contribuer à révolutionner 
               la reforestation mondiale tout en bénéficiant d'une visibilité exceptionnelle 
               et d'un impact environnemental mesurable.
             </p>
-            <Badge variant="outline" className="px-4 py-2 text-lg animate-bounce">
-              🌱 Partenaires Recherchés
-            </Badge>
+            <div className="inline-flex items-center gap-3 bg-primary/10 text-primary px-6 py-3 rounded-2xl border border-primary/20 font-display font-medium text-xl animate-bounce-gentle">
+              <TreePine className="h-6 w-6" />
+              Partenaires Recherchés
+            </div>
           </div>
 
-          {/* Sponsor Types Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+          {/* Premium Sponsor Types Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-20">
             {sponsorTypes.map((sponsor, index) => (
-              <Card 
+              <div 
                 key={index} 
-                className="group hover:shadow-2xl transition-all duration-500 hover:scale-105 border-2 hover:border-primary/30 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm animate-fade-in-up"
+                className="card-premium group cinematic-glow p-8 hover:scale-105 transition-all duration-500 animate-fade-in-up"
                 style={{ animationDelay: `${index * 0.2}s` }}
               >
-                <CardHeader className="text-center pb-6">
-                  <div className={`mx-auto w-16 h-16 bg-gradient-to-br ${sponsor.gradient} rounded-2xl flex items-center justify-center mb-4 shadow-lg group-hover:shadow-xl transition-shadow duration-300`}>
-                    <sponsor.icon className="h-8 w-8 text-white" />
+                <div className="text-center mb-8">
+                  <div className={`mx-auto w-20 h-20 bg-gradient-to-br ${sponsor.gradient} rounded-3xl flex items-center justify-center mb-6 shadow-2xl group-hover:shadow-3xl group-hover:scale-110 transition-all duration-500`}>
+                    <sponsor.icon className="h-10 w-10 text-white" />
                   </div>
-                  <CardTitle className="text-xl font-bold">{sponsor.type}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
+                  <h3 className="text-2xl font-display font-bold text-foreground">{sponsor.type}</h3>
+                </div>
+
+                <div className="space-y-6">
                   {sponsor.benefits.map((benefit, benefitIndex) => (
                     <div 
                       key={benefitIndex} 
-                      className="flex items-start space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors duration-300 group/benefit"
+                      className="flex items-start space-x-4 p-4 rounded-2xl hover:bg-muted/50 transition-all duration-300 group/benefit"
                     >
-                      <div className="flex-shrink-0 w-8 h-8 bg-muted rounded-lg flex items-center justify-center group-hover/benefit:bg-primary/10 transition-colors duration-300">
-                        <benefit.icon className="h-4 w-4 text-primary" />
+                      <div className="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center group-hover/benefit:bg-primary/20 group-hover/benefit:scale-110 transition-all duration-300">
+                        <benefit.icon className="h-6 w-6 text-primary" />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-sm mb-1 group-hover/benefit:text-primary transition-colors duration-300">
+                        <h4 className="font-display font-semibold text-lg mb-2 group-hover/benefit:text-primary transition-colors duration-300">
                           {benefit.title}
                         </h4>
-                        <p className="text-xs text-muted-foreground leading-relaxed">
+                        <p className="text-muted-foreground leading-relaxed">
                           {benefit.description}
                         </p>
                       </div>
                     </div>
                   ))}
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
 
-          {/* Partnership Benefits */}
-          <Card className="bg-gradient-primary text-white mb-12 overflow-hidden relative animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/10"></div>
-            <CardHeader className="text-center relative z-10">
-              <CardTitle className="text-white text-2xl mb-4">
-                Pourquoi Sponsoriser GAIA ?
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
-                <div className="space-y-2">
-                  <div className="text-3xl font-bold text-white">1 An</div>
-                  <div className="text-white/90">Durée Projet</div>
-                  <div className="text-white/70 text-sm">Visibilité garantie sur 12 mois</div>
-                </div>
-                <div className="space-y-2">
-                  <div className="text-3xl font-bold text-white">∞</div>
-                  <div className="text-white/90">Potentiel Impact</div>
-                  <div className="text-white/70 text-sm">Solution scalable mondialement</div>
+          {/* Premium Partnership Benefits */}
+          <div className="card-premium bg-gradient-hero text-white mb-16 overflow-hidden relative animate-fade-in-up p-12 cinematic-glow" style={{ animationDelay: '0.8s' }}>
+            <div className="absolute inset-0 bg-black/10"></div>
+            <div className="relative z-10 text-center">
+              <div className="flex justify-center mb-6">
+                <div className="p-4 bg-white/20 rounded-2xl backdrop-blur-sm">
+                  <Star className="h-12 w-12 text-white" />
                 </div>
               </div>
-            </CardContent>
-          </Card>
+              <h3 className="text-3xl font-display font-bold text-white mb-8">
+                Pourquoi Sponsoriser GAIA ?
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-3xl mx-auto">
+                <div className="text-center p-6 bg-white/10 rounded-2xl backdrop-blur-sm">
+                  <div className="text-5xl font-display font-black text-white mb-3">1 An</div>
+                  <div className="text-white/95 text-xl font-display font-semibold mb-2">Durée Projet</div>
+                  <div className="text-white/80 text-lg">Visibilité garantie sur 12 mois</div>
+                </div>
+                <div className="text-center p-6 bg-white/10 rounded-2xl backdrop-blur-sm">
+                  <div className="text-5xl font-display font-black text-white mb-3">∞</div>
+                  <div className="text-white/95 text-xl font-display font-semibold mb-2">Potentiel Impact</div>
+                  <div className="text-white/80 text-lg">Solution scalable mondialement</div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-          {/* Call to Action */}
+          {/* Premium Call to Action */}
           <div className="text-center animate-fade-in-up" style={{ animationDelay: '1s' }}>
-            <h3 className="text-2xl font-bold mb-6">
+            <h3 className="text-subsection mb-6 font-display">
               Prêt à Faire la Différence ?
             </h3>
-            <p className="text-body mb-8 max-w-2xl mx-auto">
+            <p className="text-body-large mb-10 max-w-3xl mx-auto leading-relaxed">
               Contactez-nous dès maintenant pour discuter des opportunités de partenariat 
               et découvrir comment GAIA peut valoriser votre engagement environnemental.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Button 
                 size="lg" 
-                className="group relative overflow-hidden bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-4 shadow-xl hover:shadow-2xl transition-all duration-300"
+                className="btn-hero group relative overflow-hidden bg-primary hover:bg-primary/90 text-white font-display font-semibold px-12 py-4 text-lg rounded-xl cinematic-glow"
               >
-                <span className="relative z-10">Devenir Partenaire</span>
-                <div className="absolute inset-0 bg-white/20 transform translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300"></div>
+                <span className="relative z-10 flex items-center">
+                  <Heart className="mr-3 h-5 w-5" />
+                  Devenir Partenaire
+                </span>
               </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="group border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
+                className="btn-hero border-2 border-primary text-primary hover:bg-primary hover:text-white font-display font-semibold px-12 py-4 text-lg rounded-xl"
               >
+                <Award className="mr-3 h-5 w-5" />
                 Télécharger le Dossier Sponsor
-                <Award className="ml-2 h-4 w-4 group-hover:scale-110 transition-transform duration-300" />
               </Button>
             </div>
           </div>
