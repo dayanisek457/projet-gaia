@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -49,8 +50,9 @@ const Header = () => {
               variant="outline" 
               size="lg" 
               className="btn-hero ml-6 border-2 border-primary/30 hover:border-primary text-primary hover:bg-primary hover:text-white font-display font-semibold px-6 py-2.5 rounded-xl tracking-wide"
+              asChild
             >
-              Documentation
+              <Link to="/documentation">Documentation</Link>
             </Button>
           </nav>
 
@@ -84,8 +86,10 @@ const Header = () => {
                   variant="outline" 
                   size="lg" 
                   className="btn-hero w-full border-2 border-primary/30 hover:border-primary text-primary hover:bg-primary hover:text-white font-display font-semibold tracking-wide rounded-xl"
+                  asChild
+                  onClick={() => setIsMenuOpen(false)}
                 >
-                  Documentation
+                  <Link to="/documentation">Documentation</Link>
                 </Button>
               </div>
             </div>
