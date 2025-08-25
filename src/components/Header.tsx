@@ -16,34 +16,40 @@ const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 w-full z-50 glass border-b border-white/20 backdrop-blur-lg bg-white/95 shadow-lg">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center space-x-3">
-            <img 
-              src="/favicon.ico" 
-              alt="GAIA Logo" 
-              className="h-9 w-9 object-contain drop-shadow-lg" 
-            />
-            <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent tracking-tight">
+    <header className="fixed top-0 w-full z-50 glass backdrop-blur-xl bg-white/90 shadow-2xl border-b border-white/30">
+      <div className="container mx-auto px-6">
+        <div className="flex items-center justify-between h-20">
+          {/* Premium Logo */}
+          <div className="flex items-center space-x-4">
+            <div className="cinematic-glow">
+              <img 
+                src="/favicon.ico" 
+                alt="GAIA Logo" 
+                className="h-12 w-12 object-contain drop-shadow-xl" 
+              />
+            </div>
+            <span className="text-2xl font-display font-black bg-gradient-primary bg-clip-text text-transparent tracking-tight">
               GAIA
             </span>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          {/* Premium Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-12">
             {navigation.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className="text-foreground/80 hover:text-primary transition-all duration-200 font-medium relative group"
+                className="text-foreground/85 hover:text-primary transition-all duration-300 font-display font-medium text-lg relative group tracking-wide"
               >
                 {item.name}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-primary transition-all duration-300 group-hover:w-full group-hover:left-0 rounded-full"></span>
               </a>
             ))}
-            <Button variant="outline" size="sm" className="ml-4 border-2 border-primary/20 hover:border-primary text-primary hover:bg-primary hover:text-white transition-all duration-200">
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="btn-hero ml-6 border-2 border-primary/30 hover:border-primary text-primary hover:bg-primary hover:text-white font-display font-semibold px-6 py-2.5 rounded-xl tracking-wide"
+            >
               Documentation
             </Button>
           </nav>
@@ -51,30 +57,34 @@ const Header = () => {
           {/* Mobile menu button */}
           <Button
             variant="ghost"
-            size="sm"
-            className="md:hidden"
+            size="lg"
+            className="md:hidden cinematic-glow"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Enhanced Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-white/95 backdrop-blur-lg rounded-lg mt-2 shadow-xl border border-white/20">
+            <div className="px-4 pt-4 pb-6 space-y-2 glass rounded-2xl mt-4 shadow-2xl border border-white/30">
               {navigation.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
-                  className="block px-3 py-2 text-foreground/80 hover:text-primary transition-colors duration-200 hover:bg-primary/5 rounded-md font-medium"
+                  className="block px-4 py-3 text-foreground/85 hover:text-primary transition-all duration-300 hover:bg-primary/10 rounded-xl font-display font-medium text-lg tracking-wide"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
                 </a>
               ))}
-              <div className="px-3 py-2">
-                <Button variant="outline" size="sm" className="w-full border-2 border-primary/20 hover:border-primary text-primary hover:bg-primary hover:text-white transition-all duration-200">
+              <div className="px-4 py-3">
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className="btn-hero w-full border-2 border-primary/30 hover:border-primary text-primary hover:bg-primary hover:text-white font-display font-semibold tracking-wide rounded-xl"
+                >
                   Documentation
                 </Button>
               </div>
