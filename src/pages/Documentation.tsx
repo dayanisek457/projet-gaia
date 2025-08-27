@@ -18,11 +18,7 @@ import {
   AlertTriangle,
   CheckCircle,
   X,
-  Plus,
-  Edit3,
-  Save,
-  Eye,
-  EyeOff
+  Plus
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -33,19 +29,46 @@ interface DocSection {
   id: string;
   title: string;
   content: string;
-  type: 'text' | 'accordion' | 'table' | 'callout' | 'checklist';
+  type: 'text' | 'rich' | 'accordion' | 'table' | 'callout' | 'checklist';
   data?: any;
 }
 
 const Documentation = () => {
-  const [isEditMode, setIsEditMode] = useState(false);
   const [activeSection, setActiveSection] = useState('overview');
   const [docSections, setDocSections] = useState<DocSection[]>([
     {
       id: 'overview',
       title: 'Vue d\'ensemble du Projet GAIA',
-      content: 'Le projet GAIA révolutionne la reforestation grâce à l\'intelligence artificielle et aux technologies de pointe.',
-      type: 'text'
+      content: `# Projet GAIA - Reforestation Intelligente
+
+Le projet **GAIA** révolutionne la reforestation grâce à l'**intelligence artificielle** et aux *technologies de pointe*.
+
+## Objectifs Principaux
+
+- Optimiser les techniques de reforestation
+- Utiliser l'IA pour l'analyse des terrains
+- Surveiller les plantations par drones
+- Améliorer les taux de survie des arbres
+
+---
+
+> **INFO**: Innovation Technologique
+> 
+> Ce projet combine IoT, IA et surveillance aérienne pour une approche holistique de la reforestation.
+
+### Technologies Utilisées
+
+1. **Intelligence Artificielle** pour l'analyse de terrain
+2. **Internet des Objets (IoT)** pour le monitoring
+3. **Surveillance par drones** pour le suivi aérien
+
+<details>
+<summary>Plus de détails techniques</summary>
+
+Notre approche utilise des algorithmes d'apprentissage automatique pour analyser les données environnementales et optimiser les stratégies de plantation.
+
+</details>`,
+      type: 'rich'
     },
     {
       id: 'features',
@@ -206,10 +229,75 @@ const Documentation = () => {
     </div>
   );
 
+  const renderMarkdown = (text: string) => {
+    // Enhanced markdown-to-HTML conversion for public display
+    const html = text
+      // Headers
+      .replace(/### (.*)/g, '<h3 class="text-lg font-semibold mb-2 mt-4 text-foreground">$1</h3>')
+      .replace(/## (.*)/g, '<h2 class="text-xl font-semibold mb-3 mt-6 text-foreground">$1</h2>')
+      .replace(/# (.*)/g, '<h1 class="text-2xl font-bold mb-4 mt-8 text-foreground">$1</h1>')
+      
+      // Text formatting
+      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
+      .replace(/<u>(.*?)<\/u>/g, '<span class="underline">$1</span>')
+      .replace(/`(.*?)`/g, '<code class="bg-muted px-1 py-0.5 rounded text-sm font-mono">$1</code>')
+      
+      // Lists
+      .replace(/^- \[ \] (.*)$/gm, '<div class="flex items-center space-x-2 my-1"><input type="checkbox" disabled class="rounded border-gray-300"> <span class="text-muted-foreground">$1</span></div>')
+      .replace(/^- \[x\] (.*)$/gm, '<div class="flex items-center space-x-2 my-1"><input type="checkbox" checked disabled class="rounded border-gray-300"> <span class="line-through text-muted-foreground">$1</span></div>')
+      .replace(/^- (.*)$/gm, '<li class="ml-4 text-muted-foreground">• $1</li>')
+      .replace(/^[0-9]+\. (.*)$/gm, '<li class="ml-4 list-decimal text-muted-foreground">$1</li>')
+      
+      // Quotes
+      .replace(/^> (.*)$/gm, '<blockquote class="border-l-4 border-primary/30 pl-4 italic text-muted-foreground my-2">$1</blockquote>')
+      
+      // Separators
+      .replace(/^---$/gm, '<hr class="my-6 border-border">')
+      
+      // Callouts (enhanced)
+      .replace(/^> \*\*INFO\*\*: (.*)$/gm, '<div class="bg-blue-50 dark:bg-blue-950/30 border-l-4 border-blue-400 p-4 my-4 rounded-r"><div class="flex"><div class="flex-shrink-0 text-blue-600">ℹ️</div><div class="ml-3"><h4 class="text-sm font-medium text-blue-800 dark:text-blue-200">$1</h4></div></div></div>')
+      .replace(/^> \*\*WARNING\*\*: (.*)$/gm, '<div class="bg-yellow-50 dark:bg-yellow-950/30 border-l-4 border-yellow-400 p-4 my-4 rounded-r"><div class="flex"><div class="flex-shrink-0 text-yellow-600">⚠️</div><div class="ml-3"><h4 class="text-sm font-medium text-yellow-800 dark:text-yellow-200">$1</h4></div></div></div>')
+      .replace(/^> \*\*SUCCESS\*\*: (.*)$/gm, '<div class="bg-green-50 dark:bg-green-950/30 border-l-4 border-green-400 p-4 my-4 rounded-r"><div class="flex"><div class="flex-shrink-0 text-green-600">✅</div><div class="ml-3"><h4 class="text-sm font-medium text-green-800 dark:text-green-200">$1</h4></div></div></div>')
+      
+      // Accordions/Details
+      .replace(/<details>([\s\S]*?)<\/details>/g, (match, content) => {
+        const summaryMatch = content.match(/<summary>(.*?)<\/summary>/);
+        const summary = summaryMatch ? summaryMatch[1] : 'Détails';
+        const actualContent = content.replace(/<summary>.*?<\/summary>/, '').trim();
+        return `<details class="border border-border rounded-lg p-4 my-4 bg-card"><summary class="font-semibold cursor-pointer hover:text-primary">${summary}</summary><div class="mt-2 pt-2 border-t border-border text-muted-foreground">${actualContent}</div></details>`;
+      })
+      
+      // Tables (basic support)
+      .replace(/\|(.+)\|/g, (match, content) => {
+        const cells = content.split('|').map(cell => cell.trim());
+        const cellsHtml = cells.map(cell => `<td class="border border-border px-4 py-2 text-muted-foreground">${cell}</td>`).join('');
+        return `<tr>${cellsHtml}</tr>`;
+      })
+      
+      // Links and images
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="text-primary hover:text-primary/80 underline">$1</a>')
+      .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="max-w-full h-auto rounded-lg my-4 shadow-md" />')
+      
+      // Line breaks
+      .replace(/\n\n/g, '<br><br>')
+      .replace(/\n/g, '<br>');
+
+    return html;
+  };
+
   const renderContent = (section: DocSection) => {
     switch (section.type) {
       case 'text':
         return <p className="text-muted-foreground leading-relaxed">{section.content}</p>;
+      
+      case 'rich':
+        return (
+          <div 
+            className="prose prose-sm max-w-none text-muted-foreground"
+            dangerouslySetInnerHTML={{ __html: renderMarkdown(section.content) }}
+          />
+        );
       
       case 'accordion':
         return (
@@ -264,14 +352,6 @@ const Documentation = () => {
               </Link>
             </div>
             <div className="flex items-center space-x-4">
-              <Button
-                variant={isEditMode ? "default" : "outline"}
-                onClick={() => setIsEditMode(!isEditMode)}
-                className="flex items-center space-x-2"
-              >
-                {isEditMode ? <EyeOff className="h-4 w-4" /> : <Edit3 className="h-4 w-4" />}
-                <span>{isEditMode ? 'Mode Lecture' : 'Mode Édition'}</span>
-              </Button>
               <Button variant="outline" asChild>
                 <Link to="/admin" className="flex items-center space-x-2">
                   <Settings className="h-4 w-4" />

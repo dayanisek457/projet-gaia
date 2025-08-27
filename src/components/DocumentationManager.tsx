@@ -27,7 +27,8 @@ import {
   Copy,
   Move,
   Settings,
-  Palette
+  Palette,
+  Type
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -35,7 +36,7 @@ interface DocSection {
   id: string;
   title: string;
   content: string;
-  type: 'text' | 'accordion' | 'table' | 'callout' | 'checklist';
+  type: 'text' | 'rich' | 'accordion' | 'table' | 'callout' | 'checklist';
   data?: any;
   order: number;
   isPublished: boolean;
@@ -93,14 +94,15 @@ const DocumentationManager = () => {
   const [newSection, setNewSection] = useState<Partial<DocSection>>({
     title: '',
     content: '',
-    type: 'text',
+    type: 'rich',
     data: {},
     order: sections.length + 1,
     isPublished: true
   });
 
   const sectionTypes = [
-    { value: 'text', label: 'Texte Simple', icon: FileText },
+    { value: 'rich', label: 'Contenu Riche (Markdown)', icon: FileText },
+    { value: 'text', label: 'Texte Simple', icon: Type },
     { value: 'accordion', label: 'Accordéon', icon: Layers },
     { value: 'table', label: 'Tableau', icon: Table },
     { value: 'callout', label: 'Encadré/Alerte', icon: AlertTriangle },
@@ -139,7 +141,7 @@ const DocumentationManager = () => {
     setNewSection({
       title: '',
       content: '',
-      type: 'text',
+      type: 'rich',
       data: {},
       order: sections.length + 2,
       isPublished: true
@@ -170,6 +172,41 @@ const DocumentationManager = () => {
 
   const renderAdvancedEditor = (section: DocSection) => {
     switch (section.type) {
+      case 'rich':
+        return (
+          <div className="space-y-4">
+            <Label>Contenu Markdown Avancé</Label>
+            <RichTextEditor
+              content={section.content}
+              onChange={(content) => {
+                setEditingSection({
+                  ...section,
+                  content
+                });
+              }}
+              placeholder="Utilisez la barre d'outils pour formater votre contenu avec toutes les fonctionnalités markdown avancées..."
+            />
+          </div>
+        );
+
+      case 'text':
+        return (
+          <div className="space-y-4">
+            <Label>Contenu Texte Simple</Label>
+            <Textarea
+              placeholder="Contenu de la section..."
+              value={section.content}
+              rows={10}
+              onChange={(e) => {
+                setEditingSection({
+                  ...section,
+                  content: e.target.value
+                });
+              }}
+            />
+          </div>
+        );
+
       case 'accordion':
         return (
           <div className="space-y-4">

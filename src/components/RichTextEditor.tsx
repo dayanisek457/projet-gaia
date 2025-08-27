@@ -38,7 +38,15 @@ import {
   Move,
   Copy,
   Palette,
-  Settings
+  Settings,
+  Minus,
+  CheckSquare,
+  AlertTriangle,
+  Info,
+  CheckCircle,
+  FileImage,
+  Paperclip,
+  ChevronDown
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -81,15 +89,23 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       buttons: [
         { icon: List, tooltip: 'Liste à puces', action: () => insertList('-') },
         { icon: ListOrdered, tooltip: 'Liste numérotée', action: () => insertList('1.') },
+        { icon: CheckSquare, tooltip: 'Liste de tâches', action: () => insertCheckList() },
         { icon: Quote, tooltip: 'Citation', action: () => insertFormat('> ', '') },
       ]
     },
     {
-      group: 'alignment',
+      group: 'structure',
       buttons: [
-        { icon: AlignLeft, tooltip: 'Aligner à gauche', action: () => insertAlignment('left') },
-        { icon: AlignCenter, tooltip: 'Centrer', action: () => insertAlignment('center') },
-        { icon: AlignRight, tooltip: 'Aligner à droite', action: () => insertAlignment('right') },
+        { icon: Minus, tooltip: 'Séparateur', action: () => insertSeparator() },
+        { icon: ChevronDown, tooltip: 'Accordéon', action: () => insertAccordion() },
+      ]
+    },
+    {
+      group: 'callouts',
+      buttons: [
+        { icon: Info, tooltip: 'Callout Info', action: () => insertCallout('info') },
+        { icon: AlertTriangle, tooltip: 'Callout Avertissement', action: () => insertCallout('warning') },
+        { icon: CheckCircle, tooltip: 'Callout Succès', action: () => insertCallout('success') },
       ]
     },
     {
@@ -97,6 +113,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       buttons: [
         { icon: Link, tooltip: 'Lien', action: () => insertLink() },
         { icon: Image, tooltip: 'Image', action: () => insertImage() },
+        { icon: FileImage, tooltip: 'Document', action: () => insertDocument() },
         { icon: Table, tooltip: 'Tableau', action: () => insertTable() },
       ]
     }
@@ -220,19 +237,97 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
     insertFormat(table, '');
   };
 
+  const insertCheckList = () => {
+    const textarea = document.getElementById('rich-editor') as HTMLTextAreaElement;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const text = textarea.value;
+    const lineStart = text.lastIndexOf('\n', start - 1) + 1;
+    
+    const newText = text.substring(0, lineStart) + '- [ ] ' + text.substring(lineStart);
+    onChange(newText);
+
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + 6, start + 6);
+    }, 0);
+  };
+
+  const insertSeparator = () => {
+    insertFormat('\n\n---\n\n', '');
+  };
+
+  const insertAccordion = () => {
+    const title = prompt('Titre de l\'accordéon:') || 'Titre';
+    const content = prompt('Contenu de l\'accordéon:') || 'Contenu';
+    
+    const accordion = `\n\n<details>\n<summary>${title}</summary>\n\n${content}\n\n</details>\n\n`;
+    insertFormat(accordion, '');
+  };
+
+  const insertCallout = (type: 'info' | 'warning' | 'success') => {
+    const title = prompt('Titre du callout:') || 'Note';
+    const content = prompt('Contenu du callout:') || 'Contenu du callout';
+    
+    const callout = `\n\n> **${type.toUpperCase()}**: ${title}\n> \n> ${content}\n\n`;
+    insertFormat(callout, '');
+  };
+
+  const insertDocument = () => {
+    const url = prompt('URL du document:');
+    const name = prompt('Nom du document:') || 'Document';
+    
+    if (url) {
+      insertFormat(`[📎 ${name}](${url})`, '');
+    }
+  };
+
   const renderPreview = (text: string) => {
-    // Simple markdown-to-HTML conversion for preview
+    // Enhanced markdown-to-HTML conversion for preview
     return text
-      .replace(/### (.*)/g, '<h3>$1</h3>')
-      .replace(/## (.*)/g, '<h2>$1</h2>')
-      .replace(/# (.*)/g, '<h1>$1</h1>')
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/`(.*?)`/g, '<code>$1</code>')
-      .replace(/> (.*)/g, '<blockquote>$1</blockquote>')
-      .replace(/- (.*)/g, '<li>$1</li>')
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
-      .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; height: auto;" />')
+      // Headers
+      .replace(/### (.*)/g, '<h3 class="text-lg font-semibold mb-2 mt-4">$1</h3>')
+      .replace(/## (.*)/g, '<h2 class="text-xl font-semibold mb-3 mt-6">$1</h2>')
+      .replace(/# (.*)/g, '<h1 class="text-2xl font-bold mb-4 mt-8">$1</h1>')
+      
+      // Text formatting
+      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
+      .replace(/<u>(.*?)<\/u>/g, '<span class="underline">$1</span>')
+      .replace(/`(.*?)`/g, '<code class="bg-gray-100 px-1 py-0.5 rounded text-sm">$1</code>')
+      
+      // Lists
+      .replace(/^- \[ \] (.*)$/gm, '<div class="flex items-center space-x-2 my-1"><input type="checkbox" disabled class="rounded"> <span>$1</span></div>')
+      .replace(/^- \[x\] (.*)$/gm, '<div class="flex items-center space-x-2 my-1"><input type="checkbox" checked disabled class="rounded"> <span class="line-through text-gray-500">$1</span></div>')
+      .replace(/^- (.*)$/gm, '<li class="ml-4">• $1</li>')
+      .replace(/^[0-9]+\. (.*)$/gm, '<li class="ml-4 list-decimal">$1</li>')
+      
+      // Quotes
+      .replace(/^> (.*)$/gm, '<blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 my-2">$1</blockquote>')
+      
+      // Separators
+      .replace(/^---$/gm, '<hr class="my-6 border-gray-300">')
+      
+      // Callouts (enhanced)
+      .replace(/^> \*\*INFO\*\*: (.*)$/gm, '<div class="bg-blue-50 border-l-4 border-blue-400 p-4 my-4"><div class="flex"><div class="flex-shrink-0">ℹ️</div><div class="ml-3"><h4 class="text-sm font-medium text-blue-800">$1</h4></div></div></div>')
+      .replace(/^> \*\*WARNING\*\*: (.*)$/gm, '<div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 my-4"><div class="flex"><div class="flex-shrink-0">⚠️</div><div class="ml-3"><h4 class="text-sm font-medium text-yellow-800">$1</h4></div></div></div>')
+      .replace(/^> \*\*SUCCESS\*\*: (.*)$/gm, '<div class="bg-green-50 border-l-4 border-green-400 p-4 my-4"><div class="flex"><div class="flex-shrink-0">✅</div><div class="ml-3"><h4 class="text-sm font-medium text-green-800">$1</h4></div></div></div>')
+      
+      // Accordions/Details
+      .replace(/<details>([\s\S]*?)<\/details>/g, (match, content) => {
+        const summaryMatch = content.match(/<summary>(.*?)<\/summary>/);
+        const summary = summaryMatch ? summaryMatch[1] : 'Détails';
+        const actualContent = content.replace(/<summary>.*?<\/summary>/, '').trim();
+        return `<details class="border rounded-lg p-4 my-4"><summary class="font-semibold cursor-pointer hover:text-primary">${summary}</summary><div class="mt-2 pt-2 border-t">${actualContent}</div></details>`;
+      })
+      
+      // Links and images
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="text-blue-600 hover:text-blue-800 underline">$1</a>')
+      .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="max-w-full h-auto rounded-lg my-4" />')
+      
+      // Line breaks
+      .replace(/\n\n/g, '<br><br>')
       .replace(/\n/g, '<br>');
   };
 
