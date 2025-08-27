@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import RichTextEditor from '@/components/RichTextEditor';
 import TableEditor from '@/components/TableEditor';
+import { useDocumentation, DocSection } from '@/hooks/useDocumentation';
 import { 
   Plus, 
   Edit3, 
@@ -32,16 +33,6 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 
-interface DocSection {
-  id: string;
-  title: string;
-  content: string;
-  type: 'text' | 'rich' | 'accordion' | 'table' | 'callout' | 'checklist';
-  data?: any;
-  order: number;
-  isPublished: boolean;
-}
-
 interface AccordionItem {
   id: string;
   title: string;
@@ -61,34 +52,14 @@ interface ChecklistItem {
 }
 
 const DocumentationManager = () => {
-  const [sections, setSections] = useState<DocSection[]>([
-    {
-      id: '1',
-      title: 'Vue d\'ensemble du Projet GAIA',
-      content: 'Le projet GAIA révolutionne la reforestation grâce à l\'intelligence artificielle et aux technologies de pointe.',
-      type: 'text',
-      order: 1,
-      isPublished: true
-    },
-    {
-      id: '2',
-      title: 'Fonctionnalités Principales',
-      content: '',
-      type: 'accordion',
-      data: {
-        items: [
-          {
-            id: 'ai-analysis',
-            title: 'Analyse IA du Terrain',
-            content: 'Notre système d\'intelligence artificielle analyse les conditions du sol, la topographie, et les conditions climatiques pour optimiser la plantation.'
-          }
-        ]
-      },
-      order: 2,
-      isPublished: true
-    }
-  ]);
-
+  const { 
+    sections, 
+    updateSection, 
+    createSection, 
+    deleteSection, 
+    togglePublish 
+  } = useDocumentation();
+  
   const [editingSection, setEditingSection] = useState<DocSection | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newSection, setNewSection] = useState<Partial<DocSection>>({
@@ -115,52 +86,64 @@ const DocumentationManager = () => {
       return;
     }
 
-    const section: DocSection = {
-      ...newSection as DocSection,
-      id: Date.now().toString(),
-      order: sections.length + 1
-    };
+    const sectionData = {
+      ...newSection,
+      title: newSection.title!,
+      content: newSection.content || '',
+      type: newSection.type || 'rich',
+      order: newSection.order || sections.length + 1,
+      isPublished: newSection.isPublished ?? true
+    } as Omit<DocSection, 'id'>;
 
     // Initialize data based on type
-    switch (section.type) {
+    switch (sectionData.type) {
       case 'accordion':
-        section.data = { items: [] };
+        sectionData.data = { items: [] };
         break;
       case 'table':
-        section.data = { headers: ['Colonne 1', 'Colonne 2'], rows: [] };
+        sectionData.data = { headers: ['Colonne 1', 'Colonne 2'], rows: [] };
         break;
       case 'callout':
-        section.data = { callouts: [] };
+        sectionData.data = { callouts: [] };
         break;
       case 'checklist':
-        section.data = { items: [] };
+        sectionData.data = { items: [] };
         break;
     }
 
-    setSections([...sections, section]);
-    setNewSection({
-      title: '',
-      content: '',
-      type: 'rich',
-      data: {},
-      order: sections.length + 2,
-      isPublished: true
-    });
-    setIsDialogOpen(false);
-    toast.success('Section créée avec succès');
+    const createdSection = createSection(sectionData);
+    
+    if (createdSection) {
+      setNewSection({
+        title: '',
+        content: '',
+        type: 'rich',
+        data: {},
+        order: sections.length + 2,
+        isPublished: true
+      });
+      setIsDialogOpen(false);
+      toast.success('Section créée avec succès');
+    } else {
+      toast.error('Erreur lors de la création de la section');
+    }
   };
 
   const handleDeleteSection = (id: string) => {
-    setSections(sections.filter(s => s.id !== id));
-    toast.success('Section supprimée');
+    if (deleteSection(id)) {
+      toast.success('Section supprimée');
+    } else {
+      toast.error('Erreur lors de la suppression');
+    }
   };
 
   const handleTogglePublish = (id: string) => {
-    setSections(sections.map(s => 
-      s.id === id ? { ...s, isPublished: !s.isPublished } : s
-    ));
     const section = sections.find(s => s.id === id);
-    toast.success(`Section ${section?.isPublished ? 'dépubliée' : 'publiée'}`);
+    if (togglePublish(id)) {
+      toast.success(`Section ${section?.isPublished ? 'dépubliée' : 'publiée'}`);
+    } else {
+      toast.error('Erreur lors de la publication');
+    }
   };
 
   const renderSectionTypeIcon = (type: string) => {
@@ -419,9 +402,12 @@ const DocumentationManager = () => {
 
   const saveSection = () => {
     if (editingSection) {
-      setSections(sections.map(s => s.id === editingSection.id ? editingSection : s));
-      setEditingSection(null);
-      toast.success('Section sauvegardée');
+      if (updateSection(editingSection)) {
+        setEditingSection(null);
+        toast.success('Section sauvegardée avec succès');
+      } else {
+        toast.error('Erreur lors de la sauvegarde');
+      }
     }
   };
 
