@@ -5,8 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import S3Dashboard from '@/components/S3Dashboard';
 import S3DashboardDemo from '@/components/S3DashboardDemo';
 import RoadmapManager from '@/components/RoadmapManager';
+import DocumentationManager from '@/components/DocumentationManager';
 import Login from '@/components/Login';
-import { Settings, Database, Shield, TestTube, LogOut } from 'lucide-react';
+import { Settings, Database, Shield, TestTube, LogOut, FileText } from 'lucide-react';
 import { toast } from 'sonner';
 
 const Admin = () => {
@@ -59,6 +60,7 @@ const Admin = () => {
     { id: 'dashboard', label: 'Dashboard', icon: Settings },
     { id: 's3', label: 'Gestion S3', icon: Database },
     { id: 'roadmap', label: 'Roadmap', icon: Shield },
+    { id: 'documentation', label: 'Documentation', icon: FileText },
   ];
 
   return (
@@ -156,7 +158,7 @@ const Admin = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
@@ -236,6 +238,41 @@ const Admin = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
+                    <FileText className="h-5 w-5" />
+                    <span>Documentation</span>
+                  </CardTitle>
+                  <CardDescription>
+                    Éditeur avancé de documentation
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Sections:</span>
+                      <Badge variant="default">Éditables</Badge>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Types:</span>
+                      <span className="text-xs">Tableaux, accordéons...</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Fonctionnalités:</span>
+                      <Badge variant="default">Avancées</Badge>
+                    </div>
+                  </div>
+                  <Button 
+                    onClick={() => setActiveTab('documentation')} 
+                    className="w-full mt-4"
+                    size="sm"
+                  >
+                    Gérer documentation
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
                     <Settings className="h-5 w-5" />
                     <span>Configuration</span>
                   </CardTitle>
@@ -249,6 +286,7 @@ const Admin = () => {
                     <p>✅ Upload fonctionnel</p>
                     <p>✅ Interface admin active</p>
                     <p>✅ Roadmap intégrée</p>
+                    <p>✅ Documentation avancée</p>
                     <p>✅ Mode démo disponible</p>
                   </div>
                 </CardContent>
@@ -284,6 +322,10 @@ const Admin = () => {
         
         {activeTab === 'roadmap' && (
           <RoadmapManager />
+        )}
+
+        {activeTab === 'documentation' && (
+          <DocumentationManager />
         )}
       </main>
     </div>
