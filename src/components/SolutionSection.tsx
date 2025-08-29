@@ -70,24 +70,28 @@ const SolutionSection = () => {
   ];
 
   return (
-    <section id="solution" className="py-32 bg-gradient-to-b from-background to-muted/30 relative">
-      {/* Background decoration */}
+    <section id="solution" className="py-40 bg-gradient-to-b from-background via-muted/20 to-background relative overflow-hidden">
+      {/* Ultra-Cinematic Background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 right-20 animate-float-slow">
-          <Sparkles className="h-24 w-24 text-primary/10" />
+        <div className="absolute inset-0 animate-mesh-gradient opacity-50" style={{
+          background: 'var(--gradient-mesh)',
+          backgroundSize: '400% 400%'
+        }}></div>
+        <div className="absolute top-20 right-20 animate-parallax-float glow-accent">
+          <Sparkles className="h-32 w-32 text-primary/10" />
         </div>
-        <div className="absolute bottom-32 left-16 animate-float">
-          <Wind className="h-20 w-20 text-accent/15" />
+        <div className="absolute bottom-32 left-16 animate-parallax-float glow-primary" style={{ animationDelay: '2s' }}>
+          <Wind className="h-28 w-28 text-accent/15" />
         </div>
       </div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20 animate-fade-in-up">
-            <h2 className="text-section-title mb-8 font-display">
+        <div className="max-w-8xl mx-auto">
+          <div className="text-center mb-24 animate-cinematic-entrance">
+            <h2 className="text-section-title mb-10 font-serif">
               Notre Solution : GAIA
             </h2>
-            <p className="text-body-large max-w-4xl mx-auto leading-relaxed">
+            <p className="text-body-large max-w-6xl mx-auto leading-relaxed">
               Un avion 100% électrique intelligent avec batterie haute capacité, 
               muni d'une soute pour larguer des Seedballs. Une solution écologique, économique 
               et sécurisée pour accélérer la reforestation mondiale.
