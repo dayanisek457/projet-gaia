@@ -347,6 +347,33 @@
   }
 }
 
+@keyframes eliteFloat {
+  0%, 100% { 
+    transform: translateY(0px) translateX(0px) rotate(0deg) scale(1); 
+    opacity: 0.8;
+  }
+  16% { 
+    transform: translateY(-30px) translateX(15px) rotate(2deg) scale(1.05); 
+    opacity: 0.6;
+  }
+  33% { 
+    transform: translateY(-10px) translateX(-20px) rotate(-1deg) scale(0.95); 
+    opacity: 0.9;
+  }
+  50% { 
+    transform: translateY(-45px) translateX(10px) rotate(3deg) scale(1.1); 
+    opacity: 0.4;
+  }
+  66% { 
+    transform: translateY(-15px) translateX(-10px) rotate(-2deg) scale(0.98); 
+    opacity: 0.7;
+  }
+  83% { 
+    transform: translateY(-35px) translateX(25px) rotate(1deg) scale(1.02); 
+    opacity: 0.5;
+  }
+}
+
 /* Ultra-Premium Typography & Animation System */
 .text-hero {
   font-family: 'Playfair Display', 'Space Grotesk', serif;
@@ -407,6 +434,13 @@
               inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
+.glass-ultra-subtle {
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.02);
+  border: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
 .glow-primary {
   box-shadow: 0 0 60px hsl(var(--primary-glow) / 0.4),
               0 0 120px hsl(var(--primary-glow) / 0.2);
@@ -437,6 +471,10 @@
 
 .animate-glow-pulse {
   animation: glowPulse 4s ease-in-out infinite;
+}
+
+.animate-elite-float {
+  animation: eliteFloat 20s ease-in-out infinite;
 }
 
 /* Premium Button Styles */

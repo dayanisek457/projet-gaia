@@ -20,11 +20,8 @@ const Header = () => {
     <header className="fixed top-0 w-full z-50 glass-ultra backdrop-blur-2xl shadow-2xl border-b border-white/10">
       <div className="container mx-auto px-8">
         <div className="flex items-center justify-between h-24">
-          {/* Premium Logo */}
+          {/* Removed Logo - Clean Premium Header */}
           <div className="flex items-center">
-            <span className="text-4xl font-serif font-black bg-gradient-primary bg-clip-text text-transparent tracking-tighter">
-              GAIA
-            </span>
           </div>
 
           {/* Ultra-Premium Desktop Navigation */}

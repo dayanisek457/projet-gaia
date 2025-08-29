@@ -4,7 +4,7 @@ import { ArrowRight, Leaf, Zap, Globe, Sparkles, TreePine, Wind } from 'lucide-r
 
 const HeroSection = () => {
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center bg-gradient-hero relative overflow-hidden">
+    <section id="home" className="min-h-screen pt-32 flex items-center justify-center bg-gradient-hero relative overflow-hidden">
       {/* Ultra-Cinematic Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Animated Mesh Gradient */}
@@ -13,24 +13,36 @@ const HeroSection = () => {
           backgroundSize: '300% 300%'
         }}></div>
         
-        {/* Parallax Floating Elements */}
-        <div className="absolute top-20 left-10 animate-parallax-float glow-primary">
-          <TreePine className="h-24 w-24 text-white/30" />
+        {/* Elite Floating Elements - Pure Professional Icons */}
+        <div className="absolute top-20 left-10 animate-elite-float opacity-20">
+          <div className="p-6 rounded-full glass-ultra-subtle border-0">
+            <TreePine className="h-16 w-16 text-white drop-shadow-2xl" />
+          </div>
         </div>
-        <div className="absolute top-16 right-16 animate-parallax-float glow-secondary" style={{ animationDelay: '2s' }}>
-          <Zap className="h-20 w-20 text-white/25" />
+        <div className="absolute top-16 right-16 animate-elite-float opacity-15" style={{ animationDelay: '2s' }}>
+          <div className="p-5 rounded-full glass-ultra-subtle border-0">
+            <Zap className="h-14 w-14 text-white drop-shadow-2xl" />
+          </div>
         </div>
-        <div className="absolute bottom-32 left-20 animate-parallax-float glow-accent" style={{ animationDelay: '4s' }}>
-          <Globe className="h-28 w-28 text-white/20" />
+        <div className="absolute bottom-32 left-20 animate-elite-float opacity-25" style={{ animationDelay: '4s' }}>
+          <div className="p-7 rounded-full glass-ultra-subtle border-0">
+            <Globe className="h-18 w-18 text-white drop-shadow-2xl" />
+          </div>
         </div>
-        <div className="absolute top-1/3 right-1/4 animate-parallax-float" style={{ animationDelay: '1s' }}>
-          <Wind className="h-16 w-16 text-white/15" />
+        <div className="absolute top-1/3 right-1/4 animate-elite-float opacity-10" style={{ animationDelay: '1s' }}>
+          <div className="p-4 rounded-full glass-ultra-subtle border-0">
+            <Wind className="h-12 w-12 text-white drop-shadow-2xl" />
+          </div>
         </div>
-        <div className="absolute bottom-1/4 right-12 animate-parallax-float glow-primary" style={{ animationDelay: '3s' }}>
-          <Leaf className="h-22 w-22 text-white/25" />
+        <div className="absolute bottom-1/4 right-12 animate-elite-float opacity-20" style={{ animationDelay: '3s' }}>
+          <div className="p-6 rounded-full glass-ultra-subtle border-0">
+            <Leaf className="h-16 w-16 text-white drop-shadow-2xl" />
+          </div>
         </div>
-        <div className="absolute top-1/2 left-1/4 animate-parallax-float glow-accent" style={{ animationDelay: '5s' }}>
-          <Sparkles className="h-18 w-18 text-white/20" />
+        <div className="absolute top-1/2 left-1/4 animate-elite-float opacity-15" style={{ animationDelay: '5s' }}>
+          <div className="p-5 rounded-full glass-ultra-subtle border-0">
+            <Sparkles className="h-14 w-14 text-white drop-shadow-2xl" />
+          </div>
         </div>
         
         {/* Ultra-Cinematic Overlay */}
