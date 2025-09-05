@@ -30,7 +30,7 @@ const TeamSection = () => {
       description: "Recherche et développement des solutions innovantes"
     },
     {
-      name: "Kylian ROMANOFF",
+      name: "Aloys GROUET",
       role: "Analyse & Test",
       isLeader: false,
       description: "Validation et optimisation des performances"
