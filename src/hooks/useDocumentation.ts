@@ -1,14 +1,8 @@
 import { useState, useEffect } from 'react';
+import { documentationService, type DocSection } from '@/lib/supabase-documentation';
 
-export interface DocSection {
-  id: string;
-  title: string;
-  content: string;
-  type: 'text' | 'rich' | 'accordion' | 'table' | 'callout' | 'checklist';
-  data?: any;
-  order: number;
-  isPublished: boolean;
-}
+// Re-export the interface for backward compatibility
+export type { DocSection };
 
 const STORAGE_KEY = 'gaia-documentation';
 
@@ -147,34 +141,102 @@ export const useDocumentation = () => {
 
   useEffect(() => {
     loadSections();
+    
+    // Subscribe to real-time changes
+    const subscription = documentationService.subscribeToChanges((updatedSections) => {
+      setSections(updatedSections);
+    });
+
+    return () => {
+      subscription?.unsubscribe();
+    };
   }, []);
 
-  const loadSections = () => {
+  const loadSections = async () => {
+    setIsLoading(true);
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const parsedSections = JSON.parse(stored);
-        setSections(parsedSections);
+      // Try to load from Supabase first
+      const supabaseSections = await documentationService.getAllSections();
+      
+      if (supabaseSections.length > 0) {
+        setSections(supabaseSections);
       } else {
-        setSections(initialSections);
-        saveSections(initialSections);
+        // If no sections in Supabase, check localStorage for migration
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          const parsedSections = JSON.parse(stored);
+          // Migrate localStorage data to Supabase
+          await migrateSectionsToSupabase(parsedSections);
+          setSections(parsedSections);
+        } else {
+          // No data anywhere, initialize with default sections
+          await initializeDefaultSections();
+        }
       }
     } catch (error) {
-      console.error('Error loading documentation:', error);
-      setSections(initialSections);
+      console.error('Error loading documentation from Supabase:', error);
+      // Fallback to localStorage if Supabase fails
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          const parsedSections = JSON.parse(stored);
+          setSections(parsedSections);
+        } else {
+          setSections(initialSections);
+        }
+      } catch (localError) {
+        console.error('Error loading from localStorage:', localError);
+        setSections(initialSections);
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
-  const saveSections = (newSections: DocSection[]) => {
+  const migrateSectionsToSupabase = async (sections: DocSection[]) => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newSections));
+      for (const section of sections) {
+        await documentationService.createSection(section);
+      }
+      // Clear localStorage after successful migration
+      localStorage.removeItem(STORAGE_KEY);
+      console.log('Successfully migrated documentation to Supabase');
+    } catch (error) {
+      console.error('Error migrating sections to Supabase:', error);
+    }
+  };
+
+  const initializeDefaultSections = async () => {
+    try {
+      for (const section of initialSections) {
+        await documentationService.createSection(section);
+      }
+      setSections(initialSections);
+      console.log('Initialized default documentation sections in Supabase');
+    } catch (error) {
+      console.error('Error initializing default sections:', error);
+      setSections(initialSections);
+    }
+  };
+
+  const saveSections = async (newSections: DocSection[]) => {
+    try {
+      await documentationService.saveSections(newSections);
       setSections(newSections);
+      // Also save to localStorage as backup
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newSections));
       return true;
     } catch (error) {
-      console.error('Error saving documentation:', error);
-      return false;
+      console.error('Error saving documentation to Supabase:', error);
+      // Fallback to localStorage only
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(newSections));
+        setSections(newSections);
+        return true;
+      } catch (localError) {
+        console.error('Error saving to localStorage:', localError);
+        return false;
+      }
     }
   };
 
@@ -192,29 +254,64 @@ export const useDocumentation = () => {
     return sections.find(section => section.id === id);
   };
 
-  const updateSection = (updatedSection: DocSection) => {
-    const newSections = sections.map(section => 
-      section.id === updatedSection.id ? updatedSection : section
-    );
-    return saveSections(newSections);
+  const updateSection = async (updatedSection: DocSection) => {
+    try {
+      await documentationService.updateSection(updatedSection);
+      const newSections = sections.map(section => 
+        section.id === updatedSection.id ? updatedSection : section
+      );
+      setSections(newSections);
+      // Also save to localStorage as backup
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newSections));
+      return true;
+    } catch (error) {
+      console.error('Error updating section:', error);
+      // Fallback to local state only
+      const newSections = sections.map(section => 
+        section.id === updatedSection.id ? updatedSection : section
+      );
+      return saveSections(newSections);
+    }
   };
 
-  const createSection = (section: Omit<DocSection, 'id'>) => {
-    const newSection: DocSection = {
-      ...section,
-      id: Date.now().toString(),
-      order: Math.max(...sections.map(s => s.order), 0) + 1
-    };
-    const newSections = [...sections, newSection];
-    return saveSections(newSections) ? newSection : null;
+  const createSection = async (section: Omit<DocSection, 'id'>) => {
+    try {
+      const newSection = await documentationService.createSection(section);
+      const newSections = [...sections, newSection];
+      setSections(newSections);
+      // Also save to localStorage as backup
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newSections));
+      return newSection;
+    } catch (error) {
+      console.error('Error creating section:', error);
+      // Fallback to local creation
+      const newSection: DocSection = {
+        ...section,
+        id: Date.now().toString(),
+        order: Math.max(...sections.map(s => s.order), 0) + 1
+      };
+      const newSections = [...sections, newSection];
+      return saveSections(newSections) ? newSection : null;
+    }
   };
 
-  const deleteSection = (id: string) => {
-    const newSections = sections.filter(section => section.id !== id);
-    return saveSections(newSections);
+  const deleteSection = async (id: string) => {
+    try {
+      await documentationService.deleteSection(id);
+      const newSections = sections.filter(section => section.id !== id);
+      setSections(newSections);
+      // Also save to localStorage as backup
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newSections));
+      return true;
+    } catch (error) {
+      console.error('Error deleting section:', error);
+      // Fallback to local deletion
+      const newSections = sections.filter(section => section.id !== id);
+      return saveSections(newSections);
+    }
   };
 
-  const togglePublish = (id: string) => {
+  const togglePublish = async (id: string) => {
     const section = sections.find(s => s.id === id);
     if (section) {
       const updatedSection = { ...section, isPublished: !section.isPublished };
@@ -223,7 +320,7 @@ export const useDocumentation = () => {
     return false;
   };
 
-  const reorderSections = (reorderedSections: DocSection[]) => {
+  const reorderSections = async (reorderedSections: DocSection[]) => {
     const sectionsWithOrder = reorderedSections.map((section, index) => ({
       ...section,
       order: index + 1
