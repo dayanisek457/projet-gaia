@@ -1,8 +1,23 @@
 
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import ContactPopup from './ContactPopup';
 
 const HeroSection = () => {
+  const [isContactPopupOpen, setIsContactPopupOpen] = useState(false);
+  const [contactType, setContactType] = useState<'sponsor' | 'partner'>('sponsor');
+  const navigate = useNavigate();
+
+  const handleDiscoverProject = () => {
+    navigate('/documentation');
+  };
+
+  const handleSponsorClick = () => {
+    setContactType('sponsor');
+    setIsContactPopupOpen(true);
+  };
   return (
     <section id="home" className="min-h-screen flex items-center justify-center bg-gradient-hero relative overflow-hidden">
       {/* Subtle background elements */}
@@ -46,6 +61,7 @@ const HeroSection = () => {
               size="lg" 
               variant="secondary" 
               className="btn-professional group bg-white text-primary hover:bg-white/95 font-semibold px-12 py-4 text-lg rounded-xl"
+              onClick={handleDiscoverProject}
             >
               Découvrir le projet
               <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -54,6 +70,7 @@ const HeroSection = () => {
               size="lg" 
               variant="outline" 
               className="btn-professional-outline text-white hover:bg-white/10 font-semibold px-12 py-4 text-lg rounded-xl border-2 border-white/30"
+              onClick={handleSponsorClick}
             >
               <span className="mr-3 text-xl">👥</span>
               Devenir Sponsor
@@ -89,6 +106,12 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
+      
+      <ContactPopup
+        isOpen={isContactPopupOpen}
+        onClose={() => setIsContactPopupOpen(false)}
+        type={contactType}
+      />
     </section>
   );
 };

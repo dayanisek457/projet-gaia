@@ -1,9 +1,21 @@
 
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Mail, MapPin, Phone, FileText } from 'lucide-react';
+import ContactPopup from './ContactPopup';
+import { exportDocumentationToPDFFromAnyPage } from '@/utils/pdfExport';
 
 const ContactSection = () => {
+  const [isContactPopupOpen, setIsContactPopupOpen] = useState(false);
+
+  const handlePartnerClick = () => {
+    setIsContactPopupOpen(true);
+  };
+
+  const handleDownloadDocumentation = () => {
+    exportDocumentationToPDFFromAnyPage();
+  };
   return (
     <section id="contact" className="py-20">
       <div className="container mx-auto px-4">
@@ -94,14 +106,16 @@ const ContactSection = () => {
                   variant="secondary" 
                   size="lg" 
                   className="group bg-white text-primary hover:bg-white/90 font-semibold px-6 py-3 shadow-lg hover:shadow-xl transition-all duration-300"
+                  onClick={handleDownloadDocumentation}
                 >
                   <span className="mr-2">📋</span>
-                  Télécharger le Cahier des Charges
+                  Télécharger la Documentation
                 </Button>
                 <Button 
                   variant="outline" 
                   size="lg" 
                   className="bg-white/10 border-white/30 text-white hover:bg-white/20 group backdrop-blur-sm font-semibold px-6 py-3 shadow-lg hover:shadow-xl transition-all duration-300"
+                  onClick={handlePartnerClick}
                 >
                   <span className="mr-2">🤝</span>
                   Devenir Partenaire
@@ -124,6 +138,12 @@ const ContactSection = () => {
           </Card>
         </div>
       </div>
+      
+      <ContactPopup
+        isOpen={isContactPopupOpen}
+        onClose={() => setIsContactPopupOpen(false)}
+        type="partner"
+      />
     </section>
   );
 };
