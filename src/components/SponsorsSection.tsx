@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import ContactPopup from './ContactPopup';
 import { 
   Plane, 
   TreePine, 
@@ -17,6 +19,18 @@ import {
 } from 'lucide-react';
 
 const SponsorsSection = () => {
+  const [isContactPopupOpen, setIsContactPopupOpen] = useState(false);
+  const [contactType, setContactType] = useState<'sponsor' | 'partner'>('partner');
+
+  const handlePartnerClick = () => {
+    setContactType('partner');
+    setIsContactPopupOpen(true);
+  };
+
+  const handleDownloadSponsorDossier = () => {
+    // For now, just show an alert - this could be implemented later with actual sponsor dossier
+    alert('Fonction à implémenter : Téléchargement du dossier sponsor');
+  };
   const sponsorTypes = [
     {
       type: "Entreprises Aéronautiques",
@@ -202,6 +216,7 @@ const SponsorsSection = () => {
               <Button 
                 size="lg" 
                 className="btn-professional group relative overflow-hidden bg-primary hover:bg-primary/90 text-white font-display font-semibold px-12 py-4 text-lg rounded-xl"
+                onClick={handlePartnerClick}
               >
                 <span className="relative z-10 flex items-center">
                   <Heart className="mr-3 h-5 w-5" />
@@ -212,6 +227,7 @@ const SponsorsSection = () => {
                 variant="outline" 
                 size="lg" 
                 className="btn-hero border-2 border-primary text-primary hover:bg-primary hover:text-white font-display font-semibold px-12 py-4 text-lg rounded-xl"
+                onClick={handleDownloadSponsorDossier}
               >
                 <Award className="mr-3 h-5 w-5" />
                 Télécharger le Dossier Sponsor
@@ -220,6 +236,12 @@ const SponsorsSection = () => {
           </div>
         </div>
       </div>
+      
+      <ContactPopup
+        isOpen={isContactPopupOpen}
+        onClose={() => setIsContactPopupOpen(false)}
+        type={contactType}
+      />
     </section>
   );
 };

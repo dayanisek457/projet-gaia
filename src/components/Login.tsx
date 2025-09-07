@@ -6,9 +6,10 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield, Lock, User } from 'lucide-react';
 import { toast } from 'sonner';
+import { authService, AuthUser } from '@/lib/supabase-auth';
 
 interface LoginProps {
-  onLogin: (credentials: { email: string; password: string }) => void;
+  onLogin: (user: AuthUser) => void;
 }
 
 const Login = ({ onLogin }: LoginProps) => {
@@ -22,26 +23,26 @@ const Login = ({ onLogin }: LoginProps) => {
     setLoading(true);
     setError('');
 
-    // Simulate authentication check
-    if (email === 'contact@projet-gaia.com' && password === 'admin') {
-      try {
-        // Store auth state in localStorage
-        localStorage.setItem('gaia-auth', JSON.stringify({
-          email,
-          authenticated: true,
-          timestamp: Date.now()
-        }));
-        
-        toast.success('Connexion réussie !');
-        onLogin({ email, password });
-      } catch (err) {
-        setError('Erreur lors de la connexion');
+    try {
+      const { user, error: authError } = await authService.signIn(email, password);
+      
+      if (authError) {
+        setError(authError);
+        return;
       }
-    } else {
-      setError('Identifiants invalides. Veuillez vérifier votre email et mot de passe.');
+
+      if (user) {
+        toast.success('Connexion réussie !');
+        onLogin(user);
+      } else {
+        setError('Erreur de connexion inattendue');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('Erreur lors de la connexion');
+    } finally {
+      setLoading(false);
     }
-    
-    setLoading(false);
   };
 
   return (
@@ -70,7 +71,7 @@ const Login = ({ onLogin }: LoginProps) => {
               <span>Authentification</span>
             </CardTitle>
             <CardDescription className="text-center">
-              Connectez-vous pour accéder au panneau d'administration
+              Connectez-vous avec votre compte Supabase
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -85,7 +86,7 @@ const Login = ({ onLogin }: LoginProps) => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="contact@projet-gaia.com"
+                  placeholder="votre@email.com"
                   required
                   autoComplete="email"
                 />
@@ -130,16 +131,16 @@ const Login = ({ onLogin }: LoginProps) => {
             <div className="space-y-2 text-sm">
               <div className="flex items-center space-x-2 text-blue-800">
                 <Shield className="h-4 w-4" />
-                <span className="font-semibold">Accès Administrateur</span>
+                <span className="font-semibold">Authentification Supabase</span>
               </div>
               <p className="text-blue-700">
-                Une fois connecté, vous aurez accès à la gestion complète du projet GAIA :
+                Utilise l'authentification Supabase sécurisée pour l'accès administrateur :
               </p>
               <ul className="text-blue-600 space-y-1 ml-4">
-                <li>• Stockage S3 avec fonctionnalités CRUD</li>
-                <li>• Gestion de la roadmap publique</li>
-                <li>• Upload et liaison de fichiers/images</li>
-                <li>• Mode démonstration intégré</li>
+                <li>• Connexion sécurisée avec email/mot de passe</li>
+                <li>• Gestion des sessions automatique</li>
+                <li>• Accès complet aux fonctionnalités admin</li>
+                <li>• Stockage S3 et gestion des données</li>
               </ul>
             </div>
           </CardContent>

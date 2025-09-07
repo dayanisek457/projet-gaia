@@ -16,12 +16,14 @@ import {
   Zap,
   Info,
   AlertTriangle,
-  CheckCircle
+  CheckCircle,
+  Download
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useDocumentation, DocSection } from '@/hooks/useDocumentation';
+import { exportDocumentationToPDF } from '@/utils/pdfExport';
 
 const Documentation = () => {
   const { publishedSections, isLoading } = useDocumentation();
@@ -33,6 +35,10 @@ const Documentation = () => {
       setActiveSection(publishedSections[0].id);
     }
   }, [publishedSections, activeSection]);
+
+  const handleExportPDF = () => {
+    exportDocumentationToPDF();
+  };
 
   if (isLoading) {
     return (
@@ -256,6 +262,14 @@ const Documentation = () => {
               </Link>
             </div>
             <div className="flex items-center space-x-4">
+              <Button 
+                variant="default" 
+                onClick={handleExportPDF}
+                className="flex items-center space-x-2"
+              >
+                <Download className="h-4 w-4" />
+                <span>Télécharger la documentation</span>
+              </Button>
               <Button variant="outline" asChild>
                 <Link to="/admin" className="flex items-center space-x-2">
                   <Settings className="h-4 w-4" />
