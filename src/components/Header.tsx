@@ -22,7 +22,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Premium Logo */}
           <div className="flex items-center space-x-4">
-            <div className="cinematic-glow">
+            <div>
               <img 
                 src="/favicon.ico" 
                 alt="GAIA Logo" 
@@ -60,7 +60,7 @@ const Header = () => {
           <Button
             variant="ghost"
             size="lg"
-            className="md:hidden cinematic-glow"
+            className="md:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}

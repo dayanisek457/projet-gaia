@@ -111,10 +111,13 @@ const ContactSection = () => {
               {/* Contact CTA */}
               <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
                 <p className="text-white/90 text-sm mb-2">
-                  <strong>Contact Direct :</strong> Nathan LIENARD - Chef de Projet
+                  <strong>Contact Direct :</strong> contact@projet-gaia.com
                 </p>
                 <p className="text-white/70 text-sm">
-                  Lycée Saint-Joseph Dijon | Projet SI Terminale 2025-2026
+                  Nathan LIENARD - Chef de Projet | Lycée Saint-Joseph Dijon
+                </p>
+                <p className="text-white/70 text-sm">
+                  Projet SI Terminale 2025-2026 | www.projet-gaia.com
                 </p>
               </div>
             </CardContent>

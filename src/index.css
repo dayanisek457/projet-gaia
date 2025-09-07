@@ -148,53 +148,46 @@
     @apply backdrop-blur-xl bg-black/10 border border-white/10 shadow-2xl;
   }
   
-  /* Premium Animations */
+  /* Premium Animations - simplified and professional */
   .animate-float {
     animation: float 8s ease-in-out infinite;
   }
-  
+
   .animate-float-delayed {
     animation: float 8s ease-in-out infinite;
     animation-delay: 2s;
   }
-  
+
   .animate-float-slow {
     animation: float 12s ease-in-out infinite;
     animation-delay: 4s;
   }
-  
+
   .animate-fade-in-up {
     animation: fadeInUp 1s ease-out forwards;
   }
-  
+
   .animate-fade-in-up-delayed {
     animation: fadeInUp 1s ease-out forwards;
     animation-delay: 0.5s;
     opacity: 0;
   }
-  
+
   .animate-pulse-slow {
-    animation: pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
-  
+
+  /* Smooth micro-interactions */
+  .hover\:scale-102:hover {
+    transform: scale(1.02);
+  }
+
   .animate-slide-in-left {
     animation: slideInLeft 1.2s ease-out forwards;
   }
-  
+
   .animate-slide-in-right {
     animation: slideInRight 1.2s ease-out forwards;
-  }
-  
-  .animate-bounce-gentle {
-    animation: bounceGentle 3s infinite;
-  }
-  
-  .animate-glow {
-    animation: glow 4s ease-in-out infinite alternate;
-  }
-  
-  .animate-particles {
-    animation: particles 20s linear infinite;
   }
 }
 
@@ -203,20 +196,16 @@
     transform: translateY(0px) rotate(0deg); 
     opacity: 0.7;
   }
-  33% { 
-    transform: translateY(-30px) rotate(5deg); 
+  50% { 
+    transform: translateY(-15px) rotate(2deg); 
     opacity: 0.9;
-  }
-  66% { 
-    transform: translateY(-15px) rotate(-3deg); 
-    opacity: 0.8;
   }
 }
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(60px);
+    transform: translateY(40px);
   }
   to {
     opacity: 1;
@@ -227,7 +216,7 @@
 @keyframes slideInLeft {
   from {
     opacity: 0;
-    transform: translateX(-80px);
+    transform: translateX(-60px);
   }
   to {
     opacity: 1;
@@ -238,55 +227,11 @@
 @keyframes slideInRight {
   from {
     opacity: 0;
-    transform: translateX(80px);
+    transform: translateX(60px);
   }
   to {
     opacity: 1;
     transform: translateX(0);
-  }
-}
-
-@keyframes bounceGentle {
-  0%, 20%, 53%, 80%, 100% {
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    transform: translate3d(0, 0, 0);
-  }
-  40%, 43% {
-    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-    transform: translate3d(0, -20px, 0);
-  }
-  70% {
-    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-    transform: translate3d(0, -10px, 0);
-  }
-  90% {
-    transform: translate3d(0, -4px, 0);
-  }
-}
-
-@keyframes glow {
-  from {
-    filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.5));
-  }
-  to {
-    filter: drop-shadow(0 0 40px rgba(59, 130, 246, 0.8));
-  }
-}
-
-@keyframes particles {
-  0% {
-    transform: translateY(100vh) translateX(-10px) rotate(0deg);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-100vh) translateX(10px) rotate(180deg);
-    opacity: 0;
   }
 }
 
@@ -300,7 +245,21 @@
   text-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
+/* Clean professional hero styles */
+.text-hero-clean {
+  @apply text-6xl md:text-7xl lg:text-8xl font-display font-black leading-tight tracking-tight;
+  background: linear-gradient(135deg, white 0%, rgba(255,255,255,0.9) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
 .text-hero-subtitle {
+  @apply text-2xl md:text-3xl lg:text-4xl font-display font-medium leading-tight tracking-wide;
+}
+
+.text-hero-subtitle-clean {
   @apply text-2xl md:text-3xl lg:text-4xl font-display font-medium leading-tight tracking-wide;
 }
 
@@ -320,7 +279,11 @@
   @apply text-xl md:text-2xl leading-relaxed text-foreground/90 tracking-wide;
 }
 
-/* Premium Button Styles */
+.text-body-clean {
+  @apply text-xl md:text-2xl leading-relaxed text-foreground/90 tracking-normal;
+}
+
+/* Professional Button Styles */
 .btn-hero {
   @apply font-display font-semibold tracking-wide transition-all duration-500;
   box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
@@ -331,7 +294,28 @@
   box-shadow: 0 12px 48px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* Premium Card Styles */
+/* Clean professional button styles */
+.btn-professional {
+  @apply font-display font-semibold tracking-wide transition-all duration-300;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.btn-professional:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.btn-professional-outline {
+  @apply font-display font-semibold tracking-wide transition-all duration-300;
+  backdrop-filter: blur(10px);
+}
+
+.btn-professional-outline:hover {
+  transform: translateY(-1px);
+  backdrop-filter: blur(15px);
+}
+
+/* Professional Card Styles */
 .card-premium {
   @apply bg-card/80 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl;
   box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1), 0 8px 16px -8px rgba(0,0,0,0.1);
@@ -343,26 +327,15 @@
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Cinematic Effects */
-.cinematic-glow {
-  position: relative;
+/* Clean professional card styles */
+.card-professional {
+  @apply bg-card/60 backdrop-blur-lg border border-border/30 rounded-2xl;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
 }
 
-.cinematic-glow::after {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  background: linear-gradient(135deg, 
-    rgba(34, 197, 94, 0.3) 0%, 
-    rgba(59, 130, 246, 0.3) 50%, 
-    rgba(139, 92, 246, 0.3) 100%);
-  border-radius: inherit;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  z-index: -1;
-  filter: blur(20px);
+.card-professional:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.1), 0 8px 24px rgba(0,0,0,0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.cinematic-glow:hover::after {
-  opacity: 1;
-}
