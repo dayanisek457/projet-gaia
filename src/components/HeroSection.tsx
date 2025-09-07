@@ -21,10 +21,10 @@ const HeroSection = () => {
           {/* Clean, professional hero title */}
           <div className="animate-fade-in-up">
             <h1 className="text-hero-clean mb-8">
-              GAIA
+              Gaia.
             </h1>
             <div className="text-hero-subtitle-clean text-white/95 mb-6">
-              L'avenir de la reforestation intelligente
+              L'avenir de la reforestation intelligente.
             </div>
           </div>
           
