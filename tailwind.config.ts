@@ -65,7 +65,7 @@ export default {
 			},
 			fontFamily: {
 				sans: ['Outfit', 'system-ui', 'sans-serif'],
-				display: ['Space Grotesk', 'system-ui', 'sans-serif'],
+				display: ['Plantin MT Pro', 'system-ui', 'sans-serif'],
 			},
 			keyframes: {
 				'accordion-down': {

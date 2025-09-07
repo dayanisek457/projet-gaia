@@ -1,3 +1,6 @@
+/* Import Plantin MT Pro font */
+@import url('https://fonts.cdnfonts.com/css/plantin-mt-pro');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
