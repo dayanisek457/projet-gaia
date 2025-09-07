@@ -23,7 +23,7 @@ const Login = ({ onLogin }: LoginProps) => {
     setError('');
 
     // Simulate authentication check
-    if (email === 'admin@projetgaia.com' && password === 'admin') {
+    if (email === 'contact@projet-gaia.com' && password === 'admin') {
       try {
         // Store auth state in localStorage
         localStorage.setItem('gaia-auth', JSON.stringify({
@@ -85,7 +85,7 @@ const Login = ({ onLogin }: LoginProps) => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@projetgaia.com"
+                  placeholder="contact@projet-gaia.com"
                   required
                   autoComplete="email"
                 />

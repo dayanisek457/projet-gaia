@@ -1,51 +1,36 @@
 
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Leaf, Zap, Globe, Sparkles, TreePine, Wind } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 const HeroSection = () => {
   return (
     <section id="home" className="min-h-screen flex items-center justify-center bg-gradient-hero relative overflow-hidden">
-      {/* Cinematic particle background */}
+      {/* Subtle background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Enhanced floating elements with more sophisticated animations */}
-        <div className="absolute top-20 left-10 animate-float animate-glow">
-          <TreePine className="h-20 w-20 text-white/30" />
-        </div>
-        <div className="absolute top-16 right-16 animate-float-delayed animate-glow">
-          <Zap className="h-16 w-16 text-white/25" />
-        </div>
-        <div className="absolute bottom-32 left-20 animate-float-slow animate-glow">
-          <Globe className="h-24 w-24 text-white/20" />
-        </div>
-        <div className="absolute top-1/3 right-1/4 animate-float">
-          <Wind className="h-12 w-12 text-white/15" />
-        </div>
-        <div className="absolute bottom-1/4 right-12 animate-float-delayed">
-          <Leaf className="h-18 w-18 text-white/25" />
-        </div>
-        <div className="absolute top-1/2 left-1/4 animate-float-slow">
-          <Sparkles className="h-14 w-14 text-white/20" />
-        </div>
+        {/* Clean geometric shapes instead of floating icons */}
+        <div className="absolute top-20 left-10 w-32 h-32 bg-white/5 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div className="absolute bottom-32 right-16 w-40 h-40 bg-white/3 rounded-full blur-3xl animate-pulse-slow" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/3 right-1/4 w-24 h-24 bg-white/4 rounded-full blur-2xl animate-pulse-slow" style={{animationDelay: '4s'}}></div>
         
-        {/* Cinematic overlay gradient */}
-        <div className="absolute inset-0 bg-black/10"></div>
+        {/* Professional overlay */}
+        <div className="absolute inset-0 bg-black/5"></div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-6xl mx-auto">
-          {/* Enhanced hero title with premium typography */}
+          {/* Clean, professional hero title */}
           <div className="animate-fade-in-up">
-            <h1 className="text-hero mb-8">
+            <h1 className="text-hero-clean mb-8">
               GAIA
             </h1>
-            <div className="text-hero-subtitle text-white/95 mb-6">
+            <div className="text-hero-subtitle-clean text-white/95 mb-6">
               L'avenir de la reforestation intelligente
             </div>
           </div>
           
-          {/* Enhanced subtitle with better spacing */}
+          {/* Professional subtitle */}
           <div className="animate-fade-in-up-delayed">
-            <p className="text-body-large text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-body-clean text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed">
               Un drone électrique autonome et intelligent pour accélérer 
               la reforestation mondiale et restaurer durablement nos écosystèmes face 
               à l'urgence climatique. 
@@ -55,12 +40,12 @@ const HeroSection = () => {
             </p>
           </div>
 
-          {/* Premium action buttons */}
+          {/* Clean action buttons */}
           <div className="animate-fade-in-up flex flex-col sm:flex-row gap-6 justify-center mb-16" style={{ animationDelay: '0.4s' }}>
             <Button 
               size="lg" 
               variant="secondary" 
-              className="btn-hero cinematic-glow group bg-white text-primary hover:bg-white/95 font-semibold px-12 py-4 text-lg rounded-xl"
+              className="btn-professional group bg-white text-primary hover:bg-white/95 font-semibold px-12 py-4 text-lg rounded-xl"
             >
               Découvrir le projet
               <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -68,34 +53,34 @@ const HeroSection = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="btn-hero glass text-white hover:bg-white/20 font-semibold px-12 py-4 text-lg rounded-xl border-2 border-white/40"
+              className="btn-professional-outline text-white hover:bg-white/10 font-semibold px-12 py-4 text-lg rounded-xl border-2 border-white/30"
             >
               <span className="mr-3 text-xl">👥</span>
               Devenir Sponsor
             </Button>
           </div>
 
-          {/* Enhanced key stats with premium styling */}
+          {/* Clean key stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
             <div className="text-center group">
-              <div className="card-premium p-8 mx-4">
-                <div className="text-5xl font-black text-white mb-4 group-hover:scale-110 transition-all duration-500 font-display">
+              <div className="card-professional p-8 mx-4">
+                <div className="text-5xl font-black text-white mb-4 group-hover:scale-105 transition-all duration-300 font-display">
                   100%
                 </div>
                 <div className="text-white/90 text-xl font-medium tracking-wide">100% Électrique</div>
               </div>
             </div>
             <div className="text-center group">
-              <div className="card-premium p-8 mx-4">
-                <div className="text-5xl font-black text-white mb-4 group-hover:scale-110 transition-all duration-500 font-display">
+              <div className="card-professional p-8 mx-4">
+                <div className="text-5xl font-black text-white mb-4 group-hover:scale-105 transition-all duration-300 font-display">
                   0
                 </div>
                 <div className="text-white/90 text-xl font-medium tracking-wide">Émission CO²</div>
               </div>
             </div>
             <div className="text-center group">
-              <div className="card-premium p-8 mx-4">
-                <div className="text-5xl font-black text-white mb-4 group-hover:scale-110 transition-all duration-500 font-display">
+              <div className="card-professional p-8 mx-4">
+                <div className="text-5xl font-black text-white mb-4 group-hover:scale-105 transition-all duration-300 font-display">
                   ∞
                 </div>
                 <div className="text-white/90 text-xl font-medium tracking-wide">Potentiel Impact</div>
