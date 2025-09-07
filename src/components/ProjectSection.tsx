@@ -38,7 +38,7 @@ const ProjectSection = () => {
 
   return (
     <section id="project" className="py-32 bg-muted/20 relative">
-      <div className="absolute inset-0 bg-gradient-cinematic opacity-50"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5"></div>
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20 animate-fade-in-up">
@@ -53,7 +53,7 @@ const ProjectSection = () => {
 
           {/* Enhanced Project Overview */}
           <div className="mb-20 animate-fade-in-up">
-            <div className="card-premium bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 p-12 text-center cinematic-glow">
+            <div className="card-professional bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 p-12 text-center">
               <h3 className="text-subsection mb-6 font-display text-primary">Problématique</h3>
               <p className="text-body-large leading-relaxed max-w-5xl mx-auto">
                 Comment utiliser les technologies aériennes pour accélérer la reforestation 
@@ -67,7 +67,7 @@ const ProjectSection = () => {
             {challenges.map((challenge, index) => (
               <div 
                 key={index} 
-                className="card-premium group hover:scale-[1.02] transition-all duration-500 animate-fade-in-up cinematic-glow" 
+                className="card-professional group hover:scale-[1.01] transition-all duration-300 animate-fade-in-up" 
                 style={{ animationDelay: `${index * 0.15}s` }}
               >
                 <div className="p-8">
@@ -90,7 +90,7 @@ const ProjectSection = () => {
 
           {/* Premium Project Timeline */}
           <div className="animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-            <div className="card-premium bg-gradient-hero text-white p-12 cinematic-glow relative overflow-hidden">
+            <div className="card-professional bg-gradient-hero text-white p-12 relative overflow-hidden">
               <div className="relative z-10">
                 <div className="text-center mb-12">
                   <h3 className="text-3xl font-display font-bold text-white mb-4">Informations Projet</h3>

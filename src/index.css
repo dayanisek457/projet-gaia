@@ -177,6 +177,11 @@
     animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
+  /* Smooth micro-interactions */
+  .hover\:scale-102:hover {
+    transform: scale(1.02);
+  }
+
   .animate-slide-in-left {
     animation: slideInLeft 1.2s ease-out forwards;
   }

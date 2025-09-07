@@ -102,7 +102,7 @@ const SponsorsSection = () => {
         <div className="absolute top-1/2 right-1/4 animate-float-delayed">
           <Globe className="h-20 w-20 text-secondary/8" />
         </div>
-        <div className="absolute inset-0 bg-gradient-cinematic opacity-30"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/3 to-secondary/5 opacity-60"></div>
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
@@ -128,7 +128,7 @@ const SponsorsSection = () => {
             {sponsorTypes.map((sponsor, index) => (
               <div 
                 key={index} 
-                className="card-premium group cinematic-glow p-8 hover:scale-105 transition-all duration-500 animate-fade-in-up"
+                className="card-professional group p-8 hover:scale-102 transition-all duration-300 animate-fade-in-up"
                 style={{ animationDelay: `${index * 0.2}s` }}
               >
                 <div className="text-center mb-8">
@@ -163,7 +163,7 @@ const SponsorsSection = () => {
           </div>
 
           {/* Premium Partnership Benefits */}
-          <div className="card-premium bg-gradient-hero text-white mb-16 overflow-hidden relative animate-fade-in-up p-12 cinematic-glow" style={{ animationDelay: '0.8s' }}>
+          <div className="card-professional bg-gradient-hero text-white mb-16 overflow-hidden relative animate-fade-in-up p-12" style={{ animationDelay: '0.8s' }}>
             <div className="absolute inset-0 bg-black/10"></div>
             <div className="relative z-10 text-center">
               <div className="flex justify-center mb-6">
@@ -201,7 +201,7 @@ const SponsorsSection = () => {
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Button 
                 size="lg" 
-                className="btn-hero group relative overflow-hidden bg-primary hover:bg-primary/90 text-white font-display font-semibold px-12 py-4 text-lg rounded-xl cinematic-glow"
+                className="btn-professional group relative overflow-hidden bg-primary hover:bg-primary/90 text-white font-display font-semibold px-12 py-4 text-lg rounded-xl"
               >
                 <span className="relative z-10 flex items-center">
                   <Heart className="mr-3 h-5 w-5" />

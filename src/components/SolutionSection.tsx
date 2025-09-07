@@ -99,7 +99,7 @@ const SolutionSection = () => {
             {keyBenefits.map((benefit, index) => (
               <div 
                 key={index}
-                className="card-premium group text-center p-8 cinematic-glow animate-fade-in-up" 
+                className="card-professional group text-center p-8 animate-fade-in-up" 
                 style={{ animationDelay: `${index * 0.2}s` }}
               >
                 <div className={`mx-auto w-20 h-20 bg-gradient-to-br ${benefit.gradient} rounded-2xl flex items-center justify-center mb-6 shadow-xl group-hover:scale-110 transition-all duration-500`}>
@@ -122,7 +122,7 @@ const SolutionSection = () => {
               {technicalSolutions.map((item, index) => (
                 <div 
                   key={index} 
-                  className="card-premium group p-8 cinematic-glow hover:scale-105 transition-all duration-500"
+                  className="card-professional group p-8 hover:scale-102 transition-all duration-300"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <div className="flex items-center space-x-4 mb-6">
@@ -148,7 +148,7 @@ const SolutionSection = () => {
 
           {/* Premium Future Vision */}
           <div className="animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-            <div className="card-premium bg-gradient-hero text-white p-12 cinematic-glow relative overflow-hidden">
+            <div className="card-professional bg-gradient-hero text-white p-12 relative overflow-hidden">
               <div className="absolute inset-0 bg-black/10"></div>
               <div className="relative z-10 text-center">
                 <div className="flex justify-center mb-6">
