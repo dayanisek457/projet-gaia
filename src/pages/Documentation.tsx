@@ -36,18 +36,6 @@ const Documentation = () => {
     }
   }, [publishedSections, activeSection]);
 
-  // Listen for PDF export message from other pages
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      if (event.data.action === 'exportPDF') {
-        exportDocumentationToPDF();
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, []);
-
   const handleExportPDF = () => {
     exportDocumentationToPDF();
   };
@@ -280,7 +268,7 @@ const Documentation = () => {
                 className="flex items-center space-x-2"
               >
                 <Download className="h-4 w-4" />
-                <span>Exporter en PDF</span>
+                <span>Télécharger la documentation</span>
               </Button>
               <Button variant="outline" asChild>
                 <Link to="/admin" className="flex items-center space-x-2">

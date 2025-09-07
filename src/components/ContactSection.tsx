@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Mail, MapPin, Phone, FileText } from 'lucide-react';
 import ContactPopup from './ContactPopup';
-import { exportDocumentationToPDFFromAnyPage } from '@/utils/pdfExport';
+import { exportDocumentationToPDF } from '@/utils/pdfExport';
 
 const ContactSection = () => {
   const [isContactPopupOpen, setIsContactPopupOpen] = useState(false);
@@ -14,7 +14,7 @@ const ContactSection = () => {
   };
 
   const handleDownloadDocumentation = () => {
-    exportDocumentationToPDFFromAnyPage();
+    exportDocumentationToPDF();
   };
   return (
     <section id="contact" className="py-20">

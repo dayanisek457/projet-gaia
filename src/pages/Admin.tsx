@@ -9,47 +9,79 @@ import DocumentationManager from '@/components/DocumentationManager';
 import Login from '@/components/Login';
 import { Settings, Database, Shield, TestTube, LogOut, FileText } from 'lucide-react';
 import { toast } from 'sonner';
+import { authService, AuthUser } from '@/lib/supabase-auth';
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [useDemoMode, setUseDemoMode] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentUser, setCurrentUser] = useState<{ email: string } | null>(null);
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Check if user is already authenticated
-    const authData = localStorage.getItem('gaia-auth');
-    if (authData) {
+    const checkAuth = async () => {
       try {
-        const parsed = JSON.parse(authData);
-        const hoursSinceAuth = (Date.now() - parsed.timestamp) / (1000 * 60 * 60);
-        
-        if (parsed.authenticated && hoursSinceAuth < 24) { // 24 hours session
+        const user = await authService.getCurrentUser();
+        if (user) {
           setIsAuthenticated(true);
-          setCurrentUser({ email: parsed.email });
-        } else {
-          // Session expired
-          localStorage.removeItem('gaia-auth');
+          setCurrentUser(user);
         }
       } catch (error) {
-        console.error('Error parsing auth data:', error);
-        localStorage.removeItem('gaia-auth');
+        console.error('Error checking auth:', error);
+      } finally {
+        setLoading(false);
       }
-    }
+    };
+
+    checkAuth();
+
+    // Subscribe to auth state changes
+    const { data: { subscription } } = authService.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        const user = await authService.getCurrentUser();
+        if (user) {
+          setIsAuthenticated(true);
+          setCurrentUser(user);
+        }
+      } else if (event === 'SIGNED_OUT') {
+        setIsAuthenticated(false);
+        setCurrentUser(null);
+        setActiveTab('dashboard');
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
-  const handleLogin = (credentials: { email: string; password: string }) => {
+  const handleLogin = (user: AuthUser) => {
     setIsAuthenticated(true);
-    setCurrentUser({ email: credentials.email });
+    setCurrentUser(user);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('gaia-auth');
-    setIsAuthenticated(false);
-    setCurrentUser(null);
-    setActiveTab('dashboard');
-    toast.success('Déconnexion réussie');
+  const handleLogout = async () => {
+    try {
+      await authService.signOut();
+      toast.success('Déconnexion réussie');
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast.error('Erreur lors de la déconnexion');
+    }
   };
+
+  // Show loading spinner while checking auth
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Vérification de l'authentification...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Show login if not authenticated
   if (!isAuthenticated) {
@@ -154,7 +186,7 @@ const Admin = () => {
             <div>
               <h1 className="text-3xl font-bold mb-2">Dashboard Administrateur</h1>
               <p className="text-muted-foreground">
-                Interface d'administration du projet GAIA avec stockage S3 direct
+                Interface d'administration du projet GAIA avec authentification Supabase
               </p>
             </div>
 
@@ -197,6 +229,38 @@ const Admin = () => {
                   >
                     Gérer les fichiers
                   </Button>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Shield className="h-5 w-5" />
+                    <span>Authentification</span>
+                  </CardTitle>
+                  <CardDescription>
+                    État de l'authentification Supabase
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Statut:</span>
+                      <Badge variant="default">Connecté</Badge>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Utilisateur:</span>
+                      <span className="text-xs">{currentUser?.email}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>ID:</span>
+                      <span className="text-xs">{currentUser?.id.slice(0, 8)}...</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Session:</span>
+                      <Badge variant="default">Active</Badge>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -269,28 +333,6 @@ const Admin = () => {
                   </Button>
                 </CardContent>
               </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Settings className="h-5 w-5" />
-                    <span>Configuration</span>
-                  </CardTitle>
-                  <CardDescription>
-                    Paramètres du système
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2 text-sm text-muted-foreground">
-                    <p>✅ S3 configuré</p>
-                    <p>✅ Upload fonctionnel</p>
-                    <p>✅ Interface admin active</p>
-                    <p>✅ Roadmap intégrée</p>
-                    <p>✅ Documentation avancée</p>
-                    <p>✅ Mode démo disponible</p>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
 
             {/* Instructions */}
@@ -300,9 +342,9 @@ const Admin = () => {
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <h4 className="font-semibold text-blue-900 mb-2">Mode Réel (par défaut)</h4>
+                  <h4 className="font-semibold text-blue-900 mb-2">Authentification Supabase</h4>
                   <p className="text-blue-800 text-sm">
-                    Utilise l'API Supabase réelle avec vos identifiants. Nécessite une connectivité réseau appropriée.
+                    Utilise l'authentification Supabase sécurisée avec gestion des sessions automatique.
                   </p>
                 </div>
                 <div className="bg-green-50 border border-green-200 rounded-lg p-4">

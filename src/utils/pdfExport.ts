@@ -1,24 +1,17 @@
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import { documentationService, DocSection } from '@/lib/supabase-documentation';
 
+// Define interfaces for PDF generation
+interface PDFSection {
+  title: string;
+  content: string;
+  type: string;
+  data?: any;
+}
+
+// Enhanced PDF export that properly renders documentation content as text
 export const exportDocumentationToPDF = async () => {
   try {
-    // Navigate to the documentation page if not already there
-    if (window.location.pathname !== '/documentation') {
-      window.open('/documentation', '_blank');
-      return;
-    }
-
-    // Wait for page to load completely
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // Find the main content area
-    const contentElement = document.querySelector('.lg\\:col-span-3') as HTMLElement;
-    
-    if (!contentElement) {
-      throw new Error('Documentation content not found');
-    }
-
     // Show loading indicator
     const loadingDiv = document.createElement('div');
     loadingDiv.innerHTML = `
@@ -40,40 +33,20 @@ export const exportDocumentationToPDF = async () => {
     `;
     document.body.appendChild(loadingDiv);
 
-    // Configure html2canvas options for better quality
-    const canvas = await html2canvas(contentElement, {
-      scale: 2, // Higher quality
-      useCORS: true,
-      allowTaint: false,
-      backgroundColor: '#ffffff',
-      removeContainer: true,
-      imageTimeout: 15000,
-      onclone: (clonedDoc) => {
-        // Remove any fixed/sticky elements that might interfere
-        const clonedElement = clonedDoc.querySelector('.lg\\:col-span-3') as HTMLElement;
-        if (clonedElement) {
-          // Ensure all content is visible
-          clonedElement.style.height = 'auto';
-          clonedElement.style.overflow = 'visible';
-          
-          // Style adjustments for PDF
-          const cards = clonedElement.querySelectorAll('.glass');
-          cards.forEach(card => {
-            (card as HTMLElement).style.background = '#ffffff';
-            (card as HTMLElement).style.border = '1px solid #e5e7eb';
-          });
-        }
-      }
-    });
-
-    // Calculate PDF dimensions
-    const imgWidth = 210; // A4 width in mm
-    const pageHeight = 295; // A4 height in mm
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-    let heightLeft = imgHeight;
+    // Fetch all published documentation sections directly from Supabase
+    const sections = await documentationService.getPublishedSections();
+    
+    if (sections.length === 0) {
+      throw new Error('Aucune section de documentation disponible');
+    }
 
     // Create PDF
     const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = 210;
+    const pageHeight = 297;
+    const margin = 20;
+    const contentWidth = pageWidth - (margin * 2);
+    let currentY = margin;
     
     // Add metadata
     pdf.setProperties({
@@ -84,35 +57,52 @@ export const exportDocumentationToPDF = async () => {
       producer: 'GAIA PDF Export'
     });
 
-    let position = 0;
-
     // Add cover page
-    pdf.setFontSize(24);
-    pdf.setFont(undefined, 'bold');
-    pdf.text('Documentation GAIA', 20, 30);
+    pdf.setFontSize(28);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Documentation GAIA', margin, 50);
     
-    pdf.setFontSize(16);
-    pdf.setFont(undefined, 'normal');
-    pdf.text('Projet de Reforestation Intelligente', 20, 45);
+    pdf.setFontSize(18);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text('Projet de Reforestation Intelligente', margin, 70);
+    
+    pdf.setFontSize(14);
+    pdf.text('Guide complet du projet avec IA, IoT et surveillance par drones', margin, 90);
     
     pdf.setFontSize(12);
-    pdf.text('Guide complet du projet avec IA, IoT et surveillance par drones', 20, 55);
+    pdf.setFont('helvetica', 'italic');
+    pdf.text('Lycée Saint-Joseph Dijon', margin, 120);
+    pdf.text(`Généré le ${new Date().toLocaleDateString('fr-FR')}`, margin, 135);
     
-    pdf.setFontSize(10);
-    pdf.text('Lycée Saint-Joseph Dijon', 20, 70);
-    pdf.text(`Généré le ${new Date().toLocaleDateString('fr-FR')}`, 20, 80);
-    
-    // Add first page of content
+    // Add table of contents
     pdf.addPage();
-    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
+    currentY = margin;
+    pdf.setFontSize(20);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Table des matières', margin, currentY);
+    currentY += 15;
+    
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'normal');
+    sections.forEach((section, index) => {
+      pdf.text(`${index + 1}. ${section.title}`, margin + 5, currentY);
+      currentY += 8;
+    });
 
-    // Add additional pages if needed
-    while (heightLeft >= 0) {
-      position = heightLeft - imgHeight;
+    // Process each section
+    for (let i = 0; i < sections.length; i++) {
+      const section = sections[i];
       pdf.addPage();
-      pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+      currentY = margin;
+      
+      // Section title
+      pdf.setFontSize(18);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`${i + 1}. ${section.title}`, margin, currentY);
+      currentY += 15;
+      
+      // Section content
+      currentY = await renderSectionContent(pdf, section, margin, currentY, contentWidth, pageHeight);
     }
 
     // Remove loading indicator
@@ -138,15 +128,121 @@ export const exportDocumentationToPDF = async () => {
   }
 };
 
-export const exportDocumentationToPDFFromAnyPage = () => {
-  // Open documentation page in new tab and trigger PDF export
-  const newWindow = window.open('/documentation', '_blank');
-  
-  if (newWindow) {
-    newWindow.addEventListener('load', () => {
-      setTimeout(() => {
-        newWindow.postMessage({ action: 'exportPDF' }, '*');
-      }, 2000);
+// Helper function to render section content
+async function renderSectionContent(
+  pdf: jsPDF, 
+  section: DocSection, 
+  margin: number, 
+  startY: number, 
+  contentWidth: number, 
+  pageHeight: number
+): Promise<number> {
+  let currentY = startY;
+  const lineHeight = 6;
+  const bottomMargin = 20;
+
+  // Function to check if we need a new page
+  const checkNewPage = (requiredSpace: number) => {
+    if (currentY + requiredSpace > pageHeight - bottomMargin) {
+      pdf.addPage();
+      currentY = margin;
+    }
+  };
+
+  // Function to add text with proper line wrapping
+  const addWrappedText = (text: string, fontSize: number = 12, fontStyle: string = 'normal') => {
+    pdf.setFontSize(fontSize);
+    pdf.setFont('helvetica', fontStyle);
+    
+    const lines = pdf.splitTextToSize(text, contentWidth);
+    const requiredHeight = lines.length * lineHeight;
+    
+    checkNewPage(requiredHeight);
+    
+    lines.forEach((line: string) => {
+      pdf.text(line, margin, currentY);
+      currentY += lineHeight;
     });
+    
+    currentY += 3; // Add small spacing after text
+  };
+
+  // Render content based on section type
+  switch (section.type) {
+    case 'text':
+    case 'rich':
+      // Convert markdown-like content to plain text for PDF
+      const cleanContent = cleanMarkdownForPDF(section.content);
+      addWrappedText(cleanContent);
+      break;
+
+    case 'accordion':
+      if (section.data?.items) {
+        section.data.items.forEach((item: any) => {
+          addWrappedText(item.title, 14, 'bold');
+          addWrappedText(item.content);
+          currentY += 5;
+        });
+      }
+      break;
+
+    case 'table':
+      if (section.data?.headers && section.data?.rows) {
+        // Table header
+        addWrappedText(section.data.headers.join(' | '), 12, 'bold');
+        addWrappedText('─'.repeat(50), 10);
+        
+        // Table rows
+        section.data.rows.forEach((row: string[]) => {
+          addWrappedText(row.join(' | '));
+        });
+      }
+      break;
+
+    case 'callout':
+      if (section.data?.callouts) {
+        section.data.callouts.forEach((callout: any) => {
+          const prefix = callout.type === 'warning' ? '⚠️ ' : 
+                        callout.type === 'success' ? '✅ ' : 'ℹ️ ';
+          addWrappedText(`${prefix}${callout.title}`, 12, 'bold');
+          addWrappedText(callout.content);
+          currentY += 5;
+        });
+      }
+      break;
+
+    case 'checklist':
+      if (section.data?.items) {
+        section.data.items.forEach((item: any) => {
+          const checkbox = item.completed ? '☑️' : '☐';
+          addWrappedText(`${checkbox} ${item.text}`);
+        });
+      }
+      break;
+
+    default:
+      addWrappedText(section.content);
   }
-};
+
+  return currentY;
+}
+
+// Helper function to clean markdown content for PDF
+function cleanMarkdownForPDF(content: string): string {
+  return content
+    // Remove HTML tags
+    .replace(/<[^>]*>/g, '')
+    // Convert markdown headers to plain text
+    .replace(/#{1,6}\s*/g, '')
+    // Convert bold/italic markers
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/\*(.*?)\*/g, '$1')
+    // Convert lists
+    .replace(/^- /gm, '• ')
+    .replace(/^[0-9]+\. /gm, '• ')
+    // Remove code blocks
+    .replace(/`(.*?)`/g, '$1')
+    // Clean up extra whitespace
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
