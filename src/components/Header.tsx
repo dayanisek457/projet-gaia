@@ -26,7 +26,7 @@ const Header = () => {
               <img 
                 src="/logo.png" 
                 alt="Logo" 
-                className="h-20 object-contain drop-shadow-xl" 
+                className="h-30 object-contain drop-shadow-xl" 
               />
             </div>
           </div>
