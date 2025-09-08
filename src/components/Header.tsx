@@ -24,8 +24,8 @@ const Header = () => {
           <div className="flex items-center space-x-4">
             <div>
               <img 
-                src="/favicon.ico" 
-                alt="GAIA Logo" 
+                src="/logo.png" 
+                alt="Logo" 
                 className="h-12 w-12 object-contain drop-shadow-xl" 
               />
             </div>
