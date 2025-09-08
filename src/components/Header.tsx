@@ -22,11 +22,11 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Premium Logo */}
           <div className="flex items-center space-x-4">
-            <div>
+            <div className="flex items-center justify-center">
               <img 
                 src="/logo.png" 
                 alt="Logo" 
-                className="h-13 w-30 object-contain drop-shadow-xl" 
+                className="h-10 object-contain drop-shadow-xl" 
               />
             </div>
           </div>
