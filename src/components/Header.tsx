@@ -29,9 +29,6 @@ const Header = () => {
                 className="h-12 w-12 object-contain drop-shadow-xl" 
               />
             </div>
-            <span className="text-2xl font-display font-black bg-gradient-primary bg-clip-text text-transparent tracking-tight">
-              GAIA
-            </span>
           </div>
 
           {/* Premium Desktop Navigation */}
