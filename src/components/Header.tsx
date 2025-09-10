@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Instagram } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
@@ -43,6 +43,20 @@ const Header = () => {
                 <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-primary transition-all duration-300 group-hover:w-full group-hover:left-0 rounded-full"></span>
               </a>
             ))}
+            
+            {/* Instagram Link */}
+            <a
+              href="https://www.instagram.com/projet_gaia_stjo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground/85 hover:text-primary transition-all duration-300 font-display font-medium text-lg relative group tracking-wide flex items-center"
+              title="Suivez-nous sur Instagram @projet_gaia_stjo"
+            >
+              <Instagram className="h-5 w-5 mr-2" />
+              Instagram
+              <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-primary transition-all duration-300 group-hover:w-full group-hover:left-0 rounded-full"></span>
+            </a>
+            
             <Button 
               variant="outline" 
               size="lg" 
@@ -78,6 +92,19 @@ const Header = () => {
                   {item.name}
                 </a>
               ))}
+              
+              {/* Instagram Link - Mobile */}
+              <a
+                href="https://www.instagram.com/projet_gaia_stjo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center px-4 py-3 text-foreground/85 hover:text-primary transition-all duration-300 hover:bg-primary/10 rounded-xl font-display font-medium text-lg tracking-wide"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Instagram className="h-5 w-5 mr-3" />
+                Instagram
+              </a>
+              
               <div className="px-4 py-3">
                 <Button 
                   variant="outline" 
