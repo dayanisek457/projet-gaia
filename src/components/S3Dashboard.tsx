@@ -24,11 +24,34 @@ const S3Dashboard = () => {
   const fetchFiles = async () => {
     try {
       setLoading(true);
+      
+      // First check bucket health
+      const healthCheck = await s3Manager.checkBucketHealth();
+      if (!healthCheck.healthy) {
+        console.error('Bucket health check failed:', healthCheck.error);
+        
+        if (healthCheck.serviceOffline) {
+          toast.error('Service Supabase indisponible. Utilisez le mode démo pour tester les fonctionnalités.');
+        } else {
+          toast.error(`Erreur de configuration S3: ${healthCheck.error}`);
+        }
+        return;
+      }
+      
       const fileList = await s3Manager.listFiles();
       setFiles(fileList);
+      console.log(`Successfully loaded ${fileList.length} files`);
     } catch (error) {
       console.error('Error fetching files:', error);
-      toast.error('Erreur lors de la récupération des fichiers');
+      if (error instanceof Error) {
+        if (error.message.includes('fetch')) {
+          toast.error('Service indisponible. Veuillez utiliser le mode démo ou réessayer plus tard.');
+        } else {
+          toast.error(`Erreur lors de la récupération des fichiers: ${error.message}`);
+        }
+      } else {
+        toast.error('Erreur lors de la récupération des fichiers');
+      }
     } finally {
       setLoading(false);
     }
