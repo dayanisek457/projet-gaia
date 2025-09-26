@@ -151,33 +151,33 @@
     @apply backdrop-blur-xl bg-black/10 border border-white/10 shadow-2xl;
   }
   
-  /* Premium Animations - simplified and professional */
+  /* Apple-style minimal animations - instant and subtle */
   .animate-float {
-    animation: float 8s ease-in-out infinite;
+    animation: float 12s ease-in-out infinite;
   }
 
   .animate-float-delayed {
-    animation: float 8s ease-in-out infinite;
-    animation-delay: 2s;
+    animation: float 12s ease-in-out infinite;
+    animation-delay: 0.2s;
   }
 
   .animate-float-slow {
     animation: float 12s ease-in-out infinite;
-    animation-delay: 4s;
+    animation-delay: 0.4s;
   }
 
   .animate-fade-in-up {
-    animation: fadeInUp 1s ease-out forwards;
+    animation: fadeInUp 0.6s ease-out forwards;
   }
 
   .animate-fade-in-up-delayed {
-    animation: fadeInUp 1s ease-out forwards;
-    animation-delay: 0.5s;
+    animation: fadeInUp 0.6s ease-out forwards;
+    animation-delay: 0.1s;
     opacity: 0;
   }
 
   .animate-pulse-slow {
-    animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation: pulse 16s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   /* Smooth micro-interactions */
@@ -196,19 +196,19 @@
 
 @keyframes float {
   0%, 100% { 
-    transform: translateY(0px) rotate(0deg); 
-    opacity: 0.7;
+    transform: translateY(0px); 
+    opacity: 0.4;
   }
   50% { 
-    transform: translateY(-15px) rotate(2deg); 
-    opacity: 0.9;
+    transform: translateY(-8px); 
+    opacity: 0.6;
   }
 }
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -311,11 +311,16 @@
 .btn-professional-outline {
   @apply font-display font-semibold tracking-wide transition-all duration-300;
   backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.6) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
 }
 
 .btn-professional-outline:hover {
   transform: translateY(-1px);
   backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
 }
 
 /* Professional Card Styles */
@@ -330,15 +335,15 @@
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Clean professional card styles */
+/* Apple-inspired professional card styles */
 .card-professional {
-  @apply bg-card/60 backdrop-blur-lg border border-border/30 rounded-2xl;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  @apply bg-card/40 backdrop-blur-md border border-border/20 rounded-2xl;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.02);
+  transition: all 0.2s ease-out;
 }
 
 .card-professional:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 48px rgba(0,0,0,0.1), 0 8px 24px rgba(0,0,0,0.06);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
 }
 

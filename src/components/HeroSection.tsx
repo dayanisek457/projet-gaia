@@ -22,13 +22,13 @@ const HeroSection = () => {
     <section id="home" className="min-h-screen flex items-center justify-center bg-gradient-hero relative overflow-hidden">
       {/* Subtle background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Clean geometric shapes instead of floating icons */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-white/5 rounded-full blur-3xl animate-pulse-slow"></div>
-        <div className="absolute bottom-32 right-16 w-40 h-40 bg-white/3 rounded-full blur-3xl animate-pulse-slow" style={{animationDelay: '2s'}}></div>
-        <div className="absolute top-1/3 right-1/4 w-24 h-24 bg-white/4 rounded-full blur-2xl animate-pulse-slow" style={{animationDelay: '4s'}}></div>
+        {/* Clean geometric shapes - more subtle */}
+        <div className="absolute top-20 left-10 w-24 h-24 bg-white/3 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div className="absolute bottom-32 right-16 w-32 h-32 bg-white/2 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div className="absolute top-1/3 right-1/4 w-20 h-20 bg-white/2 rounded-full blur-2xl animate-pulse-slow"></div>
         
         {/* Professional overlay */}
-        <div className="absolute inset-0 bg-black/5"></div>
+        <div className="absolute inset-0 bg-black/3"></div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -56,7 +56,7 @@ const HeroSection = () => {
           </div>
 
           {/* Clean action buttons */}
-          <div className="animate-fade-in-up flex flex-col sm:flex-row gap-6 justify-center mb-16" style={{ animationDelay: '0.4s' }}>
+          <div className="animate-fade-in-up flex flex-col sm:flex-row gap-6 justify-center mb-16">
             <Button 
               size="lg" 
               variant="secondary" 
@@ -69,7 +69,7 @@ const HeroSection = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="btn-professional-outline text-white hover:bg-white/10 font-semibold px-12 py-4 text-lg rounded-xl border-2 border-white/30"
+              className="btn-professional-outline font-semibold px-12 py-4 text-lg rounded-xl"
               onClick={handleSponsorClick}
             >
               <span className="mr-3 text-xl">👥</span>
@@ -78,7 +78,7 @@ const HeroSection = () => {
           </div>
 
           {/* Clean key stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 animate-fade-in-up-delayed">
             <div className="text-center group">
               <div className="card-professional p-8 mx-4">
                 <div className="text-5xl font-black text-white mb-4 group-hover:scale-105 transition-all duration-300 font-display">
