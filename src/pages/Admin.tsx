@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +13,7 @@ import { toast } from 'sonner';
 import { authService, AuthUser } from '@/lib/supabase-auth';
 
 const Admin = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [useDemoMode, setUseDemoMode] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -65,9 +67,13 @@ const Admin = () => {
     try {
       await authService.signOut();
       toast.success('Déconnexion réussie');
+      // Redirect to main menu after successful logout
+      navigate('/');
     } catch (error) {
       console.error('Logout error:', error);
       toast.error('Erreur lors de la déconnexion');
+      // Even if there's an error with signOut, still redirect to main menu
+      navigate('/');
     }
   };
 
