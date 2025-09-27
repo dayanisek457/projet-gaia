@@ -18,17 +18,6 @@ const Login = ({ onLogin }: LoginProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleTestMode = () => {
-    console.log('Activating test mode');
-    localStorage.setItem('admin-test-mode', 'true');
-    const testUser: AuthUser = {
-      email: 'test@gaia-project.com',
-      id: 'test-user-123',
-      role: 'admin'
-    };
-    toast.success('Mode test activé');
-    onLogin(testUser);
-  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -50,7 +39,7 @@ const Login = ({ onLogin }: LoginProps) => {
       }
     } catch (err) {
       console.error('Login error:', err);
-      setError('Erreur lors de la connexion - Service indisponible');
+      setError('Erreur lors de la connexion');
     } finally {
       setLoading(false);
     }
@@ -131,17 +120,6 @@ const Login = ({ onLogin }: LoginProps) => {
                 disabled={loading}
               >
                 {loading ? 'Connexion...' : 'Se connecter'}
-              </Button>
-              
-              {/* Test Mode Button for Development */}
-              <Button 
-                type="button" 
-                variant="outline"
-                className="w-full" 
-                onClick={handleTestMode}
-                disabled={loading}
-              >
-                Mode Test (Développement)
               </Button>
             </form>
           </CardContent>

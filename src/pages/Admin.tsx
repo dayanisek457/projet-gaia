@@ -24,23 +24,6 @@ const Admin = () => {
     // Check if user is already authenticated
     const checkAuth = async () => {
       try {
-        // Development bypass - check for test mode
-        const urlParams = new URLSearchParams(window.location.search);
-        const testMode = urlParams.get('test') === 'true' || localStorage.getItem('admin-test-mode') === 'true';
-        
-        if (testMode) {
-          console.log('Test mode enabled - bypassing authentication');
-          const testUser: AuthUser = {
-            email: 'test@gaia-project.com',
-            id: 'test-user-123',
-            role: 'admin'
-          };
-          setIsAuthenticated(true);
-          setCurrentUser(testUser);
-          setLoading(false);
-          return;
-        }
-
         const user = await authService.getCurrentUser();
         if (user) {
           setIsAuthenticated(true);
@@ -48,18 +31,6 @@ const Admin = () => {
         }
       } catch (error) {
         console.error('Error checking auth:', error);
-        // If Supabase is unreachable, check for test mode as fallback
-        const testMode = localStorage.getItem('admin-test-mode') === 'true';
-        if (testMode) {
-          console.log('Supabase unreachable - falling back to test mode');
-          const testUser: AuthUser = {
-            email: 'test@gaia-project.com',
-            id: 'test-user-123',
-            role: 'admin'
-          };
-          setIsAuthenticated(true);
-          setCurrentUser(testUser);
-        }
       } finally {
         setLoading(false);
       }
