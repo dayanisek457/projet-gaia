@@ -4,6 +4,10 @@ import { supabase } from './s3-direct';
 export type TaskStatus = 'en-attente' | 'en-cours' | 'termine' | 'bloque';
 export type TeamMember = 'Aloys' | 'Yanis' | 'Constant' | 'Hugues' | 'Nathan';
 
+// Valid values for validation
+const VALID_STATUSES: TaskStatus[] = ['en-attente', 'en-cours', 'termine', 'bloque'];
+const VALID_MEMBERS: TeamMember[] = ['Aloys', 'Yanis', 'Constant', 'Hugues', 'Nathan'];
+
 export interface Task {
   id: string;
   title: string;
@@ -29,21 +33,44 @@ export interface TaskDB {
 class TaskService {
   private tableName = 'tasks';
 
-  // Convert database record to frontend interface
+  /**
+   * Validates if a status value is a valid TaskStatus
+   */
+  private isValidStatus(status: string): status is TaskStatus {
+    return VALID_STATUSES.includes(status as TaskStatus);
+  }
+
+  /**
+   * Validates if a member value is a valid TeamMember
+   */
+  private isValidMember(member: string): member is TeamMember {
+    return VALID_MEMBERS.includes(member as TeamMember);
+  }
+
+  /**
+   * Convert database record to frontend interface with validation
+   */
   private dbToFrontend(dbItem: TaskDB): Task {
+    // Validate and default status if invalid
+    const status = this.isValidStatus(dbItem.status) ? dbItem.status : 'en-attente';
+    // Validate and default assignee if invalid
+    const assignee = this.isValidMember(dbItem.assignee) ? dbItem.assignee : 'Aloys';
+
     return {
       id: dbItem.id,
       title: dbItem.title,
       description: dbItem.description,
-      assignee: dbItem.assignee as TeamMember,
-      status: dbItem.status as TaskStatus,
+      assignee,
+      status,
       deadline: dbItem.deadline,
       created_at: dbItem.created_at,
       updated_at: dbItem.updated_at
     };
   }
 
-  // Convert frontend interface to database record
+  /**
+   * Convert frontend interface to database record
+   */
   private frontendToDb(task: Omit<Task, 'id' | 'created_at' | 'updated_at'>): Partial<TaskDB> {
     return {
       title: task.title,
@@ -55,7 +82,9 @@ class TaskService {
     };
   }
 
-  // Get all tasks
+  /**
+   * Get all tasks from the database
+   */
   async getAllTasks(): Promise<Task[]> {
     try {
       const { data, error } = await supabase

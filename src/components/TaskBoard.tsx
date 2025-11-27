@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -213,24 +213,30 @@ const TaskBoard = () => {
     return colors[member] || 'bg-gray-100 text-gray-800';
   };
 
-  // Filter tasks
-  const filteredTasks = tasks.filter(task => {
-    const memberMatch = filterMember === 'all' || task.assignee === filterMember;
-    const statusMatch = filterStatus === 'all' || task.status === filterStatus;
-    return memberMatch && statusMatch;
-  });
+  // Filter tasks - memoized to avoid redundant filtering
+  const filteredTasks = useMemo(() => {
+    return tasks.filter(task => {
+      const memberMatch = filterMember === 'all' || task.assignee === filterMember;
+      const statusMatch = filterStatus === 'all' || task.status === filterStatus;
+      return memberMatch && statusMatch;
+    });
+  }, [tasks, filterMember, filterStatus]);
 
-  // Group tasks by assignee
-  const tasksByMember = TEAM_MEMBERS.reduce((acc, member) => {
-    acc[member] = filteredTasks.filter(task => task.assignee === member);
-    return acc;
-  }, {} as Record<TeamMember, Task[]>);
+  // Group tasks by assignee - memoized
+  const tasksByMember = useMemo(() => {
+    return TEAM_MEMBERS.reduce((acc, member) => {
+      acc[member] = filteredTasks.filter(task => task.assignee === member);
+      return acc;
+    }, {} as Record<TeamMember, Task[]>);
+  }, [filteredTasks]);
 
-  // Group tasks by status
-  const tasksByStatus = TASK_STATUSES.reduce((acc, status) => {
-    acc[status.value] = filteredTasks.filter(task => task.status === status.value);
-    return acc;
-  }, {} as Record<TaskStatus, Task[]>);
+  // Group tasks by status - memoized
+  const tasksByStatus = useMemo(() => {
+    return TASK_STATUSES.reduce((acc, status) => {
+      acc[status.value] = filteredTasks.filter(task => task.status === status.value);
+      return acc;
+    }, {} as Record<TaskStatus, Task[]>);
+  }, [filteredTasks]);
 
   const TaskCard = ({ task }: { task: Task }) => (
     <Card className="mb-3 shadow-sm hover:shadow-md transition-shadow">
