@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,6 +20,51 @@ const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
+  // Key to force remount of child components when session is refreshed
+  const [sessionKey, setSessionKey] = useState(0);
+  // Ref to track if a session refresh is in progress (for debouncing)
+  const isRefreshingRef = useRef(false);
+  const lastRefreshTimeRef = useRef(0);
+
+  // Function to refresh the session and update state (with debouncing)
+  const refreshSession = useCallback(async () => {
+    // Debounce: skip if already refreshing or if last refresh was less than 2 seconds ago
+    const now = Date.now();
+    if (isRefreshingRef.current || now - lastRefreshTimeRef.current < 2000) {
+      return;
+    }
+
+    isRefreshingRef.current = true;
+    lastRefreshTimeRef.current = now;
+
+    try {
+      const session = await authService.getCurrentSession();
+      if (session) {
+        const user = await authService.getCurrentUser();
+        if (user) {
+          setIsAuthenticated(true);
+          setCurrentUser(user);
+          // Increment key to force child components to remount and refresh their data
+          setSessionKey(prev => prev + 1);
+        } else {
+          // User no longer valid, show login form
+          setIsAuthenticated(false);
+          setCurrentUser(null);
+        }
+      } else {
+        // Session expired, show login form
+        setIsAuthenticated(false);
+        setCurrentUser(null);
+      }
+    } catch (error) {
+      console.error('Error refreshing session:', error);
+      // On error, force re-authentication
+      setIsAuthenticated(false);
+      setCurrentUser(null);
+    } finally {
+      isRefreshingRef.current = false;
+    }
+  }, []);
 
   useEffect(() => {
     // Check if user is already authenticated
@@ -45,7 +90,6 @@ const Admin = () => {
 
     // Subscribe to auth state changes
     const { data: { subscription } } = authService.onAuthStateChange(async (event, session) => {
-      console.log('Auth state changed:', event);
       if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') && session) {
         const user = await authService.getCurrentUser();
         if (user) {
@@ -59,10 +103,27 @@ const Admin = () => {
       }
     });
 
+    // Handle visibility change - refresh session when tab becomes visible
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        refreshSession();
+      }
+    };
+
+    // Handle focus event - also refresh when window regains focus
+    const handleFocus = () => {
+      refreshSession();
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleFocus);
+
     return () => {
       subscription.unsubscribe();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleFocus);
     };
-  }, []);
+  }, [refreshSession]);
 
   const handleLogin = (user: AuthUser) => {
     setIsAuthenticated(true);
@@ -407,19 +468,19 @@ const Admin = () => {
         )}
 
         {activeTab === 's3' && (
-          useDemoMode ? <S3DashboardDemo /> : <S3Dashboard />
+          useDemoMode ? <S3DashboardDemo key={`s3demo-${sessionKey}`} /> : <S3Dashboard key={`s3-${sessionKey}`} />
         )}
         
         {activeTab === 'roadmap' && (
-          <RoadmapManager />
+          <RoadmapManager key={`roadmap-${sessionKey}`} />
         )}
 
         {activeTab === 'tasks' && (
-          <TaskBoard />
+          <TaskBoard key={`tasks-${sessionKey}`} />
         )}
 
         {activeTab === 'documentation' && (
-          <DocumentationManager />
+          <DocumentationManager key={`docs-${sessionKey}`} />
         )}
       </main>
     </div>
