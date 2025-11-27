@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -6,182 +6,12 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { s3Manager } from '@/lib/s3-direct';
 import { roadmapService, type RoadmapItem } from '@/lib/supabase-roadmap';
-import { Upload, FileText, Image, Edit, Trash2, Plus, Calendar, Eye } from 'lucide-react';
+import { Upload, FileText, Image, Edit, Trash2, Plus, Calendar } from 'lucide-react';
 import { toast } from 'sonner';
-
-interface FormDialogProps {
-  isEdit: boolean;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  formData: Partial<RoadmapItem>;
-  setFormData: React.Dispatch<React.SetStateAction<Partial<RoadmapItem>>>;
-  uploading: boolean;
-  handleFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  removeFile: (index: number) => void;
-  handleCreate: () => void;
-  handleUpdate: () => void;
-}
-
-const FormDialog = ({ 
-  isEdit, 
-  open, 
-  onOpenChange, 
-  formData, 
-  setFormData, 
-  uploading, 
-  handleFileUpload, 
-  removeFile, 
-  handleCreate, 
-  handleUpdate 
-}: FormDialogProps) => {
-  const FileUploadSection = () => (
-    <div className="space-y-2">
-      <Label>Fichiers et Images</Label>
-      <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-        <input
-          type="file"
-          multiple
-          onChange={handleFileUpload}
-          disabled={uploading}
-          accept="image/*,.pdf,.doc,.docx,.txt"
-          className="hidden"
-          id="file-upload"
-        />
-        <label
-          htmlFor="file-upload"
-          className="cursor-pointer flex flex-col items-center space-y-2"
-        >
-          {uploading ? (
-            <Upload className="h-8 w-8 animate-pulse text-primary" />
-          ) : (
-            <Upload className="h-8 w-8 text-gray-400" />
-          )}
-          <span className="text-sm text-gray-600">
-            {uploading 
-              ? 'Upload en cours...' 
-              : 'Cliquer pour sélectionner des fichiers'
-            }
-          </span>
-        </label>
-      </div>
-      
-      {formData.files && formData.files.length > 0 && (
-        <div className="mt-4">
-          <Label className="text-sm font-medium">Fichiers uploadés:</Label>
-          <div className="mt-2 space-y-2">
-            {formData.files.map((fileName, index) => (
-              <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
-                <div className="flex items-center space-x-2 text-sm">
-                  {fileName.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
-                    <Image className="h-4 w-4 text-green-600" />
-                  ) : (
-                    <FileText className="h-4 w-4 text-blue-600" />
-                  )}
-                  <span>{fileName.split('-').pop() || fileName}</span>
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => removeFile(index)}
-                  className="h-6 w-6 p-0"
-                >
-                  <Trash2 className="h-3 w-3" />
-                </Button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>
-            {isEdit ? 'Modifier l\'élément roadmap' : 'Créer un nouvel élément roadmap'}
-          </DialogTitle>
-          <DialogDescription>
-            {isEdit ? 'Modifiez les informations de cet élément' : 'Ajoutez un nouvel élément à la roadmap du projet GAIA'}
-          </DialogDescription>
-        </DialogHeader>
-        
-        <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="title">Titre *</Label>
-            <Input
-              id="title"
-              value={formData.title || ''}
-              onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-              placeholder="Titre de l'élément roadmap"
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="description">Description *</Label>
-            <Textarea
-              id="description"
-              value={formData.description || ''}
-              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-              placeholder="Description détaillée de l'élément"
-              rows={4}
-              required
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="timeline">Timeline</Label>
-              <Input
-                id="timeline"
-                value={formData.timeline || ''}
-                onChange={(e) => setFormData(prev => ({ ...prev, timeline: e.target.value }))}
-                placeholder="Ex: Q1 2025, Mars 2025"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="status">Statut</Label>
-              <Select
-                value={formData.status}
-                onValueChange={(value) => setFormData(prev => ({ ...prev, status: value as 'completed' | 'in-progress' | 'planned' }))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner un statut" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="planned">Planifié</SelectItem>
-                  <SelectItem value="in-progress">En cours</SelectItem>
-                  <SelectItem value="completed">Terminé</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <FileUploadSection />
-        </div>
-
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Annuler
-          </Button>
-          <Button 
-            onClick={isEdit ? handleUpdate : handleCreate}
-            disabled={uploading || !formData.title || !formData.description}
-          >
-            {uploading ? 'Upload en cours...' : (isEdit ? 'Mettre à jour' : 'Créer')}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-};
 
 const RoadmapManager = () => {
   const [roadmapItems, setRoadmapItems] = useState<RoadmapItem[]>([]);
@@ -369,6 +199,121 @@ const RoadmapManager = () => {
     }
   };
 
+  // Form content JSX - rendered inline to avoid re-mounting issues
+  const renderFormContent = () => (
+    <div className="space-y-4 py-4">
+      <div className="space-y-2">
+        <Label htmlFor="roadmap-title">Titre *</Label>
+        <Input
+          id="roadmap-title"
+          value={formData.title || ''}
+          onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+          placeholder="Titre de l'élément roadmap"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="roadmap-description">Description *</Label>
+        <Textarea
+          id="roadmap-description"
+          value={formData.description || ''}
+          onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+          placeholder="Description détaillée de l'élément"
+          rows={4}
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="roadmap-timeline">Timeline</Label>
+          <Input
+            id="roadmap-timeline"
+            value={formData.timeline || ''}
+            onChange={(e) => setFormData(prev => ({ ...prev, timeline: e.target.value }))}
+            placeholder="Ex: Q1 2025, Mars 2025"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="roadmap-status">Statut</Label>
+          <Select
+            value={formData.status}
+            onValueChange={(value) => setFormData(prev => ({ ...prev, status: value as 'completed' | 'in-progress' | 'planned' }))}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Sélectionner un statut" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="planned">Planifié</SelectItem>
+              <SelectItem value="in-progress">En cours</SelectItem>
+              <SelectItem value="completed">Terminé</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      {/* File Upload Section */}
+      <div className="space-y-2">
+        <Label>Fichiers et Images</Label>
+        <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+          <input
+            type="file"
+            multiple
+            onChange={handleFileUpload}
+            disabled={uploading}
+            accept="image/*,.pdf,.doc,.docx,.txt"
+            className="hidden"
+            id="roadmap-file-upload"
+          />
+          <label
+            htmlFor="roadmap-file-upload"
+            className="cursor-pointer flex flex-col items-center space-y-2"
+          >
+            {uploading ? (
+              <Upload className="h-8 w-8 animate-pulse text-primary" />
+            ) : (
+              <Upload className="h-8 w-8 text-gray-400" />
+            )}
+            <span className="text-sm text-gray-600">
+              {uploading 
+                ? 'Upload en cours...' 
+                : 'Cliquer pour sélectionner des fichiers'
+              }
+            </span>
+          </label>
+        </div>
+        
+        {formData.files && formData.files.length > 0 && (
+          <div className="mt-4">
+            <Label className="text-sm font-medium">Fichiers uploadés:</Label>
+            <div className="mt-2 space-y-2">
+              {formData.files.map((fileName, index) => (
+                <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+                  <div className="flex items-center space-x-2 text-sm">
+                    {fileName.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                      <Image className="h-4 w-4 text-green-600" />
+                    ) : (
+                      <FileText className="h-4 w-4 text-blue-600" />
+                    )}
+                    <span>{fileName.split('-').pop() || fileName}</span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => removeFile(index)}
+                    className="h-6 w-6 p-0"
+                  >
+                    <Trash2 className="h-3 w-3" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -492,32 +437,53 @@ const RoadmapManager = () => {
         </div>
       )}
 
-      {/* Dialogs */}
-      <FormDialog 
-        isEdit={false}
-        open={showCreateDialog}
-        onOpenChange={setShowCreateDialog}
-        formData={formData}
-        setFormData={setFormData}
-        uploading={uploading}
-        handleFileUpload={handleFileUpload}
-        removeFile={removeFile}
-        handleCreate={handleCreate}
-        handleUpdate={handleUpdate}
-      />
-      
-      <FormDialog 
-        isEdit={true}
-        open={showEditDialog}
-        onOpenChange={setShowEditDialog}
-        formData={formData}
-        setFormData={setFormData}
-        uploading={uploading}
-        handleFileUpload={handleFileUpload}
-        removeFile={removeFile}
-        handleCreate={handleCreate}
-        handleUpdate={handleUpdate}
-      />
+      {/* Create Dialog */}
+      <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
+        <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Créer un nouvel élément roadmap</DialogTitle>
+            <DialogDescription>
+              Ajoutez un nouvel élément à la roadmap du projet GAIA
+            </DialogDescription>
+          </DialogHeader>
+          {renderFormContent()}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowCreateDialog(false)}>
+              Annuler
+            </Button>
+            <Button 
+              onClick={handleCreate}
+              disabled={uploading || !formData.title || !formData.description}
+            >
+              {uploading ? 'Upload en cours...' : 'Créer'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Dialog */}
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Modifier l'élément roadmap</DialogTitle>
+            <DialogDescription>
+              Modifiez les informations de cet élément
+            </DialogDescription>
+          </DialogHeader>
+          {renderFormContent()}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowEditDialog(false)}>
+              Annuler
+            </Button>
+            <Button 
+              onClick={handleUpdate}
+              disabled={uploading || !formData.title || !formData.description}
+            >
+              {uploading ? 'Upload en cours...' : 'Mettre à jour'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

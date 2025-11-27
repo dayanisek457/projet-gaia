@@ -8,6 +8,7 @@ import Admin from "./pages/Admin";
 import Documentation from "./pages/Documentation";
 import S3Test from "./pages/S3Test";
 import RoadmapTest from "./pages/RoadmapTest";
+import TaskBoardTest from "./pages/TaskBoardTest";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/documentation" element={<Documentation />} />
           <Route path="/s3test" element={<S3Test />} />
           <Route path="/roadmaptest" element={<RoadmapTest />} />
+          <Route path="/taskboardtest" element={<TaskBoardTest />} />
           <Route path="/admin" element={<Admin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

@@ -7,8 +7,9 @@ import S3Dashboard from '@/components/S3Dashboard';
 import S3DashboardDemo from '@/components/S3DashboardDemo';
 import RoadmapManager from '@/components/RoadmapManager';
 import DocumentationManager from '@/components/DocumentationManager';
+import TaskBoard from '@/components/TaskBoard';
 import Login from '@/components/Login';
-import { Settings, Database, Shield, TestTube, LogOut, FileText } from 'lucide-react';
+import { Settings, Database, Shield, TestTube, LogOut, FileText, ClipboardList } from 'lucide-react';
 import { toast } from 'sonner';
 import { authService, AuthUser } from '@/lib/supabase-auth';
 
@@ -24,10 +25,14 @@ const Admin = () => {
     // Check if user is already authenticated
     const checkAuth = async () => {
       try {
-        const user = await authService.getCurrentUser();
-        if (user) {
-          setIsAuthenticated(true);
-          setCurrentUser(user);
+        // First check for existing session
+        const session = await authService.getCurrentSession();
+        if (session) {
+          const user = await authService.getCurrentUser();
+          if (user) {
+            setIsAuthenticated(true);
+            setCurrentUser(user);
+          }
         }
       } catch (error) {
         console.error('Error checking auth:', error);
@@ -40,7 +45,8 @@ const Admin = () => {
 
     // Subscribe to auth state changes
     const { data: { subscription } } = authService.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session) {
+      console.log('Auth state changed:', event);
+      if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') && session) {
         const user = await authService.getCurrentUser();
         if (user) {
           setIsAuthenticated(true);
@@ -98,6 +104,7 @@ const Admin = () => {
     { id: 'dashboard', label: 'Dashboard', icon: Settings },
     { id: 's3', label: 'Gestion S3', icon: Database },
     { id: 'roadmap', label: 'Roadmap', icon: Shield },
+    { id: 'tasks', label: 'Tâches', icon: ClipboardList },
     { id: 'documentation', label: 'Documentation', icon: FileText },
   ];
 
@@ -308,6 +315,41 @@ const Admin = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
+                    <ClipboardList className="h-5 w-5" />
+                    <span>Tableau des Tâches</span>
+                  </CardTitle>
+                  <CardDescription>
+                    Gestion des tâches de l'équipe
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Équipe:</span>
+                      <span className="text-xs">Aloys, Yanis, Constant, Hugues, Nathan</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Fonctionnalités:</span>
+                      <Badge variant="default">CRUD</Badge>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Statuts:</span>
+                      <span className="text-xs">En cours, Terminé, En attente...</span>
+                    </div>
+                  </div>
+                  <Button 
+                    onClick={() => setActiveTab('tasks')} 
+                    className="w-full mt-4"
+                    size="sm"
+                  >
+                    Gérer les tâches
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
                     <FileText className="h-5 w-5" />
                     <span>Documentation</span>
                   </CardTitle>
@@ -370,6 +412,10 @@ const Admin = () => {
         
         {activeTab === 'roadmap' && (
           <RoadmapManager />
+        )}
+
+        {activeTab === 'tasks' && (
+          <TaskBoard />
         )}
 
         {activeTab === 'documentation' && (
