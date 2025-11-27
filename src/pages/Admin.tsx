@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,11 +22,22 @@ const Admin = () => {
   const [loading, setLoading] = useState(true);
   // Key to force remount of child components when session is refreshed
   const [sessionKey, setSessionKey] = useState(0);
+  // Ref to track if a session refresh is in progress (for debouncing)
+  const isRefreshingRef = useRef(false);
+  const lastRefreshTimeRef = useRef(0);
 
-  // Function to refresh the session and update state
+  // Function to refresh the session and update state (with debouncing)
   const refreshSession = useCallback(async () => {
+    // Debounce: skip if already refreshing or if last refresh was less than 2 seconds ago
+    const now = Date.now();
+    if (isRefreshingRef.current || now - lastRefreshTimeRef.current < 2000) {
+      return;
+    }
+
+    isRefreshingRef.current = true;
+    lastRefreshTimeRef.current = now;
+
     try {
-      console.log('Refreshing session...');
       const session = await authService.getCurrentSession();
       if (session) {
         const user = await authService.getCurrentUser();
@@ -35,7 +46,6 @@ const Admin = () => {
           setCurrentUser(user);
           // Increment key to force child components to remount and refresh their data
           setSessionKey(prev => prev + 1);
-          console.log('Session refreshed successfully');
         } else {
           // User no longer valid, redirect to login
           setIsAuthenticated(false);
@@ -51,6 +61,8 @@ const Admin = () => {
       // On error, force re-authentication
       setIsAuthenticated(false);
       setCurrentUser(null);
+    } finally {
+      isRefreshingRef.current = false;
     }
   }, []);
 
@@ -78,7 +90,6 @@ const Admin = () => {
 
     // Subscribe to auth state changes
     const { data: { subscription } } = authService.onAuthStateChange(async (event, session) => {
-      console.log('Auth state changed:', event);
       if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') && session) {
         const user = await authService.getCurrentUser();
         if (user) {
@@ -95,14 +106,12 @@ const Admin = () => {
     // Handle visibility change - refresh session when tab becomes visible
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
-        console.log('Tab became visible, refreshing session...');
         refreshSession();
       }
     };
 
     // Handle focus event - also refresh when window regains focus
     const handleFocus = () => {
-      console.log('Window regained focus, refreshing session...');
       refreshSession();
     };
 
