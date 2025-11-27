@@ -47,12 +47,12 @@ const Admin = () => {
           // Increment key to force child components to remount and refresh their data
           setSessionKey(prev => prev + 1);
         } else {
-          // User no longer valid, redirect to login
+          // User no longer valid, show login form
           setIsAuthenticated(false);
           setCurrentUser(null);
         }
       } else {
-        // Session expired, redirect to login
+        // Session expired, show login form
         setIsAuthenticated(false);
         setCurrentUser(null);
       }
