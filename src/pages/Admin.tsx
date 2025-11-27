@@ -7,8 +7,9 @@ import S3Dashboard from '@/components/S3Dashboard';
 import S3DashboardDemo from '@/components/S3DashboardDemo';
 import RoadmapManager from '@/components/RoadmapManager';
 import DocumentationManager from '@/components/DocumentationManager';
+import TaskBoard from '@/components/TaskBoard';
 import Login from '@/components/Login';
-import { Settings, Database, Shield, TestTube, LogOut, FileText } from 'lucide-react';
+import { Settings, Database, Shield, TestTube, LogOut, FileText, ClipboardList } from 'lucide-react';
 import { toast } from 'sonner';
 import { authService, AuthUser } from '@/lib/supabase-auth';
 
@@ -98,6 +99,7 @@ const Admin = () => {
     { id: 'dashboard', label: 'Dashboard', icon: Settings },
     { id: 's3', label: 'Gestion S3', icon: Database },
     { id: 'roadmap', label: 'Roadmap', icon: Shield },
+    { id: 'tasks', label: 'Tâches', icon: ClipboardList },
     { id: 'documentation', label: 'Documentation', icon: FileText },
   ];
 
@@ -308,6 +310,41 @@ const Admin = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
+                    <ClipboardList className="h-5 w-5" />
+                    <span>Tableau des Tâches</span>
+                  </CardTitle>
+                  <CardDescription>
+                    Gestion des tâches de l'équipe
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Équipe:</span>
+                      <span className="text-xs">Aloys, Yanis, Constant, Hugues, Nathan</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Fonctionnalités:</span>
+                      <Badge variant="default">CRUD</Badge>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Statuts:</span>
+                      <span className="text-xs">En cours, Terminé, En attente...</span>
+                    </div>
+                  </div>
+                  <Button 
+                    onClick={() => setActiveTab('tasks')} 
+                    className="w-full mt-4"
+                    size="sm"
+                  >
+                    Gérer les tâches
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
                     <FileText className="h-5 w-5" />
                     <span>Documentation</span>
                   </CardTitle>
@@ -370,6 +407,10 @@ const Admin = () => {
         
         {activeTab === 'roadmap' && (
           <RoadmapManager />
+        )}
+
+        {activeTab === 'tasks' && (
+          <TaskBoard />
         )}
 
         {activeTab === 'documentation' && (
