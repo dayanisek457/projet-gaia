@@ -318,110 +318,80 @@ const TaskBoard = () => {
     </Card>
   );
 
-  const TaskFormDialog = ({ isEdit }: { isEdit: boolean }) => (
-    <Dialog 
-      open={isEdit ? showEditDialog : showCreateDialog} 
-      onOpenChange={isEdit ? setShowEditDialog : setShowCreateDialog}
-    >
-      <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
-          <DialogTitle>
-            {isEdit ? 'Modifier la tâche' : 'Créer une nouvelle tâche'}
-          </DialogTitle>
-          <DialogDescription>
-            {isEdit ? 'Modifiez les informations de cette tâche' : 'Ajoutez une nouvelle tâche au tableau'}
-          </DialogDescription>
-        </DialogHeader>
+  // Form content JSX - rendered inline to avoid re-mounting issues
+  const renderFormContent = () => (
+    <div className="space-y-4 py-4">
+      <div className="space-y-2">
+        <Label htmlFor="task-title">Titre *</Label>
+        <Input
+          id="task-title"
+          value={formData.title}
+          onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+          placeholder="Titre de la tâche"
+        />
+      </div>
 
-        <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="title">Titre *</Label>
-            <Input
-              id="title"
-              value={formData.title}
-              onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-              placeholder="Titre de la tâche"
-            />
-          </div>
+      <div className="space-y-2">
+        <Label htmlFor="task-description">Description</Label>
+        <Textarea
+          id="task-description"
+          value={formData.description}
+          onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+          placeholder="Description de la tâche"
+          rows={3}
+        />
+      </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea
-              id="description"
-              value={formData.description}
-              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-              placeholder="Description de la tâche"
-              rows={3}
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="assignee">Assigné à *</Label>
-              <Select
-                value={formData.assignee}
-                onValueChange={(value) => setFormData(prev => ({ ...prev, assignee: value as TeamMember }))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner" />
-                </SelectTrigger>
-                <SelectContent>
-                  {TEAM_MEMBERS.map(member => (
-                    <SelectItem key={member} value={member}>
-                      {member}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="status">Statut</Label>
-              <Select
-                value={formData.status}
-                onValueChange={(value) => setFormData(prev => ({ ...prev, status: value as TaskStatus }))}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {TASK_STATUSES.map(status => (
-                    <SelectItem key={status.value} value={status.value}>
-                      {status.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="deadline">Date limite *</Label>
-            <Input
-              id="deadline"
-              type="date"
-              value={formData.deadline}
-              onChange={(e) => setFormData(prev => ({ ...prev, deadline: e.target.value }))}
-            />
-          </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="task-assignee">Assigné à *</Label>
+          <Select
+            value={formData.assignee}
+            onValueChange={(value) => setFormData(prev => ({ ...prev, assignee: value as TeamMember }))}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Sélectionner" />
+            </SelectTrigger>
+            <SelectContent>
+              {TEAM_MEMBERS.map(member => (
+                <SelectItem key={member} value={member}>
+                  {member}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
-        <DialogFooter>
-          <Button 
-            variant="outline" 
-            onClick={() => isEdit ? setShowEditDialog(false) : setShowCreateDialog(false)}
+        <div className="space-y-2">
+          <Label htmlFor="task-status">Statut</Label>
+          <Select
+            value={formData.status}
+            onValueChange={(value) => setFormData(prev => ({ ...prev, status: value as TaskStatus }))}
           >
-            Annuler
-          </Button>
-          <Button 
-            onClick={isEdit ? handleUpdate : handleCreate}
-            disabled={!formData.title || !formData.assignee || !formData.deadline}
-          >
-            {isEdit ? 'Mettre à jour' : 'Créer'}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {TASK_STATUSES.map(status => (
+                <SelectItem key={status.value} value={status.value}>
+                  {status.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="task-deadline">Date limite *</Label>
+        <Input
+          id="task-deadline"
+          type="date"
+          value={formData.deadline}
+          onChange={(e) => setFormData(prev => ({ ...prev, deadline: e.target.value }))}
+        />
+      </div>
+    </div>
   );
 
   return (
@@ -562,9 +532,53 @@ const TaskBoard = () => {
         </Tabs>
       )}
 
-      {/* Dialogs */}
-      <TaskFormDialog isEdit={false} />
-      <TaskFormDialog isEdit={true} />
+      {/* Create Dialog */}
+      <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Créer une nouvelle tâche</DialogTitle>
+            <DialogDescription>
+              Ajoutez une nouvelle tâche au tableau
+            </DialogDescription>
+          </DialogHeader>
+          {renderFormContent()}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowCreateDialog(false)}>
+              Annuler
+            </Button>
+            <Button 
+              onClick={handleCreate}
+              disabled={!formData.title || !formData.assignee || !formData.deadline}
+            >
+              Créer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Dialog */}
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Modifier la tâche</DialogTitle>
+            <DialogDescription>
+              Modifiez les informations de cette tâche
+            </DialogDescription>
+          </DialogHeader>
+          {renderFormContent()}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowEditDialog(false)}>
+              Annuler
+            </Button>
+            <Button 
+              onClick={handleUpdate}
+              disabled={!formData.title || !formData.assignee || !formData.deadline}
+            >
+              Mettre à jour
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
