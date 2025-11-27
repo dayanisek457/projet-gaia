@@ -25,10 +25,14 @@ const Admin = () => {
     // Check if user is already authenticated
     const checkAuth = async () => {
       try {
-        const user = await authService.getCurrentUser();
-        if (user) {
-          setIsAuthenticated(true);
-          setCurrentUser(user);
+        // First check for existing session
+        const session = await authService.getCurrentSession();
+        if (session) {
+          const user = await authService.getCurrentUser();
+          if (user) {
+            setIsAuthenticated(true);
+            setCurrentUser(user);
+          }
         }
       } catch (error) {
         console.error('Error checking auth:', error);
@@ -41,7 +45,8 @@ const Admin = () => {
 
     // Subscribe to auth state changes
     const { data: { subscription } } = authService.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session) {
+      console.log('Auth state changed:', event);
+      if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') && session) {
         const user = await authService.getCurrentUser();
         if (user) {
           setIsAuthenticated(true);
