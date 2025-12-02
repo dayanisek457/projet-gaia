@@ -92,8 +92,19 @@ export class S3Manager {
     }
   }
 
+  // Maximum depth for recursive folder traversal to prevent stack overflow
+  private static readonly MAX_RECURSION_DEPTH = 10;
+
   // Recursively list all files from a path, including files in subfolders
-  private async listFilesRecursively(path: string = ''): Promise<S3File[]> {
+  // In Supabase Storage, folders don't have an 'id' property, while files do.
+  // This is the standard way to distinguish between files and folders in Supabase Storage API.
+  private async listFilesRecursively(path: string = '', currentDepth: number = 0): Promise<S3File[]> {
+    // Prevent excessive recursion in deeply nested folder structures
+    if (currentDepth >= S3Manager.MAX_RECURSION_DEPTH) {
+      console.warn(`Maximum recursion depth (${S3Manager.MAX_RECURSION_DEPTH}) reached at path: ${path}`);
+      return [];
+    }
+
     const { data, error } = await supabase.storage
       .from(this.bucketName)
       .list(path, {
@@ -121,9 +132,11 @@ export class S3Manager {
       // Build the full path for this item
       const fullPath = path ? `${path}/${item.name}` : item.name;
       
-      // In Supabase Storage, files have an 'id' property, folders don't
-      // Also check if metadata exists - files usually have metadata, folders might not
-      const isFile = item.id !== null && item.id !== undefined;
+      // In Supabase Storage API, files have an 'id' property (UUID), folders don't.
+      // This is the documented behavior from Supabase Storage API.
+      // Additionally, we check that metadata exists as a secondary validation.
+      const hasId = item.id !== null && item.id !== undefined;
+      const isFile = hasId;
       
       if (isFile) {
         // This is a file - add it to the list
@@ -134,8 +147,8 @@ export class S3Manager {
         });
       } else {
         // This is a folder - recursively list its contents
-        console.log(`Found folder: ${fullPath}, listing contents...`);
-        const subFiles = await this.listFilesRecursively(fullPath);
+        console.log(`Found folder: ${fullPath}, listing contents (depth: ${currentDepth + 1})...`);
+        const subFiles = await this.listFilesRecursively(fullPath, currentDepth + 1);
         files.push(...subFiles);
       }
     }
