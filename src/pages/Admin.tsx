@@ -27,6 +27,7 @@ const Admin = () => {
   const lastRefreshTimeRef = useRef(0);
 
   // Function to refresh the session and update state (with debouncing)
+  // Uses session data directly instead of making network calls to prevent infinite loading
   const refreshSession = useCallback(async () => {
     // Debounce: skip if already refreshing or if last refresh was less than 2 seconds ago
     const now = Date.now();
@@ -38,9 +39,13 @@ const Admin = () => {
     lastRefreshTimeRef.current = now;
 
     try {
+      // Use getSession() which uses cached data and doesn't make network requests
+      // This prevents hanging when returning to the tab
       const session = await authService.getCurrentSession();
       if (session) {
-        const user = await authService.getCurrentUser();
+        // Extract user from session directly without network validation
+        // This is fast and won't hang when tab becomes visible again
+        const user = authService.getUserFromSession(session);
         if (user) {
           setIsAuthenticated(true);
           setCurrentUser(user);
@@ -58,22 +63,22 @@ const Admin = () => {
       }
     } catch (error) {
       console.error('Error refreshing session:', error);
-      // On error, force re-authentication
-      setIsAuthenticated(false);
-      setCurrentUser(null);
+      // On error, don't change authentication state - let user continue
+      // The next successful request will update the state if needed
     } finally {
       isRefreshingRef.current = false;
     }
-  }, []);
+  }, []); // Empty dependency array - function uses refs and stable setters
 
   useEffect(() => {
     // Check if user is already authenticated
     const checkAuth = async () => {
       try {
-        // First check for existing session
+        // First check for existing session (fast, uses cached data)
         const session = await authService.getCurrentSession();
         if (session) {
-          const user = await authService.getCurrentUser();
+          // Use session data directly for initial check to avoid blocking
+          const user = authService.getUserFromSession(session);
           if (user) {
             setIsAuthenticated(true);
             setCurrentUser(user);
@@ -91,7 +96,9 @@ const Admin = () => {
     // Subscribe to auth state changes
     const { data: { subscription } } = authService.onAuthStateChange(async (event, session) => {
       if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') && session) {
-        const user = await authService.getCurrentUser();
+        // Use session data directly instead of making network request
+        // This prevents hanging during token refresh events
+        const user = authService.getUserFromSession(session);
         if (user) {
           setIsAuthenticated(true);
           setCurrentUser(user);
