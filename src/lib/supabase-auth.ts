@@ -83,7 +83,7 @@ class SupabaseAuthService {
     }
   }
 
-  // Get current session
+  // Get current session (uses cached data, fast and reliable)
   async getCurrentSession(): Promise<Session | null> {
     try {
       const { data } = await supabase.auth.getSession();
@@ -94,7 +94,8 @@ class SupabaseAuthService {
     }
   }
 
-  // Get current user
+  // Get current user (makes network request, can be slow or hang)
+  // Use getCurrentUserFromSession for fast access without network validation
   async getCurrentUser(): Promise<AuthUser | null> {
     try {
       const { data } = await supabase.auth.getUser();
@@ -110,6 +111,37 @@ class SupabaseAuthService {
       return null;
     } catch (error) {
       console.error('Get user error:', error);
+      return null;
+    }
+  }
+
+  // Get user from session without network validation (fast, for tab visibility changes)
+  // This uses cached session data and doesn't make network requests
+  getUserFromSession(session: Session | null): AuthUser | null {
+    if (!session?.user) {
+      return null;
+    }
+    
+    return {
+      email: session.user.email || '',
+      id: session.user.id,
+      role: session.user.user_metadata?.role || 'user'
+    };
+  }
+
+  // Get current user with timeout to prevent infinite loading
+  async getCurrentUserWithTimeout(timeoutMs: number = 5000): Promise<AuthUser | null> {
+    try {
+      const timeoutPromise = new Promise<null>((resolve) => {
+        setTimeout(() => resolve(null), timeoutMs);
+      });
+      
+      const userPromise = this.getCurrentUser();
+      
+      const result = await Promise.race([userPromise, timeoutPromise]);
+      return result;
+    } catch (error) {
+      console.error('Get user with timeout error:', error);
       return null;
     }
   }
