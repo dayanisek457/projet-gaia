@@ -92,27 +92,67 @@ export class S3Manager {
     }
   }
 
+  // Recursively list all files from a path, including files in subfolders
+  private async listFilesRecursively(path: string = ''): Promise<S3File[]> {
+    const { data, error } = await supabase.storage
+      .from(this.bucketName)
+      .list(path, {
+        limit: 1000,
+        sortBy: { column: 'created_at', order: 'desc' }
+      });
+
+    if (error) {
+      console.error(`Supabase storage error at path '${path}':`, error);
+      throw new Error(`Failed to list files: ${error.message}`);
+    }
+
+    if (!data || data.length === 0) {
+      return [];
+    }
+
+    const files: S3File[] = [];
+    
+    for (const item of data) {
+      // Skip placeholder files that Supabase creates for empty folders
+      if (item.name === '.emptyFolderPlaceholder') {
+        continue;
+      }
+      
+      // Build the full path for this item
+      const fullPath = path ? `${path}/${item.name}` : item.name;
+      
+      // In Supabase Storage, files have an 'id' property, folders don't
+      // Also check if metadata exists - files usually have metadata, folders might not
+      const isFile = item.id !== null && item.id !== undefined;
+      
+      if (isFile) {
+        // This is a file - add it to the list
+        files.push({
+          key: fullPath,
+          size: item.metadata?.size || 0,
+          lastModified: new Date(item.created_at || item.updated_at || Date.now()),
+        });
+      } else {
+        // This is a folder - recursively list its contents
+        console.log(`Found folder: ${fullPath}, listing contents...`);
+        const subFiles = await this.listFilesRecursively(fullPath);
+        files.push(...subFiles);
+      }
+    }
+    
+    return files;
+  }
+
   async listFiles(): Promise<S3File[]> {
     try {
       console.log(`Attempting to list files from bucket: ${this.bucketName}`);
-      const { data, error } = await supabase.storage
-        .from(this.bucketName)
-        .list('', {
-          limit: 100,
-          sortBy: { column: 'created_at', order: 'desc' }
-        });
+      const files = await this.listFilesRecursively('');
 
-      if (error) {
-        console.error('Supabase storage error:', error);
-        throw new Error(`Failed to list files: ${error.message}`);
-      }
-
-      console.log(`Successfully retrieved ${data?.length || 0} files`);
-      return (data || []).map(file => ({
-        key: file.name,
-        size: file.metadata?.size || 0,
-        lastModified: new Date(file.created_at),
-      }));
+      // Sort files by lastModified date (newest first)
+      files.sort((a, b) => b.lastModified.getTime() - a.lastModified.getTime());
+      
+      console.log(`Successfully retrieved ${files.length} files`);
+      return files;
     } catch (error) {
       console.error('Error listing files:', error);
       if (error instanceof Error) {
@@ -126,12 +166,16 @@ export class S3Manager {
     try {
       const fileName = customFileName || `${Date.now()}-${Math.random().toString(36).substr(2, 9)}-${file.name}`;
       console.log(`Attempting to upload file: ${fileName} to bucket: ${this.bucketName}`);
+      console.log(`File type: ${file.type || 'application/octet-stream'}, Size: ${file.size} bytes`);
       
       const { error } = await supabase.storage
         .from(this.bucketName)
         .upload(fileName, file, {
           cacheControl: '3600',
-          upsert: false
+          upsert: false,
+          // Explicitly set content type to support any file format
+          // Use the file's native type or fall back to binary stream
+          contentType: file.type || 'application/octet-stream'
         });
 
       if (error) {
@@ -198,12 +242,16 @@ export class S3Manager {
   async replaceFile(oldKey: string, newFile: File): Promise<void> {
     try {
       console.log(`Attempting to replace file: ${oldKey} with new file in bucket: ${this.bucketName}`);
+      console.log(`New file type: ${newFile.type || 'application/octet-stream'}, Size: ${newFile.size} bytes`);
+      
       // Upload new file with the same key (this replaces the existing file)
       const { error } = await supabase.storage
         .from(this.bucketName)
         .upload(oldKey, newFile, {
           cacheControl: '3600',
-          upsert: true // This allows replacing existing files
+          upsert: true, // This allows replacing existing files
+          // Explicitly set content type to support any file format
+          contentType: newFile.type || 'application/octet-stream'
         });
 
       if (error) {
