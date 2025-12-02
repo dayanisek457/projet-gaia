@@ -122,6 +122,12 @@ class SupabaseAuthService {
       return null;
     }
     
+    // Validate that we have at least an email or ID - an empty email could indicate invalid session
+    if (!session.user.email && !session.user.id) {
+      console.warn('Session user has no email or ID, treating as invalid');
+      return null;
+    }
+    
     return {
       email: session.user.email || '',
       id: session.user.id,

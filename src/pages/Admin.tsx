@@ -63,16 +63,12 @@ const Admin = () => {
       }
     } catch (error) {
       console.error('Error refreshing session:', error);
-      // On error, keep current state to avoid disrupting user experience
-      // Only force re-authentication if we were not authenticated before
-      if (!isAuthenticated) {
-        setIsAuthenticated(false);
-        setCurrentUser(null);
-      }
+      // On error, don't change authentication state - let user continue
+      // The next successful request will update the state if needed
     } finally {
       isRefreshingRef.current = false;
     }
-  }, [isAuthenticated]);
+  }, []); // Empty dependency array - function uses refs and stable setters
 
   useEffect(() => {
     // Check if user is already authenticated
