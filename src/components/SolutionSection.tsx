@@ -1,47 +1,7 @@
 
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Battery, Package, Radio, Plane, Zap, Waves, Leaf, Wind, Sparkles } from 'lucide-react';
+import { Zap, Leaf, Wind, Sparkles } from 'lucide-react';
 
 const SolutionSection = () => {
-  const technicalSolutions = [
-    {
-      function: "Voler",
-      block: "Motorisation", 
-      solution: "Moteurs électriques",
-      icon: Plane,
-      color: "bg-blue-500"
-    },
-    {
-      function: "Stocker",
-      block: "Stockage",
-      solution: "Soute à Seedballs",
-      icon: Package,
-      color: "bg-green-500"
-    },
-    {
-      function: "Piloter",
-      block: "Pilotage",
-      solution: "Manette de commande",
-      icon: Radio,
-      color: "bg-purple-500"
-    },
-    {
-      function: "Alimenter",
-      block: "Énergie",
-      solution: "Système de batterie avancé",
-      icon: Battery,
-      color: "bg-orange-500"
-    },
-    {
-      function: "Flotter sur l'eau",
-      block: "Flottaison",
-      solution: "Flotteurs intégrés",
-      icon: Waves,
-      color: "bg-cyan-500"
-    }
-  ];
-
   const keyBenefits = [
     {
       icon: Zap,
@@ -70,99 +30,64 @@ const SolutionSection = () => {
   ];
 
   return (
-    <section id="solution" className="py-32 bg-gradient-to-b from-background to-muted/30 relative">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 right-20 animate-float-slow">
-          <Sparkles className="h-24 w-24 text-primary/10" />
+    <section id="solution" className="py-24 bg-gradient-to-b from-background to-muted/10 relative">
+      {/* Subtle background decoration */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-20 opacity-20">
+          <Sparkles className="h-20 w-20 text-primary/30" />
         </div>
-        <div className="absolute bottom-32 left-16 animate-float">
-          <Wind className="h-20 w-20 text-accent/15" />
+        <div className="absolute bottom-32 left-16 opacity-20">
+          <Wind className="h-16 w-16 text-accent/30" />
         </div>
       </div>
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20 animate-fade-in-up">
-            <h2 className="text-section-title mb-8 font-display">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 text-foreground">
               Notre Solution : GAIA
             </h2>
-            <p className="text-body-large max-w-4xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed text-foreground/80">
               Un avion 100% électrique intelligent avec batterie haute capacité, 
               muni d'une soute pour larguer des Seedballs. Une solution écologique, économique 
               et sécurisée pour accélérer la reforestation mondiale.
             </p>
           </div>
 
-          {/* Premium Key Benefits */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+          {/* Key Benefits */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
             {keyBenefits.map((benefit, index) => (
               <div 
                 key={index}
-                className="card-professional group text-center p-8 animate-fade-in-up" 
-                style={{ animationDelay: `${index * 0.2}s` }}
+                className="card-professional group text-center p-8" 
               >
-                <div className={`mx-auto w-20 h-20 bg-gradient-to-br ${benefit.gradient} rounded-2xl flex items-center justify-center mb-6 shadow-xl group-hover:scale-110 transition-all duration-500`}>
-                  <benefit.icon className={`h-10 w-10 ${benefit.color}`} />
+                <div className={`mx-auto w-16 h-16 bg-gradient-to-br ${benefit.gradient} rounded-xl flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-200`}>
+                  <benefit.icon className={`h-8 w-8 ${benefit.color}`} />
                 </div>
-                <h3 className={`text-2xl font-display font-bold mb-4 ${benefit.color}`}>
+                <h3 className={`text-xl font-display font-bold mb-3 ${benefit.color}`}>
                   {benefit.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed text-lg">
+                <p className="text-muted-foreground leading-relaxed">
                   {benefit.description}
                 </p>
               </div>
             ))}
           </div>
 
-          {/* Premium Technical Solutions */}
-          <div className="mb-20 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-            <h3 className="text-subsection text-center mb-12 font-display">Solutions Techniques</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {technicalSolutions.map((item, index) => (
-                <div 
-                  key={index} 
-                  className="card-professional group p-8 hover:scale-102 transition-all duration-300"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <div className="flex items-center space-x-4 mb-6">
-                    <div className={`p-4 rounded-2xl ${item.color} bg-opacity-15 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110`}>
-                      <item.icon className={`h-8 w-8 ${item.color.replace('bg-', 'text-')}`} />
-                    </div>
-                    <div>
-                      <h4 className="text-xl font-display font-bold text-foreground">{item.function}</h4>
-                      <div className="mt-2">
-                        <span className="text-sm font-display font-medium text-primary bg-primary/15 px-3 py-1 rounded-xl border border-primary/20">
-                          {item.block}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-lg font-display font-semibold text-accent bg-accent/10 px-4 py-3 rounded-xl border border-accent/20">
-                    {item.solution}
-                  </p>
+          {/* Future Vision */}
+          <div className="max-w-4xl mx-auto">
+            <div className="card-professional bg-gradient-to-r from-primary/10 to-secondary/10 p-10 text-center">
+              <div className="flex justify-center mb-5">
+                <div className="p-3 bg-primary/10 rounded-xl">
+                  <Sparkles className="h-10 w-10 text-primary" />
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Premium Future Vision */}
-          <div className="animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-            <div className="card-professional bg-gradient-hero text-white p-12 relative overflow-hidden">
-              <div className="absolute inset-0 bg-black/10"></div>
-              <div className="relative z-10 text-center">
-                <div className="flex justify-center mb-6">
-                  <div className="p-4 bg-white/20 rounded-2xl backdrop-blur-sm">
-                    <Sparkles className="h-12 w-12 text-white" />
-                  </div>
-                </div>
-                <h3 className="text-3xl font-display font-bold text-white mb-6">Vision d'Avenir</h3>
-                <p className="text-white/95 text-xl leading-relaxed max-w-4xl mx-auto">
-                  Avec les progrès de l'aéronautique, GAIA pourra être produit à grande échelle 
-                  tout en restant écologique, notamment grâce aux futures technologies à hydrogène. 
-                  Une solution scalable pour un impact environnemental mondial.
-                </p>
               </div>
+              <h3 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-5">Vision d'Avenir</h3>
+              <p className="text-lg md:text-xl leading-relaxed text-foreground/85">
+                Avec les progrès de l'aéronautique, GAIA pourra être produit à grande échelle 
+                tout en restant écologique, notamment grâce aux futures technologies à hydrogène. 
+                Une solution scalable pour un impact environnemental mondial.
+              </p>
             </div>
           </div>
         </div>
