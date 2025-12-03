@@ -86,8 +86,6 @@ class SupabaseSponsorsService {
         .insert([{
           ...sponsor,
           display_order: sponsor.display_order || 0,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
         }])
         .select()
         .single();
@@ -109,10 +107,7 @@ class SupabaseSponsorsService {
     try {
       const { data, error } = await supabase
         .from(this.tableName)
-        .update({
-          ...updates,
-          updated_at: new Date().toISOString(),
-        })
+        .update(updates)
         .eq('id', id)
         .select()
         .single();

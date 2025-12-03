@@ -13,6 +13,16 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -39,6 +49,8 @@ const SponsorsManager = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingSponsor, setEditingSponsor] = useState<Sponsor | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [sponsorToDelete, setSponsorToDelete] = useState<string | null>(null);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -148,18 +160,24 @@ const SponsorsManager = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer ce sponsor ?')) {
-      return;
-    }
+  const handleDeleteClick = (id: string) => {
+    setSponsorToDelete(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!sponsorToDelete) return;
 
     try {
-      await sponsorsService.deleteSponsor(id);
+      await sponsorsService.deleteSponsor(sponsorToDelete);
       toast.success('Sponsor supprimé avec succès');
       loadSponsors();
     } catch (error) {
       console.error('Error deleting sponsor:', error);
       toast.error('Erreur lors de la suppression du sponsor');
+    } finally {
+      setDeleteDialogOpen(false);
+      setSponsorToDelete(null);
     }
   };
 
@@ -247,7 +265,7 @@ const SponsorsManager = () => {
                 <Button
                   variant="destructive"
                   size="sm"
-                  onClick={() => handleDelete(sponsor.id)}
+                  onClick={() => handleDeleteClick(sponsor.id)}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
@@ -394,6 +412,23 @@ const SponsorsManager = () => {
           </form>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Cette action est irréversible. Le sponsor sera définitivement supprimé de la base de données.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteConfirm} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Supprimer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
