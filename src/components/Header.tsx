@@ -8,12 +8,12 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navigation = [
-    { name: 'Accueil', href: '#home' },
-    { name: 'Projet', href: '#project' },
-    { name: 'Solution', href: '#solution' },
-    { name: 'Sponsors', href: '#sponsors' },
-    { name: 'Équipe', href: '#team' },
-    { name: 'Contact', href: '#contact' }
+    { name: 'Accueil', href: '#home', isRoute: false },
+    { name: 'Projet', href: '#project', isRoute: false },
+    { name: 'Solution', href: '#solution', isRoute: false },
+    { name: 'Partenaires', href: '/partenaires', isRoute: true },
+    { name: 'Équipe', href: '#team', isRoute: false },
+    { name: 'Contact', href: '#contact', isRoute: false }
   ];
 
   return (
@@ -34,14 +34,25 @@ const Header = () => {
           {/* Premium Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-12">
             {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-foreground/85 hover:text-primary transition-all duration-300 font-display font-medium text-lg relative group tracking-wide"
-              >
-                {item.name}
-                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-primary transition-all duration-300 group-hover:w-full group-hover:left-0 rounded-full"></span>
-              </a>
+              item.isRoute ? (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className="text-foreground/85 hover:text-primary transition-all duration-300 font-display font-medium text-lg relative group tracking-wide"
+                >
+                  {item.name}
+                  <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-primary transition-all duration-300 group-hover:w-full group-hover:left-0 rounded-full"></span>
+                </Link>
+              ) : (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="text-foreground/85 hover:text-primary transition-all duration-300 font-display font-medium text-lg relative group tracking-wide"
+                >
+                  {item.name}
+                  <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-primary transition-all duration-300 group-hover:w-full group-hover:left-0 rounded-full"></span>
+                </a>
+              )
             ))}
             
             {/* Instagram Link */}
@@ -83,14 +94,25 @@ const Header = () => {
           <div className="md:hidden">
             <div className="px-4 pt-4 pb-6 space-y-2 glass rounded-2xl mt-4 shadow-2xl border border-white/30">
               {navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="block px-4 py-3 text-foreground/85 hover:text-primary transition-all duration-300 hover:bg-primary/10 rounded-xl font-display font-medium text-lg tracking-wide"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.name}
-                </a>
+                item.isRoute ? (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className="block px-4 py-3 text-foreground/85 hover:text-primary transition-all duration-300 hover:bg-primary/10 rounded-xl font-display font-medium text-lg tracking-wide"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ) : (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className="block px-4 py-3 text-foreground/85 hover:text-primary transition-all duration-300 hover:bg-primary/10 rounded-xl font-display font-medium text-lg tracking-wide"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.name}
+                  </a>
+                )
               ))}
               
               {/* Instagram Link - Mobile */}

@@ -8,8 +8,9 @@ import S3DashboardDemo from '@/components/S3DashboardDemo';
 import RoadmapManager from '@/components/RoadmapManager';
 import DocumentationManager from '@/components/DocumentationManager';
 import TaskBoard from '@/components/TaskBoard';
+import SponsorsManager from '@/components/SponsorsManager';
 import Login from '@/components/Login';
-import { Settings, Database, Shield, TestTube, LogOut, FileText, ClipboardList } from 'lucide-react';
+import { Settings, Database, Shield, TestTube, LogOut, FileText, ClipboardList, Users } from 'lucide-react';
 import { toast } from 'sonner';
 import { authService, AuthUser } from '@/lib/supabase-auth';
 
@@ -173,6 +174,7 @@ const Admin = () => {
     { id: 's3', label: 'Gestion S3', icon: Database },
     { id: 'roadmap', label: 'Roadmap', icon: Shield },
     { id: 'tasks', label: 'Tâches', icon: ClipboardList },
+    { id: 'sponsors', label: 'Sponsors', icon: Users },
     { id: 'documentation', label: 'Documentation', icon: FileText },
   ];
 
@@ -484,6 +486,10 @@ const Admin = () => {
 
         {activeTab === 'tasks' && (
           <TaskBoard key={`tasks-${sessionKey}`} />
+        )}
+
+        {activeTab === 'sponsors' && (
+          <SponsorsManager key={`sponsors-${sessionKey}`} />
         )}
 
         {activeTab === 'documentation' && (
