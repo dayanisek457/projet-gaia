@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,7 @@ import { roadmapService, type RoadmapItem } from '@/lib/supabase-roadmap';
 import { toast } from 'sonner';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import DOMPurify from 'dompurify';
 
 const Roadmap = () => {
   const [roadmapItems, setRoadmapItems] = useState<RoadmapItem[]>([]);
@@ -91,73 +92,101 @@ const Roadmap = () => {
     }
   };
 
-  const renderMarkdownContent = (content?: string) => {
-    if (!content) return null;
+  const renderMarkdownContent = useMemo(() => {
+    return (content?: string) => {
+      if (!content) return null;
 
-    // Enhanced markdown-to-HTML conversion with video support
-    let html = content
-      // Headers
-      .replace(/### (.*)/g, '<h3 class="text-xl font-semibold mb-3 mt-6 text-gray-900">$1</h3>')
-      .replace(/## (.*)/g, '<h2 class="text-2xl font-semibold mb-4 mt-8 text-gray-900">$1</h2>')
-      .replace(/# (.*)/g, '<h1 class="text-3xl font-bold mb-6 mt-10 text-gray-900">$1</h1>')
+      // Validate and sanitize video IDs
+      const validateYouTubeId = (id: string) => /^[a-zA-Z0-9_-]{11}$/.test(id);
+      const validateVimeoId = (id: string) => /^[0-9]{1,10}$/.test(id);
+
+      // Enhanced markdown-to-HTML conversion with video support
+      let html = content
+        // Headers
+        .replace(/### (.*)/g, '<h3 class="text-xl font-semibold mb-3 mt-6 text-gray-900">$1</h3>')
+        .replace(/## (.*)/g, '<h2 class="text-2xl font-semibold mb-4 mt-8 text-gray-900">$1</h2>')
+        .replace(/# (.*)/g, '<h1 class="text-3xl font-bold mb-6 mt-10 text-gray-900">$1</h1>')
+        
+        // Text formatting
+        .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-gray-900">$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
+        .replace(/<u>(.*?)<\/u>/g, '<span class="underline">$1</span>')
+        .replace(/`(.*?)`/g, '<code class="bg-gray-100 px-2 py-1 rounded text-sm font-mono text-gray-800">$1</code>')
+        
+        // Lists
+        .replace(/^- \[ \] (.*)$/gm, '<div class="flex items-center space-x-2 my-2"><input type="checkbox" disabled class="rounded border-gray-300"> <span>$1</span></div>')
+        .replace(/^- \[x\] (.*)$/gm, '<div class="flex items-center space-x-2 my-2"><input type="checkbox" checked disabled class="rounded border-gray-300"> <span class="line-through text-gray-500">$1</span></div>')
+        .replace(/^- (.*)$/gm, '<li class="ml-6 my-1 list-disc">$1</li>')
+        .replace(/^[0-9]+\. (.*)$/gm, '<li class="ml-6 my-1 list-decimal">$1</li>')
+        
+        // Quotes
+        .replace(/^> (.*)$/gm, '<blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-4 py-2">$1</blockquote>')
+        
+        // Separators
+        .replace(/^---$/gm, '<hr class="my-8 border-gray-200">')
+        
+        // Callouts
+        .replace(/^> \*\*INFO\*\*: (.*)$/gm, '<div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6 rounded-r-lg"><div class="flex items-start"><div class="flex-shrink-0 text-2xl mr-3">ℹ️</div><div><h4 class="text-sm font-semibold text-blue-900 mb-1">Information</h4><p class="text-sm text-blue-800">$1</p></div></div></div>')
+        .replace(/^> \*\*WARNING\*\*: (.*)$/gm, '<div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 my-6 rounded-r-lg"><div class="flex items-start"><div class="flex-shrink-0 text-2xl mr-3">⚠️</div><div><h4 class="text-sm font-semibold text-yellow-900 mb-1">Attention</h4><p class="text-sm text-yellow-800">$1</p></div></div></div>')
+        .replace(/^> \*\*SUCCESS\*\*: (.*)$/gm, '<div class="bg-green-50 border-l-4 border-green-500 p-4 my-6 rounded-r-lg"><div class="flex items-start"><div class="flex-shrink-0 text-2xl mr-3">✅</div><div><h4 class="text-sm font-semibold text-green-900 mb-1">Succès</h4><p class="text-sm text-green-800">$1</p></div></div></div>')
+        
+        // Accordions/Details
+        .replace(/<details>([\s\S]*?)<\/details>/g, (match, content) => {
+          const summaryMatch = content.match(/<summary>(.*?)<\/summary>/);
+          const summary = summaryMatch ? summaryMatch[1] : 'Détails';
+          const actualContent = content.replace(/<summary>.*?<\/summary>/, '').trim();
+          return `<details class="border border-gray-200 rounded-lg p-4 my-6 bg-white"><summary class="font-semibold cursor-pointer hover:text-primary text-gray-900">${summary}</summary><div class="mt-4 pt-4 border-t border-gray-100">${actualContent}</div></details>`;
+        });
+
+      // Handle YouTube embeds with validation (convert YouTube links to embeds)
+      html = html.replace(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/g, 
+        (match, videoId) => {
+          if (!validateYouTubeId(videoId)) {
+            return match; // Return original if invalid
+          }
+          return `<div class="my-6 rounded-lg overflow-hidden shadow-lg"><iframe width="100%" height="400" src="https://www.youtube.com/embed/${videoId}" style="border: 0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full"></iframe></div>`;
+        });
       
-      // Text formatting
-      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-gray-900">$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
-      .replace(/<u>(.*?)<\/u>/g, '<span class="underline">$1</span>')
-      .replace(/`(.*?)`/g, '<code class="bg-gray-100 px-2 py-1 rounded text-sm font-mono text-gray-800">$1</code>')
+      // Handle Vimeo embeds with validation
+      html = html.replace(/(?:https?:\/\/)?(?:www\.)?vimeo\.com\/([0-9]+)/g, 
+        (match, videoId) => {
+          if (!validateVimeoId(videoId)) {
+            return match; // Return original if invalid
+          }
+          return `<div class="my-6 rounded-lg overflow-hidden shadow-lg"><iframe width="100%" height="400" src="https://player.vimeo.com/video/${videoId}" style="border: 0;" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen class="w-full"></iframe></div>`;
+        });
+
+      // Images - before links to prevent conflict
+      html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, 
+        '<img src="$2" alt="$1" class="max-w-full h-auto rounded-lg shadow-md my-6" loading="lazy" />');
       
-      // Lists
-      .replace(/^- \[ \] (.*)$/gm, '<div class="flex items-center space-x-2 my-2"><input type="checkbox" disabled class="rounded border-gray-300"> <span>$1</span></div>')
-      .replace(/^- \[x\] (.*)$/gm, '<div class="flex items-center space-x-2 my-2"><input type="checkbox" checked disabled class="rounded border-gray-300"> <span class="line-through text-gray-500">$1</span></div>')
-      .replace(/^- (.*)$/gm, '<li class="ml-6 my-1 list-disc">$1</li>')
-      .replace(/^[0-9]+\. (.*)$/gm, '<li class="ml-6 my-1 list-decimal">$1</li>')
+      // Links
+      html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, 
+        '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary/80 underline font-medium">$1</a>');
       
-      // Quotes
-      .replace(/^> (.*)$/gm, '<blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-4 py-2">$1</blockquote>')
-      
-      // Separators
-      .replace(/^---$/gm, '<hr class="my-8 border-gray-200">')
-      
-      // Callouts
-      .replace(/^> \*\*INFO\*\*: (.*)$/gm, '<div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6 rounded-r-lg"><div class="flex items-start"><div class="flex-shrink-0 text-2xl mr-3">ℹ️</div><div><h4 class="text-sm font-semibold text-blue-900 mb-1">Information</h4><p class="text-sm text-blue-800">$1</p></div></div></div>')
-      .replace(/^> \*\*WARNING\*\*: (.*)$/gm, '<div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 my-6 rounded-r-lg"><div class="flex items-start"><div class="flex-shrink-0 text-2xl mr-3">⚠️</div><div><h4 class="text-sm font-semibold text-yellow-900 mb-1">Attention</h4><p class="text-sm text-yellow-800">$1</p></div></div></div>')
-      .replace(/^> \*\*SUCCESS\*\*: (.*)$/gm, '<div class="bg-green-50 border-l-4 border-green-500 p-4 my-6 rounded-r-lg"><div class="flex items-start"><div class="flex-shrink-0 text-2xl mr-3">✅</div><div><h4 class="text-sm font-semibold text-green-900 mb-1">Succès</h4><p class="text-sm text-green-800">$1</p></div></div></div>')
-      
-      // Accordions/Details
-      .replace(/<details>([\s\S]*?)<\/details>/g, (match, content) => {
-        const summaryMatch = content.match(/<summary>(.*?)<\/summary>/);
-        const summary = summaryMatch ? summaryMatch[1] : 'Détails';
-        const actualContent = content.replace(/<summary>.*?<\/summary>/, '').trim();
-        return `<details class="border border-gray-200 rounded-lg p-4 my-6 bg-white"><summary class="font-semibold cursor-pointer hover:text-primary text-gray-900">${summary}</summary><div class="mt-4 pt-4 border-t border-gray-100">${actualContent}</div></details>`;
+      // Line breaks
+      html = html.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+
+      // Sanitize HTML to prevent XSS attacks
+      const sanitizedHtml = DOMPurify.sanitize(html, {
+        ALLOWED_TAGS: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'br', 'strong', 'em', 'span', 'code', 'pre', 
+                       'ul', 'ol', 'li', 'div', 'a', 'img', 'blockquote', 'hr', 'iframe', 'details', 'summary', 
+                       'input', 'label'],
+        ALLOWED_ATTR: ['class', 'href', 'src', 'alt', 'target', 'rel', 'loading', 'width', 'height', 'style', 
+                       'allow', 'allowfullscreen', 'type', 'disabled', 'checked'],
+        ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
+        ADD_TAGS: ['iframe'],
+        ADD_ATTR: ['allowfullscreen', 'allow', 'loading']
       });
 
-    // Handle YouTube embeds (convert YouTube links to embeds)
-    html = html.replace(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/g, 
-      '<div class="my-6 rounded-lg overflow-hidden shadow-lg"><iframe width="100%" height="400" src="https://www.youtube.com/embed/$1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full"></iframe></div>');
-    
-    // Handle Vimeo embeds
-    html = html.replace(/(?:https?:\/\/)?(?:www\.)?vimeo\.com\/([0-9]+)/g, 
-      '<div class="my-6 rounded-lg overflow-hidden shadow-lg"><iframe width="100%" height="400" src="https://player.vimeo.com/video/$1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen class="w-full"></iframe></div>');
-
-    // Images - before links to prevent conflict
-    html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, 
-      '<img src="$2" alt="$1" class="max-w-full h-auto rounded-lg shadow-md my-6" loading="lazy" />');
-    
-    // Links
-    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, 
-      '<a href="$2" target="_blank" class="text-primary hover:text-primary/80 underline font-medium">$1</a>');
-    
-    // Line breaks
-    html = html.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
-
-    return (
-      <div 
-        className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
-    );
-  };
+      return (
+        <div 
+          className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
+        />
+      );
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-white to-secondary/5">
