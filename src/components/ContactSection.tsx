@@ -50,44 +50,19 @@ const ContactSection = () => {
                 <div className="flex items-start space-x-3">
                   <Phone className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <p className="font-medium">Chef de Projet</p>
-                    <p className="text-muted-foreground">Nathan LIENARD</p>
+                    <p className="font-medium">06.67.69.09.78</p>
+                    <p className="text-muted-foreground">Yanis EL-KFEL</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <FileText className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
                     <p className="font-medium">Type de Projet</p>
-                    <p className="text-muted-foreground">Terminale Sciences de l'Ingénieur</p>
+                    <p className="text-muted-foreground">Terminale - Sciences de l'Ingénieur</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-
-            {/* Project Specs */}
-            <Card className="border-secondary/20">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <FileText className="h-5 w-5 text-secondary" />
-                  <span>Spécifications Projet</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Début du projet</span>
-                  <span className="font-semibold">Juin 2025</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Fin prévue</span>
-                  <span className="font-semibold">Juin 2026</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Type de financement</span>
-                  <span className="font-semibold">Temps & Matériel</span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
 
           {/* Call to Action */}
           <Card className="bg-gradient-primary text-white text-center animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
