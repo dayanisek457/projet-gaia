@@ -46,7 +46,7 @@ const SponsorsSection = () => {
               Nos Partenaires
             </h2>
             <p className="text-body-large max-w-3xl mx-auto mb-8 leading-relaxed">
-              Le projet GAIA recherche des partenaires engagés pour révolutionner 
+              Le projet Gaia recherche des partenaires engagés pour révolutionner 
               la reforestation mondiale. Découvrez comment votre organisation peut 
               contribuer à cette initiative écologique innovante.
             </p>

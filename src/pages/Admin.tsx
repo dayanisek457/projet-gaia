@@ -188,10 +188,10 @@ const Admin = () => {
               <div className="flex items-center space-x-2">
                 <img 
                   src="/favicon.ico" 
-                  alt="GAIA Logo" 
+                  alt="Gaia Logo" 
                   className="h-8 w-8 object-contain" 
                 />
-                <span className="text-xl font-bold">GAIA Admin</span>
+                <span className="text-xl font-bold">Gaia Admin</span>
               </div>
               <Badge variant="secondary" className="flex items-center space-x-1">
                 <Shield className="h-3 w-3" />
@@ -269,7 +269,7 @@ const Admin = () => {
             <div>
               <h1 className="text-3xl font-bold mb-2">Dashboard Administrateur</h1>
               <p className="text-muted-foreground">
-                Interface d'administration du projet GAIA avec authentification Supabase
+                Interface d'administration du projet Gaia avec authentification Supabase
               </p>
             </div>
 

@@ -56,7 +56,7 @@ const HeroSection = () => {
           </div>
 
           {/* Clean action buttons */}
-          <div className="animate-fade-in-up flex flex-col sm:flex-row gap-6 justify-center mb-16">
+          <div className="animate-fade-in-up flex flex-col sm:flex-row gap-6 justify-center">
             <Button 
               size="lg" 
               variant="secondary" 
@@ -75,34 +75,6 @@ const HeroSection = () => {
               <span className="mr-3 text-xl">👥</span>
               Devenir Sponsor
             </Button>
-          </div>
-
-          {/* Clean key stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 animate-fade-in-up-delayed">
-            <div className="text-center group">
-              <div className="card-professional p-8 mx-4">
-                <div className="text-5xl font-black text-white mb-4 group-hover:scale-105 transition-all duration-300 font-display">
-                  100%
-                </div>
-                <div className="text-white/90 text-xl font-medium tracking-wide">100% Électrique</div>
-              </div>
-            </div>
-            <div className="text-center group">
-              <div className="card-professional p-8 mx-4">
-                <div className="text-5xl font-black text-white mb-4 group-hover:scale-105 transition-all duration-300 font-display">
-                  0
-                </div>
-                <div className="text-white/90 text-xl font-medium tracking-wide">Émission CO²</div>
-              </div>
-            </div>
-            <div className="text-center group">
-              <div className="card-professional p-8 mx-4">
-                <div className="text-5xl font-black text-white mb-4 group-hover:scale-105 transition-all duration-300 font-display">
-                  ∞
-                </div>
-                <div className="text-white/90 text-xl font-medium tracking-wide">Potentiel Impact</div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

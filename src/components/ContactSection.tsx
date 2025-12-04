@@ -25,7 +25,7 @@ const ContactSection = () => {
               Contact & Informations
             </h2>
             <p className="text-body max-w-2xl mx-auto">
-              Intéressé par notre projet GAIA ? Contactez-nous pour en savoir plus 
+              Intéressé par notre projet Gaia ? Contactez-nous pour en savoir plus 
               sur notre solution de reforestation innovante et les opportunités de partenariat.
             </p>
           </div>
@@ -92,13 +92,13 @@ const ContactSection = () => {
           {/* Call to Action */}
           <Card className="bg-gradient-primary text-white text-center animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
             <CardHeader>
-              <CardTitle className="text-white text-2xl mb-2">Rejoignez la Mission GAIA</CardTitle>
+              <CardTitle className="text-white text-2xl mb-2">Rejoignez la Mission Gaia</CardTitle>
               <p className="text-white/80">Partenaires, sponsors et organisations engagées</p>
             </CardHeader>
             <CardContent>
               <p className="text-white/90 text-lg mb-6">
                 Ensemble, construisons un avenir plus vert pour notre planète. 
-                Découvrez comment GAIA peut transformer la reforestation mondiale 
+                Découvrez comment Gaia peut transformer la reforestation mondiale 
                 et valoriser votre engagement environnemental.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">

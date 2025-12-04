@@ -26,12 +26,12 @@ const ContactPopup = ({ isOpen, onClose, type }: ContactPopupProps) => {
     
     // Create mailto link with pre-filled content
     const subject = type === 'sponsor' 
-      ? 'Demande de sponsoring - Projet GAIA'
-      : 'Demande de partenariat - Projet GAIA';
+      ? 'Demande de sponsoring - Projet Gaia'
+      : 'Demande de partenariat - Projet Gaia';
     
     const body = `Bonjour,
 
-Je suis intéressé(e) par ${type === 'sponsor' ? 'sponsoriser' : 'devenir partenaire de'} votre projet GAIA.
+Je suis intéressé(e) par ${type === 'sponsor' ? 'sponsoriser' : 'devenir partenaire de'} votre projet Gaia.
 
 Mes informations de contact :
 - Nom : ${formData.name}
@@ -149,7 +149,7 @@ ${formData.name}`;
               id="message"
               value={formData.message}
               onChange={(e) => handleInputChange('message', e.target.value)}
-              placeholder={`Parlez-nous de votre intérêt pour ${type === 'sponsor' ? 'sponsoriser' : 'un partenariat avec'} le projet GAIA...`}
+              placeholder={`Parlez-nous de votre intérêt pour ${type === 'sponsor' ? 'sponsoriser' : 'un partenariat avec'} le projet Gaia...`}
               rows={4}
             />
           </div>

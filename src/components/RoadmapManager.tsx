@@ -381,7 +381,7 @@ Utilisez la barre d'outils pour plus d'options de formatage."
         <div>
           <h1 className="text-3xl font-bold mb-2">Gestion de la Roadmap</h1>
           <p className="text-muted-foreground">
-            Gérez les éléments de la roadmap publique du projet GAIA
+            Gérez les éléments de la roadmap publique du projet Gaia
           </p>
         </div>
         <Button onClick={openCreateDialog} className="flex items-center space-x-2">
@@ -504,7 +504,7 @@ Utilisez la barre d'outils pour plus d'options de formatage."
           <DialogHeader>
             <DialogTitle>Créer un nouvel élément roadmap</DialogTitle>
             <DialogDescription>
-              Ajoutez un nouvel élément à la roadmap du projet GAIA
+              Ajoutez un nouvel élément à la roadmap du projet Gaia
             </DialogDescription>
           </DialogHeader>
           {renderFormContent()}
