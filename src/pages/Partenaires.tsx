@@ -58,7 +58,7 @@ const Partenaires = () => {
                 Nos Partenaires
               </h1>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                Découvrez les organisations qui soutiennent le projet GAIA et contribuent 
+                Découvrez les organisations qui soutiennent le projet Gaia et contribuent 
                 à notre mission de révolutionner la reforestation mondiale.
               </p>
               <Button
@@ -86,7 +86,7 @@ const Partenaires = () => {
                   <Mail className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
                   <h3 className="text-2xl font-bold mb-2">Premiers Partenaires Recherchés</h3>
                   <p className="text-muted-foreground mb-6">
-                    Nous recherchons activement nos premiers partenaires pour soutenir le projet GAIA.
+                    Nous recherchons activement nos premiers partenaires pour soutenir le projet Gaia.
                     Devenez pionnier de cette révolution écologique !
                   </p>
                   <Button onClick={handlePartnerClick}>
@@ -165,7 +165,7 @@ const Partenaires = () => {
             <Card className="max-w-4xl mx-auto bg-gradient-to-br from-primary to-secondary text-white border-0">
               <CardContent className="py-16 text-center">
                 <h2 className="text-4xl font-display font-bold mb-6">
-                  Rejoignez l'Aventure GAIA
+                  Rejoignez l'Aventure Gaia
                 </h2>
                 <p className="text-xl mb-8 text-white/90 max-w-2xl mx-auto leading-relaxed">
                   Votre organisation partage nos valeurs environnementales ? 

@@ -14,10 +14,10 @@ const Footer = () => {
               <div className="flex items-center space-x-2">
                 <img 
                   src="/logo.png" 
-                  alt="GAIA Logo" 
+                  alt="Gaia Logo" 
                   className="h-8 object-contain" 
                 />
-                <span className="text-xl font-bold">GAIA</span>
+                <span className="text-xl font-bold">Gaia</span>
               </div>
               <p className="text-background/80 text-sm leading-relaxed">
                 Révolutionner la reforestation mondiale grâce à une technologie 
@@ -52,7 +52,7 @@ const Footer = () => {
 
             {/* Project Info */}
             <div className="space-y-4">
-              <h4 className="font-semibold text-lg">Projet GAIA</h4>
+              <h4 className="font-semibold text-lg">Projet Gaia</h4>
               <div className="space-y-2 text-sm">
                 <p className="text-background/80">Lycée Saint-Joseph Dijon</p>
                 <p className="text-background/80">Sciences de l'Ingénieur</p>
@@ -67,7 +67,7 @@ const Footer = () => {
               <div className="flex items-center space-x-2 text-sm text-background/80">
                 <span>Fait avec</span>
                 <Heart className="h-4 w-4 text-red-400" />
-                <span>par l'équipe GAIA</span>
+                <span>par l'équipe Gaia</span>
               </div>
               <div className="flex items-center space-x-4">
                 <a 
@@ -77,7 +77,7 @@ const Footer = () => {
                   Accès Admin
                 </a>
                 <div className="text-sm text-background/80">
-                  © 2025 Projet GAIA - Tous droits réservés
+                  © 2025 Projet Gaia - Tous droits réservés
                 </div>
               </div>
             </div>

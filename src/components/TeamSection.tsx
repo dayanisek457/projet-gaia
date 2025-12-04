@@ -9,7 +9,7 @@ const TeamSection = () => {
       name: "Nathan LIENARD",
       role: "Chef de Projet",
       isLeader: true,
-      description: "Responsable de la coordination générale et de la gestion du projet GAIA"
+      description: "Responsable de la coordination générale et de la gestion du projet Gaia"
     },
     {
       name: "Constant MOREAU",

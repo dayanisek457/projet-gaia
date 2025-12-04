@@ -50,17 +50,17 @@ export const exportDocumentationToPDF = async () => {
     
     // Add metadata
     pdf.setProperties({
-      title: 'Documentation GAIA - Projet de Reforestation Intelligente',
-      subject: 'Documentation technique du projet GAIA',
+      title: 'Documentation Gaia - Projet de Reforestation Intelligente',
+      subject: 'Documentation technique du projet Gaia',
       author: 'Lycée Saint-Joseph Dijon',
-      creator: 'GAIA Documentation System',
-      producer: 'GAIA PDF Export'
+      creator: 'Gaia Documentation System',
+      producer: 'Gaia PDF Export'
     });
 
     // Add cover page
     pdf.setFontSize(28);
     pdf.setFont('helvetica', 'bold');
-    pdf.text('Documentation GAIA', margin, 50);
+    pdf.text('Documentation Gaia', margin, 50);
     
     pdf.setFontSize(18);
     pdf.setFont('helvetica', 'normal');
@@ -109,7 +109,7 @@ export const exportDocumentationToPDF = async () => {
     document.body.removeChild(loadingDiv);
 
     // Save the PDF
-    const fileName = `Documentation_GAIA_${new Date().toISOString().split('T')[0]}.pdf`;
+    const fileName = `Documentation_Gaia_${new Date().toISOString().split('T')[0]}.pdf`;
     pdf.save(fileName);
 
     return true;

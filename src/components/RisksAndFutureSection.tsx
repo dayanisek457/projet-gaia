@@ -77,7 +77,7 @@ const RisksAndFutureSection = () => {
             </h2>
             <p className="text-body max-w-3xl mx-auto">
               Une approche transparente de notre projet avec l'identification des risques, 
-              nos hypothèses de travail et notre vision à long terme pour GAIA.
+              nos hypothèses de travail et notre vision à long terme pour Gaia.
             </p>
           </div>
 
@@ -146,7 +146,7 @@ const RisksAndFutureSection = () => {
                 <span>Vision d'Avenir</span>
               </h3>
               <p className="text-body max-w-2xl mx-auto">
-                GAIA n'est que le début. Découvrez notre roadmap pour révolutionner 
+                Gaia n'est que le début. Découvrez notre roadmap pour révolutionner 
                 la reforestation mondiale et créer un impact environnemental durable.
               </p>
             </div>

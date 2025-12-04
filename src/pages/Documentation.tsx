@@ -285,7 +285,7 @@ const Documentation = () => {
               <span>Documentation Technique</span>
             </div>
             <h1 className="text-5xl font-display font-black bg-gradient-primary bg-clip-text text-transparent mb-4">
-              Documentation GAIA
+              Documentation Gaia
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Guide complet du projet de reforestation intelligente avec IA, IoT et surveillance par drones

@@ -40,7 +40,7 @@ const ProjectSection = () => {
               Face à l'urgence climatique mondiale
             </h2>
             <p className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed text-foreground/80">
-              Notre projet GAIA répond aux défis environnementaux majeurs de notre époque 
+              Notre projet Gaia répond aux défis environnementaux majeurs de notre époque 
               par une approche technologique innovante et durable.
             </p>
           </div>

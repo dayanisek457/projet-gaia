@@ -45,7 +45,7 @@ const SolutionSection = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 text-foreground">
-              Notre Solution : GAIA
+              Notre Solution : Gaia
             </h2>
             <p className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed text-foreground/80">
               Un avion 100% électrique intelligent avec batterie haute capacité, 
@@ -84,7 +84,7 @@ const SolutionSection = () => {
               </div>
               <h3 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-5">Vision d'Avenir</h3>
               <p className="text-lg md:text-xl leading-relaxed text-foreground/85">
-                Avec les progrès de l'aéronautique, GAIA pourra être produit à grande échelle 
+                Avec les progrès de l'aéronautique, Gaia pourra être produit à grande échelle 
                 tout en restant écologique, notamment grâce aux futures technologies à hydrogène. 
                 Une solution scalable pour un impact environnemental mondial.
               </p>

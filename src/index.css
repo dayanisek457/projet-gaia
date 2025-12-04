@@ -9,10 +9,10 @@
 
 @layer base {
   :root {
-    /* Enhanced Primary Colors - Sophisticated greens and premium blues */
-    --primary: 145 63% 49%; /* Deep forest green */
+    /* Enhanced Primary Colors - Vibrant yet refined greens and blues */
+    --primary: 145 58% 48%; /* Rich emerald green */
     --primary-foreground: 0 0% 100%;
-    --secondary: 200 100% 50%; /* Vibrant sky blue */
+    --secondary: 200 88% 52%; /* Vibrant sky blue */
     --secondary-foreground: 0 0% 100%;
     
     /* Refined Accent Colors */
@@ -42,22 +42,22 @@
     --input: 160 30% 90%;
     --ring: 145 63% 49%;
     
-    /* Cinematic Gradient Variables */
-    --gradient-primary: linear-gradient(135deg, hsl(145 63% 49%) 0%, hsl(200 100% 50%) 100%);
+    /* Cinematic Gradient Variables - Vibrant and eye-catching */
+    --gradient-primary: linear-gradient(135deg, hsl(145 58% 48%) 0%, hsl(200 88% 52%) 100%);
     --gradient-hero: linear-gradient(135deg, 
-      hsl(158 64% 52%) 0%, 
-      hsl(145 63% 49%) 25%, 
-      hsl(200 100% 50%) 75%, 
-      hsl(220 91% 55%) 100%);
+      hsl(158 62% 50%) 0%, 
+      hsl(145 58% 48%) 25%, 
+      hsl(200 88% 52%) 75%, 
+      hsl(220 85% 58%) 100%);
     --gradient-cinematic: linear-gradient(135deg,
-      rgba(34, 197, 94, 0.1) 0%,
+      rgba(34, 197, 94, 0.12) 0%,
       rgba(59, 130, 246, 0.15) 25%,
-      rgba(16, 185, 129, 0.1) 50%,
-      rgba(139, 92, 246, 0.12) 75%,
-      rgba(34, 197, 94, 0.08) 100%);
+      rgba(16, 185, 129, 0.12) 50%,
+      rgba(139, 92, 246, 0.14) 75%,
+      rgba(34, 197, 94, 0.10) 100%);
     --gradient-earth-sky: linear-gradient(to bottom, 
-      hsl(200 100% 50%) 0%, 
-      hsl(158 64% 52%) 100%);
+      hsl(200 88% 52%) 0%, 
+      hsl(158 62% 50%) 100%);
     
     --radius: 1rem;
   }
@@ -177,7 +177,7 @@
   }
 
   .animate-pulse-slow {
-    animation: pulse 16s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation: gentlePulse 20s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   /* Smooth micro-interactions */
@@ -191,6 +191,40 @@
 
   .animate-slide-in-right {
     animation: slideInRight 1.2s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.8s ease-out forwards;
+  }
+
+  .animate-scale-in-delayed {
+    animation: scaleIn 0.8s ease-out forwards;
+    animation-delay: 0.2s;
+    opacity: 0;
+  }
+
+  /* Cinematic scroll effects */
+  .parallax-slow {
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hover-lift {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Glass morphism effects */
+  .backdrop-elegant {
+    backdrop-filter: blur(20px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.75);
+  }
+
+  .dark .backdrop-elegant {
+    background-color: rgba(0, 0, 0, 0.75);
   }
 }
 
@@ -235,6 +269,37 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes gentlePulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
   }
 }
 

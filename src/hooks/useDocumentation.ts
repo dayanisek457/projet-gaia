@@ -10,10 +10,10 @@ const STORAGE_KEY = 'gaia-documentation';
 const initialSections: DocSection[] = [
   {
     id: 'overview',
-    title: 'Vue d\'ensemble du Projet GAIA',
-    content: `# Projet GAIA - Reforestation Intelligente
+    title: 'Vue d\'ensemble du Projet Gaia',
+    content: `# Projet Gaia - Reforestation Intelligente
 
-Le projet **GAIA** révolutionne la reforestation grâce à l'**intelligence artificielle** et aux *technologies de pointe*.
+Le projet **Gaia** révolutionne la reforestation grâce à l'**intelligence artificielle** et aux *technologies de pointe*.
 
 ## Objectifs Principaux
 

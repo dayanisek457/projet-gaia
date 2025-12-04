@@ -222,10 +222,10 @@ const Roadmap = () => {
         {/* Hero Section */}
         <div className="text-center mb-16 max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Roadmap du Projet GAIA
+            Roadmap du Projet Gaia
           </h1>
           <p className="text-xl text-gray-600 leading-relaxed">
-            Découvrez les étapes clés du développement de GAIA, notre solution innovante de reforestation autonome. 
+            Découvrez les étapes clés du développement de Gaia, notre solution innovante de reforestation autonome. 
             Suivez notre progression et les prochaines fonctionnalités à venir.
           </p>
         </div>

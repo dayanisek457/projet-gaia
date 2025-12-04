@@ -90,7 +90,7 @@ const RoadmapCreator = () => {
         <CardHeader>
           <CardTitle>Créer un nouvel élément roadmap</CardTitle>
           <CardDescription>
-            Ajoutez un élément à la roadmap du projet GAIA avec des fichiers et images
+            Ajoutez un élément à la roadmap du projet Gaia avec des fichiers et images
           </CardDescription>
         </CardHeader>
         <CardContent>

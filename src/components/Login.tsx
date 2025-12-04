@@ -54,10 +54,10 @@ const Login = ({ onLogin }: LoginProps) => {
             <div className="flex items-center space-x-2">
               <img 
                 src="/favicon.ico" 
-                alt="GAIA Logo" 
+                alt="Gaia Logo" 
                 className="h-10 w-10 object-contain" 
               />
-              <span className="text-2xl font-bold">GAIA Admin</span>
+              <span className="text-2xl font-bold">Gaia Admin</span>
             </div>
           </div>
           <p className="text-gray-600">Connexion au panneau d'administration</p>
