@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { s3Manager, type S3File } from '@/lib/s3-direct';
+import { s3Manager, type S3File } from '@/lib/s3';
 import { 
   Upload, 
   Download, 

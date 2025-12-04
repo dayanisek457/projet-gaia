@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { s3Manager } from '@/lib/s3-direct';
+import { s3Manager } from '@/lib/s3';
 import { roadmapService, type RoadmapItem } from '@/lib/supabase-roadmap';
 import RichTextEditor from '@/components/RichTextEditor';
 import { Upload, FileText, Image, Edit, Trash2, Plus, Calendar, Eye } from 'lucide-react';

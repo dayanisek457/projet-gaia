@@ -32,7 +32,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { Sponsor, sponsorsService, CreateSponsorDto } from '@/lib/supabase-sponsors';
-import { s3Manager } from '@/lib/s3-direct';
+import { s3Manager } from '@/lib/s3';
 import { Plus, Edit, Trash2, Upload, ExternalLink, Image as ImageIcon } from 'lucide-react';
 
 const SPONSOR_CATEGORIES = [
