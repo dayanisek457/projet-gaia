@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { s3Manager } from '@/lib/s3-direct';
+import { s3Manager } from '@/lib/s3';
 import { Upload, FileText, Image } from 'lucide-react';
 import { toast } from 'sonner';
 

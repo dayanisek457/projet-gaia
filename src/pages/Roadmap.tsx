@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, FileText, Image as ImageIcon, ExternalLink, Video } from 'lucide-react';
-import { s3Manager } from '@/lib/s3-direct';
+import { s3Manager } from '@/lib/s3';
 import { roadmapService, type RoadmapItem } from '@/lib/supabase-roadmap';
 import { toast } from 'sonner';
 import Header from '@/components/Header';
