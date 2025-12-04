@@ -67,7 +67,7 @@ class RoadmapService {
         .from(this.tableName)
         .select('*')
         .eq('is_published', true)
-        .order('created_at', { ascending: true });
+        .order('created_at', { ascending: false }); // Newest first
 
       if (error) throw error;
 
