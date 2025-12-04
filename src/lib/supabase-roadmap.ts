@@ -5,6 +5,7 @@ export interface RoadmapItem {
   id: string;
   title: string;
   description: string;
+  content?: string; // Markdown content with support for images and videos
   timeline: string;
   files: string[];
   status: 'completed' | 'in-progress' | 'planned';
@@ -36,6 +37,7 @@ class RoadmapService {
       id: dbItem.id,
       title: dbItem.title,
       description: dbItem.description,
+      content: dbItem.content || undefined,
       timeline: dbItem.timeline || 'Non spécifié',
       files: dbItem.attached_files || [],
       status: (dbItem.status as 'completed' | 'in-progress' | 'planned') || 'planned',
@@ -49,6 +51,7 @@ class RoadmapService {
     return {
       title: item.title,
       description: item.description,
+      content: item.content || null,
       timeline: item.timeline,
       status: item.status,
       attached_files: item.files,

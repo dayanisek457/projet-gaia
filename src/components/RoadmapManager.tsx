@@ -8,9 +8,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { s3Manager } from '@/lib/s3-direct';
 import { roadmapService, type RoadmapItem } from '@/lib/supabase-roadmap';
-import { Upload, FileText, Image, Edit, Trash2, Plus, Calendar } from 'lucide-react';
+import RichTextEditor from '@/components/RichTextEditor';
+import { Upload, FileText, Image, Edit, Trash2, Plus, Calendar, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 
 const RoadmapManager = () => {
@@ -24,6 +26,7 @@ const RoadmapManager = () => {
   const [formData, setFormData] = useState<Partial<RoadmapItem>>({
     title: '',
     description: '',
+    content: '',
     timeline: '',
     status: 'planned',
     files: []
@@ -97,6 +100,7 @@ const RoadmapManager = () => {
       const newItem = await roadmapService.createItem({
         title: formData.title,
         description: formData.description,
+        content: formData.content,
         timeline: formData.timeline || 'Non spécifié',
         status: formData.status || 'planned',
         files: formData.files || []
@@ -121,6 +125,7 @@ const RoadmapManager = () => {
       await roadmapService.updateItem(editingItem.id, {
         title: formData.title,
         description: formData.description,
+        content: formData.content,
         timeline: formData.timeline || 'Non spécifié',
         status: formData.status || 'planned',
         files: formData.files || []
@@ -151,6 +156,7 @@ const RoadmapManager = () => {
     setFormData({
       title: item.title,
       description: item.description,
+      content: item.content || '',
       timeline: item.timeline,
       status: item.status,
       files: [...item.files]
@@ -167,6 +173,7 @@ const RoadmapManager = () => {
     setFormData({
       title: '',
       description: '',
+      content: '',
       timeline: '',
       status: 'planned',
       files: []
@@ -201,117 +208,171 @@ const RoadmapManager = () => {
 
   // Form content JSX - rendered inline to avoid re-mounting issues
   const renderFormContent = () => (
-    <div className="space-y-4 py-4">
-      <div className="space-y-2">
-        <Label htmlFor="roadmap-title">Titre *</Label>
-        <Input
-          id="roadmap-title"
-          value={formData.title || ''}
-          onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-          placeholder="Titre de l'élément roadmap"
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="roadmap-description">Description *</Label>
-        <Textarea
-          id="roadmap-description"
-          value={formData.description || ''}
-          onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-          placeholder="Description détaillée de l'élément"
-          rows={4}
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
+    <Tabs defaultValue="basic" className="w-full">
+      <TabsList className="grid w-full grid-cols-2">
+        <TabsTrigger value="basic">Informations de base</TabsTrigger>
+        <TabsTrigger value="content">Contenu détaillé (Markdown)</TabsTrigger>
+      </TabsList>
+      
+      <TabsContent value="basic" className="space-y-4 py-4">
         <div className="space-y-2">
-          <Label htmlFor="roadmap-timeline">Timeline</Label>
+          <Label htmlFor="roadmap-title">Titre *</Label>
           <Input
-            id="roadmap-timeline"
-            value={formData.timeline || ''}
-            onChange={(e) => setFormData(prev => ({ ...prev, timeline: e.target.value }))}
-            placeholder="Ex: Q1 2025, Mars 2025"
+            id="roadmap-title"
+            value={formData.title || ''}
+            onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+            placeholder="Titre de l'élément roadmap"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="roadmap-status">Statut</Label>
-          <Select
-            value={formData.status}
-            onValueChange={(value) => setFormData(prev => ({ ...prev, status: value as 'completed' | 'in-progress' | 'planned' }))}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Sélectionner un statut" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="planned">Planifié</SelectItem>
-              <SelectItem value="in-progress">En cours</SelectItem>
-              <SelectItem value="completed">Terminé</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      {/* File Upload Section */}
-      <div className="space-y-2">
-        <Label>Fichiers et Images</Label>
-        <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-          <input
-            type="file"
-            multiple
-            onChange={handleFileUpload}
-            disabled={uploading}
-            accept="image/*,.pdf,.doc,.docx,.txt"
-            className="hidden"
-            id="roadmap-file-upload"
+          <Label htmlFor="roadmap-description">Description courte *</Label>
+          <Textarea
+            id="roadmap-description"
+            value={formData.description || ''}
+            onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+            placeholder="Description courte qui apparaitra en haut de la carte"
+            rows={3}
           />
-          <label
-            htmlFor="roadmap-file-upload"
-            className="cursor-pointer flex flex-col items-center space-y-2"
-          >
-            {uploading ? (
-              <Upload className="h-8 w-8 animate-pulse text-primary" />
-            ) : (
-              <Upload className="h-8 w-8 text-gray-400" />
-            )}
-            <span className="text-sm text-gray-600">
-              {uploading 
-                ? 'Upload en cours...' 
-                : 'Cliquer pour sélectionner des fichiers'
-              }
-            </span>
-          </label>
+          <p className="text-xs text-muted-foreground">
+            Résumé court visible sur la carte. Pour du contenu détaillé, utilisez l'onglet "Contenu détaillé".
+          </p>
         </div>
-        
-        {formData.files && formData.files.length > 0 && (
-          <div className="mt-4">
-            <Label className="text-sm font-medium">Fichiers uploadés:</Label>
-            <div className="mt-2 space-y-2">
-              {formData.files.map((fileName, index) => (
-                <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
-                  <div className="flex items-center space-x-2 text-sm">
-                    {fileName.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
-                      <Image className="h-4 w-4 text-green-600" />
-                    ) : (
-                      <FileText className="h-4 w-4 text-blue-600" />
-                    )}
-                    <span>{fileName.split('-').pop() || fileName}</span>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="roadmap-timeline">Timeline</Label>
+            <Input
+              id="roadmap-timeline"
+              value={formData.timeline || ''}
+              onChange={(e) => setFormData(prev => ({ ...prev, timeline: e.target.value }))}
+              placeholder="Ex: Q1 2025, Mars 2025"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="roadmap-status">Statut</Label>
+            <Select
+              value={formData.status}
+              onValueChange={(value) => setFormData(prev => ({ ...prev, status: value as 'completed' | 'in-progress' | 'planned' }))}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Sélectionner un statut" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="planned">Planifié</SelectItem>
+                <SelectItem value="in-progress">En cours</SelectItem>
+                <SelectItem value="completed">Terminé</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* File Upload Section */}
+        <div className="space-y-2">
+          <Label>Fichiers et Images</Label>
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+            <input
+              type="file"
+              multiple
+              onChange={handleFileUpload}
+              disabled={uploading}
+              accept="image/*,video/*,.pdf,.doc,.docx,.txt"
+              className="hidden"
+              id="roadmap-file-upload"
+            />
+            <label
+              htmlFor="roadmap-file-upload"
+              className="cursor-pointer flex flex-col items-center space-y-2"
+            >
+              {uploading ? (
+                <Upload className="h-8 w-8 animate-pulse text-primary" />
+              ) : (
+                <Upload className="h-8 w-8 text-gray-400" />
+              )}
+              <span className="text-sm text-gray-600">
+                {uploading 
+                  ? 'Upload en cours...' 
+                  : 'Cliquer pour sélectionner des fichiers'
+                }
+              </span>
+              <span className="text-xs text-muted-foreground">
+                Images, vidéos, PDF, documents acceptés
+              </span>
+            </label>
+          </div>
+          
+          {formData.files && formData.files.length > 0 && (
+            <div className="mt-4">
+              <Label className="text-sm font-medium">Fichiers uploadés:</Label>
+              <div className="mt-2 space-y-2">
+                {formData.files.map((fileName, index) => (
+                  <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+                    <div className="flex items-center space-x-2 text-sm">
+                      {fileName.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                        <Image className="h-4 w-4 text-green-600" />
+                      ) : (
+                        <FileText className="h-4 w-4 text-blue-600" />
+                      )}
+                      <span>{fileName.split('-').pop() || fileName}</span>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => removeFile(index)}
+                      className="h-6 w-6 p-0"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => removeFile(index)}
-                    className="h-6 w-6 p-0"
-                  >
-                    <Trash2 className="h-3 w-3" />
-                  </Button>
-                </div>
-              ))}
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </TabsContent>
+
+      <TabsContent value="content" className="py-4">
+        <div className="space-y-2">
+          <div className="flex items-start justify-between mb-2">
+            <div>
+              <Label>Contenu détaillé (Markdown)</Label>
+              <p className="text-xs text-muted-foreground mt-1">
+                Utilisez le Markdown pour formater le contenu. Vous pouvez inclure des images, vidéos YouTube/Vimeo, tableaux, etc.
+              </p>
             </div>
           </div>
-        )}
-      </div>
-    </div>
+          <RichTextEditor
+            content={formData.content || ''}
+            onChange={(content) => setFormData(prev => ({ ...prev, content }))}
+            placeholder="## Contenu détaillé
+
+Écrivez ici le contenu détaillé de cet élément de roadmap...
+
+### Ajouter une image
+![Description](URL_de_l_image)
+
+### Ajouter une vidéo YouTube
+Collez simplement l'URL: https://www.youtube.com/watch?v=VIDEO_ID
+
+### Ajouter une vidéo Vimeo
+Collez simplement l'URL: https://vimeo.com/VIDEO_ID
+
+Utilisez la barre d'outils pour plus d'options de formatage."
+            showToolbar={true}
+          />
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-4">
+            <h4 className="text-sm font-semibold text-blue-900 mb-2">💡 Conseils pour les médias</h4>
+            <ul className="text-xs text-blue-800 space-y-1 list-disc list-inside">
+              <li>Pour les images: utilisez la syntaxe <code className="bg-blue-100 px-1 rounded">![alt](url)</code></li>
+              <li>Pour YouTube: collez directement l'URL (ex: https://www.youtube.com/watch?v=VIDEO_ID)</li>
+              <li>Pour Vimeo: collez directement l'URL (ex: https://vimeo.com/VIDEO_ID)</li>
+              <li>Les vidéos seront automatiquement converties en lecteurs intégrés</li>
+            </ul>
+          </div>
+        </div>
+      </TabsContent>
+    </Tabs>
   );
 
   return (

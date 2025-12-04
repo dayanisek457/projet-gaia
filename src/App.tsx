@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Admin from "./pages/Admin";
 import Documentation from "./pages/Documentation";
 import Partenaires from "./pages/Partenaires";
+import Roadmap from "./pages/Roadmap";
 import S3Test from "./pages/S3Test";
 import RoadmapTest from "./pages/RoadmapTest";
 import TaskBoardTest from "./pages/TaskBoardTest";
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/documentation" element={<Documentation />} />
           <Route path="/partenaires" element={<Partenaires />} />
+          <Route path="/roadmap" element={<Roadmap />} />
           <Route path="/s3test" element={<S3Test />} />
           <Route path="/roadmaptest" element={<RoadmapTest />} />
           <Route path="/taskboardtest" element={<TaskBoardTest />} />
