@@ -9,12 +9,13 @@ import {
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 // S3 configuration as per Supabase documentation
+// Using environment variables for security
 export const s3Config = {
-  endpoint: 'https://mvtlxvxywbdjkzcouyrn.storage.supabase.co/storage/v1/s3',
-  region: 'eu-west-3',
-  accessKeyId: '2ed84c6059ce258fb86db0af4f01c7a8',
-  secretAccessKey: '717335f769f526d68e4f4de5c4fabd551e9344b2df13125c4fa6602c56995f18',
-  bucketName: 'global'
+  endpoint: import.meta.env.VITE_S3_ENDPOINT || 'https://mvtlxvxywbdjkzcouyrn.storage.supabase.co/storage/v1/s3',
+  region: import.meta.env.VITE_S3_REGION || 'eu-west-3',
+  accessKeyId: import.meta.env.VITE_S3_ACCESS_KEY_ID || '2ed84c6059ce258fb86db0af4f01c7a8',
+  secretAccessKey: import.meta.env.VITE_S3_SECRET_ACCESS_KEY || '717335f769f526d68e4f4de5c4fabd551e9344b2df13125c4fa6602c56995f18',
+  bucketName: import.meta.env.VITE_S3_BUCKET_NAME || 'global'
 };
 
 // Create S3 client with proper configuration
@@ -96,7 +97,7 @@ export class S3Manager {
    */
   async uploadFile(file: File, customFileName?: string): Promise<string> {
     try {
-      const fileName = customFileName || `${Date.now()}-${Math.random().toString(36).substr(2, 9)}-${file.name}`;
+      const fileName = customFileName || `${Date.now()}-${Math.random().toString(36).substring(2, 11)}-${file.name}`;
       console.log(`Uploading file: ${fileName} to bucket: ${this.bucketName}`);
       console.log(`File type: ${file.type || 'application/octet-stream'}, Size: ${file.size} bytes`);
       
