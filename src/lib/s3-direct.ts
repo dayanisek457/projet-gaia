@@ -3,7 +3,7 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Supabase configuration from environment variables
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://mvtlxvxywbdjkzcouyrn.supabase.co';
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://mvtlxvxywbdjkzcouyrn.storage.supabase.co/storage/v1/s3';
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12dGx4dnh5d2Jkamt6Y291eXJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MjA0MTUsImV4cCI6MjA3MTE5NjQxNX0.wlMC3yJCrCLOqPyCV71A5BzwcXoJcC84ygJKTGbEdao';
 
 // Create Supabase client with explicit auth configuration
