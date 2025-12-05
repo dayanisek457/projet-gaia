@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 import S3Dashboard from '@/components/S3Dashboard';
 import S3DashboardDemo from '@/components/S3DashboardDemo';
 import RoadmapManager from '@/components/RoadmapManager';
@@ -185,18 +186,27 @@ const Admin = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
+              <Button
+                onClick={() => navigate('/')}
+                variant="ghost"
+                size="sm"
+                className="flex items-center space-x-2"
+              >
                 <img 
                   src="/favicon.ico" 
                   alt="Gaia Logo" 
-                  className="h-8 w-8 object-contain" 
+                  className="h-6 w-6 object-contain" 
                 />
+                <span className="text-sm">Retour à l'accueil</span>
+              </Button>
+              <Separator orientation="vertical" className="h-6" />
+              <div className="flex items-center space-x-2">
                 <span className="text-xl font-bold">Gaia Admin</span>
+                <Badge variant="secondary" className="flex items-center space-x-1">
+                  <Shield className="h-3 w-3" />
+                  <span>Administrateur</span>
+                </Badge>
               </div>
-              <Badge variant="secondary" className="flex items-center space-x-1">
-                <Shield className="h-3 w-3" />
-                <span>Administrateur</span>
-              </Badge>
             </div>
             
             <div className="flex items-center space-x-4">

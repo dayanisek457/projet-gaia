@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ExternalLink, Heart, Mail } from 'lucide-react';
+import { ExternalLink, Heart, Mail, Euro, Instagram, Plane, CheckCircle2 } from 'lucide-react';
 import { Sponsor, sponsorsService } from '@/lib/supabase-sponsors';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -69,6 +69,106 @@ const Partenaires = () => {
                 <Heart className="mr-2 h-5 w-5" />
                 Devenir Partenaire
               </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Pack Sponsor Section */}
+        <section className="py-20 bg-background">
+          <div className="container mx-auto px-6">
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl md:text-5xl font-display font-bold mb-4 text-foreground">
+                  Offre de Partenariat
+                </h2>
+                <p className="text-xl text-muted-foreground">
+                  Rejoignez l'aventure Gaia et donnez de la visibilité à votre entreprise
+                </p>
+              </div>
+
+              <Card className="overflow-hidden border-2 border-primary/20 shadow-xl">
+                <div className="bg-gradient-to-br from-primary/10 to-secondary/10 p-8 md:p-12">
+                  <div className="flex items-center justify-center mb-6">
+                    <div className="bg-primary text-primary-foreground rounded-full p-4">
+                      <Euro className="h-8 w-8" />
+                    </div>
+                  </div>
+                  <h3 className="text-3xl md:text-4xl font-display font-bold text-center mb-4">
+                    Pack Sponsor
+                  </h3>
+                  <p className="text-center text-2xl md:text-3xl font-bold text-primary mb-2">
+                    À partir de 50€
+                  </p>
+                  <p className="text-center text-muted-foreground mb-8">
+                    par entreprise
+                  </p>
+
+                  <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                    <Card className="bg-background/80 backdrop-blur">
+                      <CardContent className="p-6">
+                        <div className="flex items-start space-x-4">
+                          <div className="flex-shrink-0 bg-primary/10 rounded-full p-3">
+                            <Instagram className="h-6 w-6 text-primary" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-lg mb-2 flex items-center">
+                              <CheckCircle2 className="h-5 w-5 text-green-600 mr-2" />
+                              Promotion sur les Réseaux Sociaux
+                            </h4>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                              Votre entreprise sera mise en avant sur Instagram grâce à notre partenaire 
+                              <strong className="text-primary"> SkyX International</strong> (@skyx_intl)
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="bg-background/80 backdrop-blur">
+                      <CardContent className="p-6">
+                        <div className="flex items-start space-x-4">
+                          <div className="flex-shrink-0 bg-primary/10 rounded-full p-3">
+                            <Plane className="h-6 w-6 text-primary" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-lg mb-2 flex items-center">
+                              <CheckCircle2 className="h-5 w-5 text-green-600 mr-2" />
+                              Logo sur l'Avion
+                            </h4>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                              Votre logo sera affiché sur notre avion, offrant une visibilité exceptionnelle 
+                              à votre entreprise sponsor lors de nos vols et événements
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  <div className="mt-10 text-center">
+                    <Button
+                      size="lg"
+                      onClick={handlePartnerClick}
+                      className="font-display font-semibold px-10 py-6 text-xl rounded-xl shadow-lg hover:shadow-xl transition-all"
+                    >
+                      <Heart className="mr-3 h-6 w-6" />
+                      Je suis intéressé(e)
+                    </Button>
+                    <p className="text-sm text-muted-foreground mt-4">
+                      Contactez-nous pour en savoir plus sur le Pack Sponsor
+                    </p>
+                  </div>
+                </div>
+              </Card>
+
+              <div className="mt-8 p-6 bg-primary/5 rounded-lg border border-primary/10">
+                <p className="text-center text-sm text-muted-foreground">
+                  <strong className="text-foreground">Pourquoi devenir sponsor ?</strong><br />
+                  En soutenant le projet Gaia, vous contribuez à un avenir plus vert tout en donnant 
+                  une visibilité unique à votre entreprise. Votre engagement sera reconnu et valorisé 
+                  auprès de notre communauté et lors de nos événements.
+                </p>
+              </div>
             </div>
           </div>
         </section>
