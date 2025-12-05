@@ -8,13 +8,13 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navigation = [
-    { name: 'Accueil', href: '#home', isRoute: false },
-    { name: 'Projet', href: '#project', isRoute: false },
-    { name: 'Solution', href: '#solution', isRoute: false },
+    { name: 'Accueil', href: '/#home', isRoute: false },
+    { name: 'Projet', href: '/#project', isRoute: false },
+    { name: 'Solution', href: '/#solution', isRoute: false },
     { name: 'Roadmap', href: '/roadmap', isRoute: true },
     { name: 'Partenaires', href: '/partenaires', isRoute: true },
-    { name: 'Équipe', href: '#team', isRoute: false },
-    { name: 'Contact', href: '#contact', isRoute: false }
+    { name: 'Équipe', href: '/#team', isRoute: false },
+    { name: 'Contact', href: '/#contact', isRoute: false }
   ];
 
   return (
