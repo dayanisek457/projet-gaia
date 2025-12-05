@@ -79,7 +79,7 @@ const Partenaires = () => {
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-4xl md:text-5xl font-display font-bold mb-4 text-foreground">
-                  Devenir Partenaire
+                  Offre de Partenariat
                 </h2>
                 <p className="text-xl text-muted-foreground">
                   Rejoignez l'aventure Gaia et donnez de la visibilité à votre entreprise
