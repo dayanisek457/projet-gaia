@@ -381,6 +381,8 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
             value={content}
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder}
+            lang="fr"
+            spellCheck="true"
             className="min-h-[300px] resize-none font-mono text-sm"
             onSelect={(e) => {
               const textarea = e.target as HTMLTextAreaElement;
