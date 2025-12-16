@@ -9,6 +9,7 @@ export interface RoadmapItem {
   timeline: string;
   files: string[];
   status: 'completed' | 'in-progress' | 'planned';
+  displayOrder: number; // Order in which the item appears on the public roadmap (higher = first)
   createdAt: string;
   updatedAt: string;
 }
@@ -26,6 +27,7 @@ export interface RoadmapItemDB {
   updated_at: string;
   timeline: string | null;
   status: string;
+  display_order: number;
 }
 
 class RoadmapService {
@@ -41,6 +43,7 @@ class RoadmapService {
       timeline: dbItem.timeline || 'Non spécifié',
       files: dbItem.attached_files || [],
       status: (dbItem.status as 'completed' | 'in-progress' | 'planned') || 'planned',
+      displayOrder: dbItem.display_order || 0,
       createdAt: dbItem.created_at,
       updatedAt: dbItem.updated_at
     };
@@ -55,6 +58,7 @@ class RoadmapService {
       timeline: item.timeline,
       status: item.status,
       attached_files: item.files,
+      display_order: item.displayOrder,
       is_published: true, // Items created from admin should be published
       updated_at: new Date().toISOString()
     };
@@ -67,7 +71,8 @@ class RoadmapService {
         .from(this.tableName)
         .select('*')
         .eq('is_published', true)
-        .order('created_at', { ascending: false }); // Newest first
+        .order('display_order', { ascending: false }) // Highest display_order first
+        .order('created_at', { ascending: false }); // Then by creation date as fallback
 
       if (error) throw error;
 
