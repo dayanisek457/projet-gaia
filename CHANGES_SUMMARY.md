@@ -92,12 +92,12 @@ spellCheck="true"
 CREATE TABLE autosaves (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   entity_type TEXT NOT NULL CHECK (entity_type IN ('roadmap', 'documentation', 'task', 'sponsor')),
-  entity_id TEXT NOT NULL DEFAULT '',
+  entity_id TEXT, -- Nullable for new/unsaved entities
   content TEXT NOT NULL,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  UNIQUE(entity_type, entity_id, user_id)
+  UNIQUE NULLS NOT DISTINCT (entity_type, entity_id, user_id)
 );
 ```
 
