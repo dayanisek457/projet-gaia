@@ -30,6 +30,7 @@ const RoadmapManager = () => {
     content: '',
     timeline: '',
     status: 'planned',
+    displayOrder: 1,
     files: []
   });
 
@@ -113,6 +114,7 @@ const RoadmapManager = () => {
         content: formData.content,
         timeline: formData.timeline || 'Non spécifié',
         status: formData.status || 'planned',
+        displayOrder: formData.displayOrder || 1,
         files: formData.files || []
       });
 
@@ -141,6 +143,7 @@ const RoadmapManager = () => {
         content: formData.content,
         timeline: formData.timeline || 'Non spécifié',
         status: formData.status || 'planned',
+        displayOrder: formData.displayOrder || 1,
         files: formData.files || []
       });
 
@@ -175,6 +178,7 @@ const RoadmapManager = () => {
       content: item.content || '',
       timeline: item.timeline,
       status: item.status,
+      displayOrder: item.displayOrder,
       files: [...item.files]
     });
     setShowEditDialog(true);
@@ -192,6 +196,7 @@ const RoadmapManager = () => {
       content: '',
       timeline: '',
       status: 'planned',
+      displayOrder: roadmapItems.length + 1, // Default to next available position
       files: []
     });
   };
@@ -282,6 +287,34 @@ const RoadmapManager = () => {
               </SelectContent>
             </Select>
           </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="roadmap-display-order">Ordre d'affichage *</Label>
+          <Select
+            value={String(formData.displayOrder || 1)}
+            onValueChange={(value) => setFormData(prev => ({ ...prev, displayOrder: parseInt(value) }))}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Choisir l'ordre d'affichage" />
+            </SelectTrigger>
+            <SelectContent>
+              {Array.from({ length: Math.max(roadmapItems.length + 1, 10) }, (_, i) => i + 1).map((num) => (
+                <SelectItem key={num} value={String(num)}>
+                  {num === 1 
+                    ? `${num} - Dernier (en bas de la page)` 
+                    : num === Math.max(roadmapItems.length + 1, 10)
+                    ? `${num} - Premier (en haut de la page)`
+                    : `${num}`
+                  }
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <p className="text-xs text-muted-foreground">
+            L'ordre d'affichage détermine la position de cet élément sur la page roadmap publique. 
+            Le nombre le plus élevé apparaîtra en premier (en haut), et 1 apparaîtra en dernier (en bas).
+          </p>
         </div>
 
         {/* File Upload Section */}
@@ -431,7 +464,12 @@ Utilisez la barre d'outils pour plus d'options de formatage."
             <Card key={item.id} className="shadow-lg hover:shadow-xl transition-shadow">
               <CardHeader>
                 <div className="flex justify-between items-start">
-                  <CardTitle className="text-lg">{item.title}</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="bg-primary/10 text-primary font-bold">
+                      #{item.displayOrder}
+                    </Badge>
+                    <CardTitle className="text-lg">{item.title}</CardTitle>
+                  </div>
                   <Badge className={getStatusColor(item.status)}>
                     {getStatusText(item.status)}
                   </Badge>
