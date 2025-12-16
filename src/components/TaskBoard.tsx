@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { taskService, type Task, type TaskStatus, type TeamMember, TEAM_MEMBERS, TASK_STATUSES } from '@/lib/supabase-tasks';
+import { useAutosave } from '@/hooks/useAutosave';
 import { Edit, Trash2, Plus, Calendar, User, Clock, CheckCircle2, AlertCircle, Hourglass, XCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { format, isPast, isToday, parseISO } from 'date-fns';
@@ -40,6 +41,15 @@ const TaskBoard = () => {
   const [formData, setFormData] = useState<TaskFormData>(initialFormData);
   const [filterMember, setFilterMember] = useState<TeamMember | 'all'>('all');
   const [filterStatus, setFilterStatus] = useState<TaskStatus | 'all'>('all');
+
+  // Autosave for task form
+  const taskFormContent = JSON.stringify(formData);
+  const { clearAutosave } = useAutosave({
+    entityType: 'task',
+    entityId: editingTask?.id || null,
+    content: taskFormContent,
+    enabled: showCreateDialog || showEditDialog,
+  });
 
   useEffect(() => {
     loadTasks();
@@ -82,6 +92,9 @@ const TaskBoard = () => {
         deadline: formData.deadline
       });
 
+      // Clear autosave after successful creation
+      await clearAutosave();
+
       setShowCreateDialog(false);
       setFormData(initialFormData);
       toast.success('Tâche créée avec succès !');
@@ -105,6 +118,9 @@ const TaskBoard = () => {
         status: formData.status,
         deadline: formData.deadline
       });
+
+      // Clear autosave after successful update
+      await clearAutosave();
 
       setShowEditDialog(false);
       setEditingTask(null);

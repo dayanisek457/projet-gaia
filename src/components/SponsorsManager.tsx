@@ -33,6 +33,7 @@ import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { Sponsor, sponsorsService, CreateSponsorDto } from '@/lib/supabase-sponsors';
 import { s3Manager } from '@/lib/s3';
+import { useAutosave } from '@/hooks/useAutosave';
 import { Plus, Edit, Trash2, Upload, ExternalLink, Image as ImageIcon } from 'lucide-react';
 
 const SPONSOR_CATEGORIES = [
@@ -62,6 +63,15 @@ const SponsorsManager = () => {
   });
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
+
+  // Autosave for sponsor form
+  const sponsorFormContent = JSON.stringify(formData);
+  const { clearAutosave } = useAutosave({
+    entityType: 'sponsor',
+    entityId: editingSponsor?.id || null,
+    content: sponsorFormContent,
+    enabled: isDialogOpen,
+  });
 
   useEffect(() => {
     loadSponsors();
@@ -149,6 +159,9 @@ const SponsorsManager = () => {
         await sponsorsService.createSponsor(sponsorData);
         toast.success('Sponsor créé avec succès');
       }
+
+      // Clear autosave after successful save
+      await clearAutosave();
 
       handleCloseDialog();
       loadSponsors();

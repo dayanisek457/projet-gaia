@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { s3Manager } from '@/lib/s3';
 import { roadmapService, type RoadmapItem } from '@/lib/supabase-roadmap';
 import RichTextEditor from '@/components/RichTextEditor';
+import { useAutosave } from '@/hooks/useAutosave';
 import { Upload, FileText, Image, Edit, Trash2, Plus, Calendar, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -30,6 +31,15 @@ const RoadmapManager = () => {
     timeline: '',
     status: 'planned',
     files: []
+  });
+
+  // Autosave for form content - serialize the form data for autosave
+  const formContentForAutosave = JSON.stringify(formData);
+  const { clearAutosave } = useAutosave({
+    entityType: 'roadmap',
+    entityId: editingItem?.id || null,
+    content: formContentForAutosave,
+    enabled: showCreateDialog || showEditDialog, // Only autosave when dialog is open
   });
 
   useEffect(() => {
@@ -106,6 +116,9 @@ const RoadmapManager = () => {
         files: formData.files || []
       });
 
+      // Clear autosave after successful creation
+      await clearAutosave();
+      
       setShowCreateDialog(false);
       resetForm();
       toast.success('Élément roadmap créé avec succès !');
@@ -130,6 +143,9 @@ const RoadmapManager = () => {
         status: formData.status || 'planned',
         files: formData.files || []
       });
+
+      // Clear autosave after successful update
+      await clearAutosave();
 
       setShowEditDialog(false);
       setEditingItem(null);

@@ -12,6 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import RichTextEditor from '@/components/RichTextEditor';
 import TableEditor from '@/components/TableEditor';
 import { useDocumentation, DocSection } from '@/hooks/useDocumentation';
+import { useAutosave } from '@/hooks/useAutosave';
 import { 
   Plus, 
   Edit3, 
@@ -71,6 +72,24 @@ const DocumentationManager = () => {
     isPublished: true
   });
 
+  // Autosave for editing section
+  const editingSectionContent = editingSection ? JSON.stringify(editingSection) : '';
+  const { clearAutosave: clearEditAutosave } = useAutosave({
+    entityType: 'documentation',
+    entityId: editingSection?.id || null,
+    content: editingSectionContent,
+    enabled: !!editingSection,
+  });
+
+  // Autosave for new section
+  const newSectionContent = JSON.stringify(newSection);
+  const { clearAutosave: clearNewAutosave } = useAutosave({
+    entityType: 'documentation',
+    entityId: null,
+    content: newSectionContent,
+    enabled: isDialogOpen,
+  });
+
   const sectionTypes = [
     { value: 'rich', label: 'Contenu Riche (Markdown)', icon: FileText },
     { value: 'text', label: 'Texte Simple', icon: Type },
@@ -80,7 +99,7 @@ const DocumentationManager = () => {
     { value: 'checklist', label: 'Liste de Tâches', icon: CheckSquare }
   ];
 
-  const handleCreateSection = () => {
+  const handleCreateSection = async () => {
     if (!newSection.title) {
       toast.error('Le titre est obligatoire');
       return;
@@ -114,6 +133,9 @@ const DocumentationManager = () => {
     const createdSection = createSection(sectionData);
     
     if (createdSection) {
+      // Clear autosave after successful creation
+      await clearNewAutosave();
+      
       setNewSection({
         title: '',
         content: '',
@@ -400,9 +422,12 @@ const DocumentationManager = () => {
     }
   };
 
-  const saveSection = () => {
+  const saveSection = async () => {
     if (editingSection) {
       if (updateSection(editingSection)) {
+        // Clear autosave after successful save
+        await clearEditAutosave();
+        
         setEditingSection(null);
         toast.success('Section sauvegardée avec succès');
       } else {
