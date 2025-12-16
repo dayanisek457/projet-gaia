@@ -227,6 +227,15 @@ const RoadmapManager = () => {
     }
   };
 
+  const getOrderDisplayLabel = (orderNum: number, maxOrder: number): string => {
+    if (orderNum === 1) {
+      return `${orderNum} - Dernier (en bas de la page)`;
+    } else if (orderNum === maxOrder) {
+      return `${orderNum} - Premier (en haut de la page)`;
+    }
+    return `${orderNum}`;
+  };
+
   // Form content JSX - rendered inline to avoid re-mounting issues
   const renderFormContent = () => (
     <Tabs defaultValue="basic" className="w-full">
@@ -299,16 +308,15 @@ const RoadmapManager = () => {
               <SelectValue placeholder="Choisir l'ordre d'affichage" />
             </SelectTrigger>
             <SelectContent>
-              {Array.from({ length: Math.max(roadmapItems.length + 1, 10) }, (_, i) => i + 1).map((num) => (
-                <SelectItem key={num} value={String(num)}>
-                  {num === 1 
-                    ? `${num} - Dernier (en bas de la page)` 
-                    : num === Math.max(roadmapItems.length + 1, 10)
-                    ? `${num} - Premier (en haut de la page)`
-                    : `${num}`
-                  }
-                </SelectItem>
-              ))}
+              {(() => {
+                const MIN_ORDER_OPTIONS = 10;
+                const maxOrder = Math.max(roadmapItems.length + 1, MIN_ORDER_OPTIONS);
+                return Array.from({ length: maxOrder }, (_, i) => i + 1).map((num) => (
+                  <SelectItem key={num} value={String(num)}>
+                    {getOrderDisplayLabel(num, maxOrder)}
+                  </SelectItem>
+                ));
+              })()}
             </SelectContent>
           </Select>
           <p className="text-xs text-muted-foreground">
