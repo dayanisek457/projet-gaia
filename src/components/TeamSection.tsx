@@ -7,33 +7,33 @@ const TeamSection = () => {
   const teamMembers = [
     {
       name: "Nathan LIENARD",
-      role: "Chef de Projet",
-      isLeader: true,
-      description: "Responsable de la coordination générale et de la gestion du projet Gaia"
+      role: "Développement Technique",
+      isLeader: false,
+      description: "Câblage et aide à la conception aéronautique"
     },
     {
       name: "Constant MOREAU",
-      role: "Développement Technique",
+      role: "Systèmes internes et externes",
       isLeader: false,
       description: "Conception et développement des systèmes techniques"
     },
     {
       name: "Hugues DUCHANOY", 
-      role: "Ingénierie Système",
+      role: "Modélisation 3D",
       isLeader: false,
       description: "Architecture et intégration des composants"
     },
     {
       name: "Yanis EL-KFEL",
-      role: "Innovation & Design",
+      role: "Physique et Communication",
       isLeader: false,
-      description: "Recherche et développement des solutions innovantes"
+      description: "Bases de calculs physiques "
     },
     {
       name: "Aloys GROUET",
-      role: "Analyse & Test",
+      role: "Optimisation 3D",
       isLeader: false,
-      description: "Validation et optimisation des performances"
+      description: "Affinement et détails 3D"
     }
   ];
 
@@ -46,7 +46,7 @@ const TeamSection = () => {
               Notre Équipe
             </h2>
             <p className="text-body max-w-2xl mx-auto">
-              Une équipe passionnée d'étudiants de Terminale SI du Lycée Saint-Joseph Dijon, 
+              Une équipe passionnée d'étudiants de Terminale SI du Lycée Saint-Joseph à Dijon, 
               unis pour révolutionner la reforestation mondiale.
             </p>
           </div>
@@ -89,7 +89,7 @@ const TeamSection = () => {
             </CardHeader>
             <CardContent>
               <p className="text-white/90 text-lg">
-                Projet de Terminale Sciences de l'Ingénieur
+                Projet de Terminale - Sciences de l'Ingénieur
               </p>
               <p className="text-white/80 mt-2">
                 Période d'exécution : Juin 2025 - Juin 2026
