@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { supabase } from './s3-direct';
 
 export interface Autosave {
   id: string;
