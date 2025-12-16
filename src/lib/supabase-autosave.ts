@@ -10,8 +10,10 @@ export interface Autosave {
   user_id: string;
 }
 
+export type EntityType = 'roadmap' | 'documentation' | 'task' | 'sponsor';
+
 export interface CreateAutosaveDto {
-  entity_type: 'roadmap' | 'documentation' | 'task' | 'sponsor';
+  entity_type: EntityType;
   entity_id: string | null;
   content: string;
 }
@@ -29,21 +31,27 @@ class AutosaveService {
       }
 
       // Check if an autosave already exists for this entity
-      const { data: existing } = await supabase
+      let query = supabase
         .from('autosaves')
         .select('*')
         .eq('entity_type', data.entity_type)
-        .eq('entity_id', data.entity_id || '')
-        .eq('user_id', user.id)
-        .maybeSingle();
+        .eq('user_id', user.id);
+      
+      // Handle entity_id - use is null check for null values
+      if (data.entity_id === null) {
+        query = query.is('entity_id', null);
+      } else {
+        query = query.eq('entity_id', data.entity_id);
+      }
+      
+      const { data: existing } = await query.maybeSingle();
 
       if (existing) {
-        // Update existing autosave
+        // Update existing autosave (updated_at is automatically set by trigger)
         const { data: updated, error } = await supabase
           .from('autosaves')
           .update({
-            content: data.content,
-            updated_at: new Date().toISOString()
+            content: data.content
           })
           .eq('id', existing.id)
           .select()
@@ -57,7 +65,7 @@ class AutosaveService {
           .from('autosaves')
           .insert({
             entity_type: data.entity_type,
-            entity_id: data.entity_id || '',
+            entity_id: data.entity_id,
             content: data.content,
             user_id: user.id
           })
@@ -76,7 +84,7 @@ class AutosaveService {
   /**
    * Get autosave for a specific entity
    */
-  async getAutosave(entityType: string, entityId: string | null): Promise<Autosave | null> {
+  async getAutosave(entityType: EntityType, entityId: string | null): Promise<Autosave | null> {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
@@ -84,13 +92,20 @@ class AutosaveService {
         throw new Error('User not authenticated');
       }
 
-      const { data, error } = await supabase
+      let query = supabase
         .from('autosaves')
         .select('*')
         .eq('entity_type', entityType)
-        .eq('entity_id', entityId || '')
-        .eq('user_id', user.id)
-        .maybeSingle();
+        .eq('user_id', user.id);
+      
+      // Handle entity_id - use is null check for null values
+      if (entityId === null) {
+        query = query.is('entity_id', null);
+      } else {
+        query = query.eq('entity_id', entityId);
+      }
+      
+      const { data, error } = await query.maybeSingle();
 
       if (error) throw error;
       return data;
@@ -103,7 +118,7 @@ class AutosaveService {
   /**
    * Delete autosave for a specific entity
    */
-  async deleteAutosave(entityType: string, entityId: string | null): Promise<boolean> {
+  async deleteAutosave(entityType: EntityType, entityId: string | null): Promise<boolean> {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
@@ -111,12 +126,20 @@ class AutosaveService {
         throw new Error('User not authenticated');
       }
 
-      const { error } = await supabase
+      let query = supabase
         .from('autosaves')
         .delete()
         .eq('entity_type', entityType)
-        .eq('entity_id', entityId || '')
         .eq('user_id', user.id);
+      
+      // Handle entity_id - use is null check for null values
+      if (entityId === null) {
+        query = query.is('entity_id', null);
+      } else {
+        query = query.eq('entity_id', entityId);
+      }
+      
+      const { error } = await query;
 
       if (error) throw error;
       return true;
@@ -129,7 +152,7 @@ class AutosaveService {
   /**
    * Delete all autosaves for a specific entity type and user
    */
-  async deleteAllAutosaves(entityType: string): Promise<boolean> {
+  async deleteAllAutosaves(entityType: EntityType): Promise<boolean> {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       

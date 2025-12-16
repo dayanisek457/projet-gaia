@@ -1,6 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { autosaveService } from '@/lib/supabase-autosave';
-import { toast } from 'sonner';
 
 interface UseAutosaveOptions {
   entityType: 'roadmap' | 'documentation' | 'task' | 'sponsor';

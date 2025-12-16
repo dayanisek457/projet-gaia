@@ -5,14 +5,15 @@
 CREATE TABLE IF NOT EXISTS autosaves (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   entity_type TEXT NOT NULL CHECK (entity_type IN ('roadmap', 'documentation', 'task', 'sponsor')),
-  entity_id TEXT NOT NULL DEFAULT '',
+  entity_id TEXT,
   content TEXT NOT NULL,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   
   -- Unique constraint: one autosave per user per entity
-  UNIQUE(entity_type, entity_id, user_id)
+  -- NULLS NOT DISTINCT ensures that multiple NULL entity_ids are treated as the same value
+  UNIQUE NULLS NOT DISTINCT (entity_type, entity_id, user_id)
 );
 
 -- Create index for faster lookups
