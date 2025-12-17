@@ -1,0 +1,30 @@
+{
+  "images": [
+    {
+      "src": "/gallery/example-image-1.svg",
+      "alt": "Exemple d'image format large - Projet Gaia",
+      "size": "large"
+    },
+    {
+      "src": "/gallery/example-image-2.svg",
+      "alt": "Exemple d'image format medium - Drone",
+      "size": "medium"
+    },
+    {
+      "src": "/gallery/example-image-3.svg",
+      "alt": "Exemple d'image format small - Reforestation",
+      "size": "small"
+    }
+  ],
+  "_instructions": {
+    "comment": "Pour ajouter des images à la galerie:",
+    "steps": [
+      "1. Ajoutez vos fichiers images dans le dossier public/gallery",
+      "2. Ajoutez une entrée dans le tableau 'images' ci-dessus",
+      "3. Définissez 'src' comme le chemin relatif depuis public (ex: /gallery/mon-image.jpg)",
+      "4. Définissez 'alt' comme une description de l'image",
+      "5. Définissez 'size' comme 'small', 'medium', ou 'large' pour varier les tailles d'affichage"
+    ],
+    "note": "Les entrées d'exemple ci-dessus peuvent être supprimées une fois vos vraies images ajoutées"
+  }
+}

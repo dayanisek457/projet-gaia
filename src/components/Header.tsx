@@ -12,6 +12,7 @@ const Header = () => {
     { name: 'Projet', href: '/#project', isRoute: false },
     { name: 'Solution', href: '/#solution', isRoute: false },
     { name: 'Roadmap', href: '/roadmap', isRoute: true },
+    { name: 'Galerie', href: '/galerie', isRoute: true },
     { name: 'Partenaires', href: '/partenaires', isRoute: true },
     { name: 'Équipe', href: '/#team', isRoute: false },
     { name: 'Contact', href: '/#contact', isRoute: false }
