@@ -1,0 +1,11 @@
+# Présentation du Projet Gaia
+
+Ceci est un fichier d'exemple de présentation.
+
+Remplacez ce fichier par votre vraie présentation PowerPoint, PDF ou autre format.
+
+Le fichier manifest.json permet de définir :
+- Le nom d'affichage
+- Le type de fichier
+- La taille
+- Le chemin d'accès

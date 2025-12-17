@@ -1,0 +1,28 @@
+{
+  "files": [
+    {
+      "name": "Document d'exemple",
+      "path": "/files/example-document.txt",
+      "type": "Document texte",
+      "size": "1 KB"
+    },
+    {
+      "name": "Présentation du Projet",
+      "path": "/files/presentation.txt",
+      "type": "Document texte",
+      "size": "1 KB"
+    }
+  ],
+  "_instructions": {
+    "comment": "Pour ajouter des fichiers aux ressources:",
+    "steps": [
+      "1. Ajoutez vos fichiers dans le dossier public/files",
+      "2. Ajoutez une entrée dans le tableau 'files' ci-dessus",
+      "3. Définissez 'name' comme le nom à afficher",
+      "4. Définissez 'path' comme le chemin relatif depuis public (ex: /files/mon-document.pdf)",
+      "5. Définissez 'type' comme le type de fichier (optionnel)",
+      "6. Définissez 'size' comme la taille du fichier (optionnel)"
+    ],
+    "note": "Les entrées d'exemple ci-dessus peuvent être supprimées une fois vos vrais fichiers ajoutés"
+  }
+}

@@ -1,0 +1,14 @@
+# Projet Gaia - Document d'exemple
+
+Ce fichier est un exemple de ressource téléchargeable pour le projet Gaia.
+
+## Instructions
+
+Vous pouvez remplacer ce fichier par vos propres documents :
+- PDF
+- PowerPoint
+- Word
+- Excel
+- Et tout autre type de fichier
+
+N'oubliez pas de mettre à jour le fichier manifest.json dans ce dossier pour référencer vos nouveaux fichiers.
