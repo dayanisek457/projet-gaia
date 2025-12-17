@@ -108,10 +108,10 @@ const ContactSection = () => {
               {/* Enhanced Contact CTA */}
               <div className="bg-white/15 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-xl">
                 <p className="text-white text-base mb-3">
-                  <strong className="text-lg">Contact Direct :</strong> contact@projet-gaia.com
+                  <strong className="text-lg">Email:</strong> contact@projet-gaia.com
                 </p>
                 <p className="text-white/80 text-sm mb-1">
-                  Nathan LIENARD - Chef de Projet | Lycée Saint-Joseph Dijon
+                  Lycée Saint-Joseph Dijon
                 </p>
                 <p className="text-white/80 text-sm">
                   Projet SI Terminale 2025-2026 | www.projet-gaia.com
