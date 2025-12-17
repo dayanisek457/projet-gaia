@@ -60,7 +60,7 @@ const Header = () => {
               href="https://www.instagram.com/projet_gaia_stjo"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-foreground/85 hover:text-primary transition-all duration-300 p-2 hover:bg-primary/10 rounded-lg"
+              className="text-foreground/85 hover:text-primary transition-all duration-300 p-2 hover:bg-primary/10 rounded-lg focus-visible:ring-2 focus-visible:ring-primary"
               title="Suivez-nous sur Instagram @projet_gaia_stjo"
             >
               <Instagram className="h-5 w-5" />
