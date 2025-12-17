@@ -32,7 +32,7 @@ const GalleryResources = () => {
         if (response.ok) {
           const data = await response.json();
           // Filter out the _instructions field and only keep actual image entries
-          const images = data.images.filter((img: any) => img.src && img.alt);
+          const images = data.images.filter((img: GalleryImage) => img.src && img.alt);
           setGalleryImages(images);
         }
       } catch (error) {
@@ -49,7 +49,7 @@ const GalleryResources = () => {
         if (response.ok) {
           const data = await response.json();
           // Filter out the _instructions field and only keep actual file entries
-          const files = data.files.filter((file: any) => file.name && file.path);
+          const files = data.files.filter((file: ResourceFile) => file.name && file.path);
           setResourceFiles(files);
         }
       } catch (error) {
