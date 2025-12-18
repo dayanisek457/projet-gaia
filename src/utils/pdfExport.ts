@@ -1,4 +1,5 @@
 import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import { documentationService, DocSection } from '@/lib/supabase-documentation';
 
 // Define interfaces for PDF generation
@@ -57,35 +58,111 @@ export const exportDocumentationToPDF = async () => {
       producer: 'Gaia PDF Export'
     });
 
-    // Add cover page
-    pdf.setFontSize(28);
-    pdf.setFont('helvetica', 'bold');
-    pdf.text('Documentation Gaia', margin, 50);
+    // Add cover page with branding
+    // Add a colored header bar
+    pdf.setFillColor(34, 197, 94); // Green color for Gaia branding
+    pdf.rect(0, 0, pageWidth, 30, 'F');
     
-    pdf.setFontSize(18);
+    // Try to load and add logo
+    try {
+      const logoImg = new Image();
+      logoImg.src = '/logo.png';
+      await new Promise((resolve, reject) => {
+        logoImg.onload = resolve;
+        logoImg.onerror = reject;
+        setTimeout(() => reject(new Error('Logo load timeout')), 2000);
+      });
+      
+      // Add logo centered at the top
+      const logoWidth = 60;
+      const logoHeight = 34;
+      const logoX = (pageWidth - logoWidth) / 2;
+      pdf.addImage(logoImg, 'PNG', logoX, 40, logoWidth, logoHeight);
+      currentY = 85;
+    } catch (error) {
+      console.log('Could not load logo, continuing without it');
+      currentY = 50;
+    }
+    
+    // Project title with gradient effect (simulated with color)
+    pdf.setFontSize(32);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setTextColor(34, 197, 94); // Green
+    pdf.text('PROJET GAIA', pageWidth / 2, currentY, { align: 'center' });
+    currentY += 12;
+    
+    pdf.setFontSize(20);
+    pdf.setTextColor(16, 185, 129); // Lighter green
+    pdf.text('Documentation Technique', pageWidth / 2, currentY, { align: 'center' });
+    currentY += 20;
+    
+    pdf.setFontSize(16);
     pdf.setFont('helvetica', 'normal');
-    pdf.text('Projet de Reforestation Intelligente', margin, 70);
+    pdf.setTextColor(75, 85, 99); // Gray
+    pdf.text('Projet de Reforestation Intelligente', pageWidth / 2, currentY, { align: 'center' });
+    currentY += 10;
+    
+    pdf.setFontSize(13);
+    pdf.text('avec IA, IoT et surveillance par drones', pageWidth / 2, currentY, { align: 'center' });
+    currentY += 30;
+    
+    // Add decorative line
+    pdf.setDrawColor(34, 197, 94);
+    pdf.setLineWidth(0.5);
+    pdf.line(pageWidth / 2 - 40, currentY, pageWidth / 2 + 40, currentY);
+    currentY += 20;
     
     pdf.setFontSize(14);
-    pdf.text('Guide complet du projet avec IA, IoT et surveillance par drones', margin, 90);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setTextColor(31, 41, 55); // Dark gray
+    pdf.text('Lycée Saint-Joseph Dijon', pageWidth / 2, currentY, { align: 'center' });
+    currentY += 10;
     
     pdf.setFontSize(12);
     pdf.setFont('helvetica', 'italic');
-    pdf.text('Lycée Saint-Joseph Dijon', margin, 120);
-    pdf.text(`Généré le ${new Date().toLocaleDateString('fr-FR')}`, margin, 135);
+    pdf.setTextColor(107, 114, 128); // Medium gray
+    pdf.text(`Généré le ${new Date().toLocaleDateString('fr-FR', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    })}`, pageWidth / 2, currentY, { align: 'center' });
     
-    // Add table of contents
+    // Add footer with project info
+    pdf.setFontSize(10);
+    pdf.setTextColor(156, 163, 175); // Light gray
+    pdf.text('© 2024 Lycée Saint-Joseph Dijon - Tous droits réservés', pageWidth / 2, pageHeight - 30, { align: 'center' });
+    pdf.text('Un projet écologique pour un avenir durable', pageWidth / 2, pageHeight - 22, { align: 'center' });
+    
+    // Add table of contents with enhanced styling
     pdf.addPage();
     currentY = margin;
+    
+    // TOC Header with background
+    pdf.setFillColor(34, 197, 94);
+    pdf.rect(margin - 5, currentY - 8, contentWidth + 10, 15, 'F');
+    
     pdf.setFontSize(20);
     pdf.setFont('helvetica', 'bold');
+    pdf.setTextColor(255, 255, 255);
     pdf.text('Table des matières', margin, currentY);
-    currentY += 15;
+    currentY += 20;
+    
+    // Reset text color
+    pdf.setTextColor(31, 41, 55);
+    
+    // Add decorative line
+    pdf.setDrawColor(34, 197, 94);
+    pdf.setLineWidth(0.5);
+    pdf.line(margin, currentY, pageWidth - margin, currentY);
+    currentY += 10;
     
     pdf.setFontSize(12);
     pdf.setFont('helvetica', 'normal');
     sections.forEach((section, index) => {
-      pdf.text(`${index + 1}. ${section.title}`, margin + 5, currentY);
+      pdf.setTextColor(34, 197, 94);
+      pdf.text(`${index + 1}.`, margin + 5, currentY);
+      pdf.setTextColor(31, 41, 55);
+      pdf.text(section.title, margin + 15, currentY);
       currentY += 8;
     });
 
@@ -95,14 +172,35 @@ export const exportDocumentationToPDF = async () => {
       pdf.addPage();
       currentY = margin;
       
-      // Section title
+      // Section title with enhanced styling
+      pdf.setFillColor(34, 197, 94); // Green header background
+      pdf.rect(margin - 5, currentY - 8, contentWidth + 10, 15, 'F');
+      
       pdf.setFontSize(18);
       pdf.setFont('helvetica', 'bold');
+      pdf.setTextColor(255, 255, 255); // White text
       pdf.text(`${i + 1}. ${section.title}`, margin, currentY);
       currentY += 15;
       
+      // Reset text color for content
+      pdf.setTextColor(31, 41, 55);
+      
       // Section content
       currentY = await renderSectionContent(pdf, section, margin, currentY, contentWidth, pageHeight);
+    }
+    
+    // Add page numbers to all pages except cover (run once after all content is generated)
+    const totalPages = pdf.getNumberOfPages();
+    for (let pageIndex = 2; pageIndex <= totalPages; pageIndex++) {
+      pdf.setPage(pageIndex);
+      pdf.setFontSize(9);
+      pdf.setTextColor(156, 163, 175);
+      pdf.text(
+        `Page ${pageIndex - 1}`,
+        pageWidth / 2,
+        pageHeight - 10,
+        { align: 'center' }
+      );
     }
 
     // Remove loading indicator
@@ -150,9 +248,10 @@ async function renderSectionContent(
   };
 
   // Function to add text with proper line wrapping
-  const addWrappedText = (text: string, fontSize: number = 12, fontStyle: string = 'normal') => {
+  const addWrappedText = (text: string, fontSize: number = 12, fontStyle: string = 'normal', color: [number, number, number] = [31, 41, 55]) => {
     pdf.setFontSize(fontSize);
     pdf.setFont('helvetica', fontStyle);
+    pdf.setTextColor(color[0], color[1], color[2]);
     
     const lines = pdf.splitTextToSize(text, contentWidth);
     const requiredHeight = lines.length * lineHeight;
@@ -179,7 +278,7 @@ async function renderSectionContent(
     case 'accordion':
       if (section.data?.items) {
         section.data.items.forEach((item: any) => {
-          addWrappedText(item.title, 14, 'bold');
+          addWrappedText(item.title, 14, 'bold', [34, 197, 94]); // Green for titles
           addWrappedText(item.content);
           currentY += 5;
         });
@@ -188,14 +287,40 @@ async function renderSectionContent(
 
     case 'table':
       if (section.data?.headers && section.data?.rows) {
-        // Table header
-        addWrappedText(section.data.headers.join(' | '), 12, 'bold');
-        addWrappedText('─'.repeat(50), 10);
+        // Check if we need a new page before the table
+        checkNewPage(30);
         
-        // Table rows
-        section.data.rows.forEach((row: string[]) => {
-          addWrappedText(row.join(' | '));
+        // Use jspdf-autotable for proper table rendering
+        autoTable(pdf, {
+          head: [section.data.headers],
+          body: section.data.rows,
+          startY: currentY,
+          margin: { left: margin, right: margin },
+          theme: 'grid',
+          styles: {
+            fontSize: 10,
+            cellPadding: 4,
+            lineColor: [200, 200, 200],
+            lineWidth: 0.1,
+          },
+          headStyles: {
+            fillColor: [34, 197, 94], // Green color matching Gaia branding
+            textColor: [255, 255, 255],
+            fontStyle: 'bold',
+            halign: 'left',
+          },
+          bodyStyles: {
+            textColor: [31, 41, 55],
+          },
+          alternateRowStyles: {
+            fillColor: [249, 250, 251], // Light gray for alternate rows
+          },
         });
+        
+        // Update currentY to position after the table
+        // Use jspdf-autotable's getLastAutoTable method to get the table info
+        const pdfWithAutoTable = pdf as jsPDF & { lastAutoTable?: { finalY: number } };
+        currentY = (pdfWithAutoTable.lastAutoTable?.finalY ?? currentY) + 10;
       }
       break;
 
@@ -204,7 +329,28 @@ async function renderSectionContent(
         section.data.callouts.forEach((callout: any) => {
           const prefix = callout.type === 'warning' ? '⚠️ ' : 
                         callout.type === 'success' ? '✅ ' : 'ℹ️ ';
-          addWrappedText(`${prefix}${callout.title}`, 12, 'bold');
+          
+          // Add colored background for callouts
+          checkNewPage(20);
+          const calloutColors = {
+            warning: [251, 191, 36],  // Yellow
+            success: [34, 197, 94],   // Green
+            info: [59, 130, 246]      // Blue
+          };
+          const bgColor = calloutColors[callout.type as keyof typeof calloutColors] || calloutColors.info;
+          
+          // Calculate the height needed for the callout
+          const titleText = `${prefix}${callout.title}`;
+          const titleLines = pdf.splitTextToSize(titleText, contentWidth);
+          const contentLines = pdf.splitTextToSize(callout.content, contentWidth);
+          const calloutHeight = (titleLines.length + contentLines.length) * 6 + 10;
+          
+          pdf.setFillColor(bgColor[0], bgColor[1], bgColor[2]);
+          pdf.setGlobalAlpha(0.1);
+          pdf.rect(margin - 5, currentY - 5, contentWidth + 10, calloutHeight, 'F');
+          pdf.setGlobalAlpha(1);
+          
+          addWrappedText(titleText, 12, 'bold', bgColor);
           addWrappedText(callout.content);
           currentY += 5;
         });
