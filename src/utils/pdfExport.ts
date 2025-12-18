@@ -191,12 +191,12 @@ export const exportDocumentationToPDF = async () => {
     
     // Add page numbers to all pages except cover (run once after all content is generated)
     const totalPages = pdf.getNumberOfPages();
-    for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
-      pdf.setPage(pageNum);
+    for (let pageIndex = 2; pageIndex <= totalPages; pageIndex++) {
+      pdf.setPage(pageIndex);
       pdf.setFontSize(9);
       pdf.setTextColor(156, 163, 175);
       pdf.text(
-        `Page ${pageNum - 1}`,
+        `Page ${pageIndex - 1}`,
         pageWidth / 2,
         pageHeight - 10,
         { align: 'center' }
@@ -318,9 +318,9 @@ async function renderSectionContent(
         });
         
         // Update currentY to position after the table
-        // jspdf-autotable adds a lastAutoTable property to the jsPDF instance
-        const pdfWithTable = pdf as jsPDF & { lastAutoTable?: { finalY: number } };
-        currentY = (pdfWithTable.lastAutoTable?.finalY ?? currentY) + 10;
+        // Use jspdf-autotable's getLastAutoTable method to get the table info
+        const pdfWithAutoTable = pdf as jsPDF & { lastAutoTable?: { finalY: number } };
+        currentY = (pdfWithAutoTable.lastAutoTable?.finalY ?? currentY) + 10;
       }
       break;
 
