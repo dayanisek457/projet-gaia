@@ -130,8 +130,8 @@ export const exportDocumentationToPDF = async () => {
     // Add footer with project info
     pdf.setFontSize(10);
     pdf.setTextColor(156, 163, 175); // Light gray
-    pdf.text('© 2024 Lycée Saint-Joseph Dijon - Tous droits réservés', pageWidth / 2, pageHeight - 30, { align: 'center' });
-    pdf.text('Un projet écologique pour un avenir durable', pageWidth / 2, pageHeight - 22, { align: 'center' });
+    pdf.text('© 2025 Groupe Gaia - Tous droits réservés', pageWidth / 2, pageHeight - 30, { align: 'center' });
+    pdf.text('Reforestation intelligente', pageWidth / 2, pageHeight - 22, { align: 'center' });
     
     // Add table of contents with enhanced styling
     pdf.addPage();
