@@ -1,18 +1,18 @@
 {
   "images": [
     {
-      "src": "/gallery/example-image-1.svg",
-      "alt": "Exemple d'image format large - Projet Gaia",
+      "src": "/gallery/IMG_20251219_085053.jpg",
+      "alt": "Transmission caméra vidéo",
       "size": "large"
     },
     {
-      "src": "/gallery/example-image-2.svg",
-      "alt": "Exemple d'image format medium - Drone",
+      "src": "/gallery/IMG_20251219_085234.jpg",
+      "alt": "Système de largage de graines - Design SOLIDWORKS",
       "size": "medium"
     },
     {
-      "src": "/gallery/example-image-3.svg",
-      "alt": "Exemple d'image format small - Reforestation",
+      "src": "/gallery/IMG_20251219_085708.jpg",
+      "alt": "Backend du site web",
       "size": "small"
     }
   ],
