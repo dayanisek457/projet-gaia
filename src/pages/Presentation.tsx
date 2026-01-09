@@ -31,9 +31,13 @@ import {
   Calendar,
   Sparkles,
   BookOpen,
+  Image,
+  Camera,
+  Cpu,
 } from 'lucide-react';
 import { roadmapService, type RoadmapItem } from '@/lib/supabase-roadmap';
 import { sponsorsService, type Sponsor } from '@/lib/supabase-sponsors';
+import { documentationService, type DocSection } from '@/lib/supabase-documentation';
 
 const Presentation = () => {
   const navigate = useNavigate();
@@ -42,18 +46,21 @@ const Presentation = () => {
   const [count, setCount] = useState(0);
   const [roadmapItems, setRoadmapItems] = useState<RoadmapItem[]>([]);
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
+  const [docSections, setDocSections] = useState<DocSection[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Load data from Supabase
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [roadmap, sponsorsList] = await Promise.all([
+        const [roadmap, sponsorsList, documentation] = await Promise.all([
           roadmapService.getAllItems(),
           sponsorsService.getSponsors(),
+          documentationService.getPublishedSections(),
         ]);
-        setRoadmapItems(roadmap.slice(0, 3)); // Only show first 3 items
+        setRoadmapItems(roadmap.slice(0, 5)); // Show first 5 roadmap items
         setSponsors(sponsorsList);
+        setDocSections(documentation.slice(0, 3)); // Get first 3 doc sections
       } catch (error) {
         console.error('Error loading presentation data:', error);
       } finally {
@@ -159,7 +166,11 @@ const Presentation = () => {
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl flex items-center justify-center">
                   <div className="text-center space-y-8 p-12">
                     <div className="inline-block animate-scale-in">
-                      <TreePine className="h-24 w-24 text-primary mx-auto mb-6" />
+                      <img 
+                        src="/logo.png" 
+                        alt="Logo Gaia" 
+                        className="h-32 w-32 mx-auto mb-6 object-contain"
+                      />
                     </div>
                     <h1 className="text-7xl md:text-8xl font-display font-black bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-fade-in-up">
                       Gaia
@@ -554,47 +565,67 @@ const Presentation = () => {
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-6">
-                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl border-2 border-blue-200 shadow-lg text-center">
-                        <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                          <BookOpen className="h-8 w-8 text-white" />
-                        </div>
-                        <h3 className="text-xl font-bold text-blue-900 mb-3">Documentation Complète</h3>
-                        <p className="text-blue-700">
-                          Spécifications techniques, architecture du système, et guide d'utilisation détaillé
-                        </p>
+                    {docSections.length > 0 ? (
+                      <div className="space-y-6">
+                        {docSections.map((section, index) => (
+                          <div key={section.id} className="bg-white/80 p-6 rounded-xl shadow-lg border border-gray-200">
+                            <div className="flex items-start gap-4">
+                              <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white font-bold">
+                                {index + 1}
+                              </div>
+                              <div className="flex-1">
+                                <h3 className="text-xl font-bold text-gray-900 mb-2">{section.title}</h3>
+                                <p className="text-gray-600 line-clamp-3">
+                                  {section.content.replace(/<[^>]*>/g, '').substring(0, 200)}...
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
                       </div>
+                    ) : (
+                      <div className="grid grid-cols-2 gap-6">
+                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl border-2 border-blue-200 shadow-lg text-center">
+                          <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <BookOpen className="h-8 w-8 text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold text-blue-900 mb-3">Documentation Complète</h3>
+                          <p className="text-blue-700">
+                            Spécifications techniques, architecture du système, et guide d'utilisation détaillé
+                          </p>
+                        </div>
 
-                      <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl border-2 border-green-200 shadow-lg text-center">
-                        <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                          <Zap className="h-8 w-8 text-white" />
+                        <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl border-2 border-green-200 shadow-lg text-center">
+                          <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Zap className="h-8 w-8 text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold text-green-900 mb-3">Technologies Utilisées</h3>
+                          <p className="text-green-700">
+                            React, TypeScript, Supabase, IoT, Intelligence Artificielle, et systèmes embarqués
+                          </p>
                         </div>
-                        <h3 className="text-xl font-bold text-green-900 mb-3">Technologies Utilisées</h3>
-                        <p className="text-green-700">
-                          React, TypeScript, Supabase, IoT, Intelligence Artificielle, et systèmes embarqués
-                        </p>
-                      </div>
 
-                      <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl border-2 border-purple-200 shadow-lg text-center">
-                        <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                          <TreePine className="h-8 w-8 text-white" />
+                        <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl border-2 border-purple-200 shadow-lg text-center">
+                          <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <TreePine className="h-8 w-8 text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold text-purple-900 mb-3">Impact Environnemental</h3>
+                          <p className="text-purple-700">
+                            Solution 100% écologique avec zéro émission pour accélérer la reforestation
+                          </p>
                         </div>
-                        <h3 className="text-xl font-bold text-purple-900 mb-3">Impact Environnemental</h3>
-                        <p className="text-purple-700">
-                          Solution 100% écologique avec zéro émission pour accélérer la reforestation
-                        </p>
-                      </div>
 
-                      <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-2xl border-2 border-orange-200 shadow-lg text-center">
-                        <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                          <Sparkles className="h-8 w-8 text-white" />
+                        <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-2xl border-2 border-orange-200 shadow-lg text-center">
+                          <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Sparkles className="h-8 w-8 text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold text-orange-900 mb-3">Innovation</h3>
+                          <p className="text-orange-700">
+                            Technologie de pointe combinant drones, IA, et développement durable
+                          </p>
                         </div>
-                        <h3 className="text-xl font-bold text-orange-900 mb-3">Innovation</h3>
-                        <p className="text-orange-700">
-                          Technologie de pointe combinant drones, IA, et développement durable
-                        </p>
                       </div>
-                    </div>
+                    )}
 
                     <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-8 rounded-2xl border-2 border-primary/20 text-center">
                       <p className="text-lg text-gray-700 leading-relaxed">
@@ -618,7 +649,155 @@ const Presentation = () => {
               </div>
             </CarouselItem>
 
-            {/* Slide 8: Contact & Conclusion */}
+            {/* Slide 8: Galerie Technique / Développement */}
+            <CarouselItem>
+              <div className="h-[80vh] flex items-center justify-center p-8">
+                <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
+                  <div className="p-12 space-y-8">
+                    <div className="text-center space-y-4">
+                      <h2 className="text-5xl font-display font-bold text-gray-900 flex items-center justify-center gap-4">
+                        <Camera className="h-12 w-12 text-primary" />
+                        Galerie Technique
+                      </h2>
+                      <p className="text-2xl text-gray-600">
+                        Nos prototypes et développements en cours
+                      </p>
+                    </div>
+
+                    {/* Gallery Grid */}
+                    <div className="grid grid-cols-3 gap-6">
+                      {/* Image 1 - Transmission camera */}
+                      <div className="bg-white/80 rounded-xl shadow-lg border border-gray-200 overflow-hidden group">
+                        <div className="aspect-video overflow-hidden bg-gray-100">
+                          <img
+                            src="/gallery/IMG_20251219_085053.jpg"
+                            alt="Transmission caméra vidéo"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                        <div className="p-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Camera className="h-5 w-5 text-primary" />
+                            <h3 className="font-bold text-gray-900">Système Vidéo</h3>
+                          </div>
+                          <p className="text-sm text-gray-600">Transmission caméra vidéo embarquée</p>
+                        </div>
+                      </div>
+
+                      {/* Image 2 - SOLIDWORKS design */}
+                      <div className="bg-white/80 rounded-xl shadow-lg border border-gray-200 overflow-hidden group">
+                        <div className="aspect-video overflow-hidden bg-gray-100">
+                          <img
+                            src="/gallery/IMG_20251219_085234.jpg"
+                            alt="Système de largage de graines"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                        <div className="p-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Cpu className="h-5 w-5 text-primary" />
+                            <h3 className="font-bold text-gray-900">Design 3D</h3>
+                          </div>
+                          <p className="text-sm text-gray-600">Système de largage - SOLIDWORKS</p>
+                        </div>
+                      </div>
+
+                      {/* Image 3 - Backend */}
+                      <div className="bg-white/80 rounded-xl shadow-lg border border-gray-200 overflow-hidden group">
+                        <div className="aspect-video overflow-hidden bg-gray-100">
+                          <img
+                            src="/gallery/IMG_20251219_085708.jpg"
+                            alt="Backend du site web"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                        <div className="p-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Zap className="h-5 w-5 text-primary" />
+                            <h3 className="font-bold text-gray-900">Backend Web</h3>
+                          </div>
+                          <p className="text-sm text-gray-600">Infrastructure technique du site</p>
+                        </div>
+                      </div>
+
+                      {/* Image 4 - Type aile */}
+                      <div className="bg-white/80 rounded-xl shadow-lg border border-gray-200 overflow-hidden group">
+                        <div className="aspect-video overflow-hidden bg-gray-100">
+                          <img
+                            src="/gallery/type_aile2.png"
+                            alt="Conception de l'aile"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                        <div className="p-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Wind className="h-5 w-5 text-primary" />
+                            <h3 className="font-bold text-gray-900">Aérodynamique</h3>
+                          </div>
+                          <p className="text-sm text-gray-600">Conception et type d'aile</p>
+                        </div>
+                      </div>
+
+                      {/* Image 5 - Screenshots */}
+                      <div className="bg-white/80 rounded-xl shadow-lg border border-gray-200 overflow-hidden group">
+                        <div className="aspect-video overflow-hidden bg-gray-100">
+                          <img
+                            src="/gallery/Capture d'écran (23).png"
+                            alt="Interface de développement"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                        <div className="p-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Sparkles className="h-5 w-5 text-primary" />
+                            <h3 className="font-bold text-gray-900">Interface</h3>
+                          </div>
+                          <p className="text-sm text-gray-600">Développement de l'interface</p>
+                        </div>
+                      </div>
+
+                      {/* Image 6 - Screenshot 2 */}
+                      <div className="bg-white/80 rounded-xl shadow-lg border border-gray-200 overflow-hidden group">
+                        <div className="aspect-video overflow-hidden bg-gray-100">
+                          <img
+                            src="/gallery/Capture d'écran (27).png"
+                            alt="Tests et validation"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                        <div className="p-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <TreePine className="h-5 w-5 text-primary" />
+                            <h3 className="font-bold text-gray-900">Tests</h3>
+                          </div>
+                          <p className="text-sm text-gray-600">Validation et tests techniques</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-6 rounded-2xl border-2 border-primary/20 text-center">
+                      <p className="text-lg text-gray-700 leading-relaxed">
+                        Notre équipe travaille activement sur tous les aspects du projet : conception 3D, 
+                        systèmes embarqués, développement web, et tests en conditions réelles.
+                      </p>
+                    </div>
+
+                    <div className="text-center pt-4">
+                      <Button
+                        size="lg"
+                        onClick={() => handleNavigateToPage('/gallery')}
+                        className="bg-primary hover:bg-primary/90"
+                      >
+                        <Image className="mr-2 h-5 w-5" />
+                        Voir toute la galerie
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </CarouselItem>
+
+            {/* Slide 9: Contact & Conclusion */}
             <CarouselItem>
               <div className="h-[80vh] flex items-center justify-center p-8">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl flex items-center justify-center">
