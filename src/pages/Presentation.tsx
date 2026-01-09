@@ -192,7 +192,126 @@ const Presentation = () => {
               </div>
             </CarouselItem>
 
-            {/* Slide 2: Problématique */}
+            {/* Slide 2: Contexte */}
+            <CarouselItem>
+              <div className="h-[80vh] flex items-center justify-center p-8">
+                <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
+                  <div className="p-12 space-y-8">
+                    <div className="text-center space-y-4">
+                      <h2 className="text-5xl font-display font-bold text-gray-900 flex items-center justify-center gap-4">
+                        <Globe className="h-12 w-12 text-primary" />
+                        Contexte Mondial
+                      </h2>
+                      <p className="text-2xl text-gray-600 max-w-4xl mx-auto">
+                        La reforestation au cœur des enjeux climatiques
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-6">
+                      <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border-2 border-green-200 shadow-lg">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="p-3 bg-green-500 rounded-lg">
+                            <TreePine className="h-6 w-6 text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold text-green-900">Déforestation</h3>
+                        </div>
+                        <ul className="space-y-2 text-sm text-green-800">
+                          <li className="flex items-start gap-2">
+                            <span className="text-green-600 mt-0.5">•</span>
+                            <span>10 millions d'hectares de forêts perdus chaque année</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-green-600 mt-0.5">•</span>
+                            <span>Perte de biodiversité massive et irréversible</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-green-600 mt-0.5">•</span>
+                            <span>Impact direct sur le réchauffement climatique</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl border-2 border-orange-200 shadow-lg">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="p-3 bg-orange-500 rounded-lg">
+                            <AlertTriangle className="h-6 w-6 text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold text-orange-900">Urgence Climatique</h3>
+                        </div>
+                        <ul className="space-y-2 text-sm text-orange-800">
+                          <li className="flex items-start gap-2">
+                            <span className="text-orange-600 mt-0.5">•</span>
+                            <span>Température mondiale en hausse de +1.5°C d'ici 2040</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-orange-600 mt-0.5">•</span>
+                            <span>Événements climatiques extrêmes en augmentation</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-orange-600 mt-0.5">•</span>
+                            <span>Fenêtre d'action limitée pour inverser la tendance</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border-2 border-blue-200 shadow-lg">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="p-3 bg-blue-500 rounded-lg">
+                            <Leaf className="h-6 w-6 text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold text-blue-900">Importance des Arbres</h3>
+                        </div>
+                        <ul className="space-y-2 text-sm text-blue-800">
+                          <li className="flex items-start gap-2">
+                            <span className="text-blue-600 mt-0.5">•</span>
+                            <span>Captent 30% des émissions de CO2 mondiales</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-blue-600 mt-0.5">•</span>
+                            <span>Régulent le cycle de l'eau et protègent les sols</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-blue-600 mt-0.5">•</span>
+                            <span>Abritent 80% de la biodiversité terrestre</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl border-2 border-purple-200 shadow-lg">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="p-3 bg-purple-500 rounded-lg">
+                            <Target className="h-6 w-6 text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold text-purple-900">Objectifs Mondiaux</h3>
+                        </div>
+                        <ul className="space-y-2 text-sm text-purple-800">
+                          <li className="flex items-start gap-2">
+                            <span className="text-purple-600 mt-0.5">•</span>
+                            <span>Planter 1 trillion d'arbres d'ici 2030 (ONU)</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-purple-600 mt-0.5">•</span>
+                            <span>Restaurer 350 millions d'hectares de forêts</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-purple-600 mt-0.5">•</span>
+                            <span>Limiter le réchauffement à +1.5°C</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-6 rounded-xl border-2 border-primary/20 text-center">
+                      <p className="text-lg text-gray-700 font-semibold">
+                        La reforestation est l'une des solutions les plus efficaces pour lutter contre le changement climatique
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </CarouselItem>
+
+            {/* Slide 3: Problématique */}
             <CarouselItem>
               <div className="h-[80vh] flex items-center justify-center p-8">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
