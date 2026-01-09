@@ -58,9 +58,9 @@ const Presentation = () => {
           sponsorsService.getSponsors(),
           documentationService.getPublishedSections(),
         ]);
-        setRoadmapItems(roadmap.slice(0, 5)); // Show first 5 roadmap items
+        setRoadmapItems(roadmap); // Show all roadmap items
         setSponsors(sponsorsList);
-        setDocSections(documentation.slice(0, 3)); // Get first 3 doc sections
+        setDocSections(documentation); // Get all doc sections
       } catch (error) {
         console.error('Error loading presentation data:', error);
       } finally {
@@ -347,65 +347,122 @@ const Presentation = () => {
             {/* Slide 4: Roadmap */}
             <CarouselItem>
               <div className="h-[80vh] flex items-center justify-center p-8">
-                <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
-                  <div className="p-12 space-y-8">
-                    <div className="text-center space-y-4">
-                      <h2 className="text-5xl font-display font-bold text-gray-900 flex items-center justify-center gap-4">
-                        <MapPin className="h-12 w-12 text-primary" />
-                        Roadmap du Projet
-                      </h2>
-                      <p className="text-2xl text-gray-600">
-                        Les étapes clés du développement de Gaia
-                      </p>
+                <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-hidden">
+                  <div className="h-full flex flex-col">
+                    {/* Header */}
+                    <div className="p-8 pb-6 border-b border-gray-200 bg-gradient-to-r from-primary/5 to-secondary/5">
+                      <div className="text-center space-y-3">
+                        <div className="flex items-center justify-center gap-3">
+                          <MapPin className="h-10 w-10 text-primary" />
+                          <h2 className="text-4xl font-display font-bold text-gray-900">
+                            Roadmap du Projet
+                          </h2>
+                        </div>
+                        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                          Suivez les étapes clés du développement de Gaia
+                        </p>
+                      </div>
                     </div>
 
-                    {roadmapItems.length > 0 ? (
-                      <>
-                        <div className="space-y-6">
-                          {roadmapItems.map((item, index) => (
-                            <div key={item.id} className="bg-white/80 p-6 rounded-xl shadow-lg border-2 border-gray-200">
-                              <div className="flex items-start gap-4">
-                                <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center text-white font-bold">
-                                  {index + 1}
+                    {/* Content */}
+                    <div className="flex-1 overflow-auto p-8">
+                      {roadmapItems.length > 0 ? (
+                        <div className="space-y-4 max-w-5xl mx-auto">
+                          {/* Progress Overview */}
+                          {(() => {
+                            const completedCount = roadmapItems.filter(item => item.status === 'completed').length;
+                            const inProgressCount = roadmapItems.filter(item => item.status === 'in-progress').length;
+                            const totalCount = roadmapItems.length;
+                            const progressPercentage = Math.round(((completedCount + inProgressCount * 0.5) / totalCount) * 100);
+                            
+                            return (
+                              <div className="mb-6 p-5 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl border border-primary/20">
+                                <div className="flex items-center justify-between mb-3">
+                                  <span className="text-sm font-semibold text-gray-700">Progression globale</span>
+                                  <span className="text-2xl font-bold text-primary">{progressPercentage}%</span>
                                 </div>
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-3 mb-2">
-                                    <h3 className="text-xl font-bold text-gray-900">{item.title}</h3>
-                                    <Badge className={
-                                      item.status === 'completed' ? 'bg-green-500' :
-                                      item.status === 'in-progress' ? 'bg-blue-500' : 'bg-gray-500'
-                                    }>
-                                      {item.status === 'completed' ? 'Terminé' :
-                                       item.status === 'in-progress' ? 'En cours' : 'Planifié'}
-                                    </Badge>
+                                <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+                                  <div 
+                                    className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-500"
+                                    style={{ width: `${progressPercentage}%` }}
+                                  ></div>
+                                </div>
+                                <div className="flex items-center justify-center gap-6 mt-3 text-xs">
+                                  <span className="flex items-center gap-1">
+                                    <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+                                    {completedCount} terminé{completedCount > 1 ? 's' : ''}
+                                  </span>
+                                  <span className="flex items-center gap-1">
+                                    <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
+                                    {inProgressCount} en cours
+                                  </span>
+                                  <span className="flex items-center gap-1">
+                                    <span className="w-3 h-3 bg-gray-400 rounded-full"></span>
+                                    {totalCount - completedCount - inProgressCount} planifié{totalCount - completedCount - inProgressCount > 1 ? 's' : ''}
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          })()}
+
+                          {/* Roadmap Items */}
+                          <div className="space-y-3">
+                            {roadmapItems.slice(0, 4).map((item, index) => (
+                              <div key={item.id} className="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg transition-shadow">
+                                <div className="flex items-start gap-3">
+                                  <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    {index + 1}
                                   </div>
-                                  <p className="text-gray-600 mb-2">{item.description}</p>
-                                  <div className="flex items-center text-sm text-gray-500">
-                                    <Calendar className="h-4 w-4 mr-2" />
-                                    {item.timeline}
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 mb-2 flex-wrap">
+                                      <h3 className="text-base font-bold text-gray-900 truncate">{item.title}</h3>
+                                      <Badge className={`text-xs px-2 py-0.5 ${
+                                        item.status === 'completed' ? 'bg-green-500' :
+                                        item.status === 'in-progress' ? 'bg-blue-500' : 'bg-gray-500'
+                                      }`}>
+                                        {item.status === 'completed' ? '✓ Terminé' :
+                                         item.status === 'in-progress' ? '⚡ En cours' : '📅 Planifié'}
+                                      </Badge>
+                                    </div>
+                                    <p className="text-sm text-gray-600 line-clamp-2 mb-2">{item.description}</p>
+                                    {item.content && (
+                                      <p className="text-xs text-gray-500 line-clamp-1">
+                                        {item.content.replace(/<[^>]*>/g, '').substring(0, 100)}...
+                                      </p>
+                                    )}
+                                    <div className="flex items-center text-xs text-gray-500 mt-2">
+                                      <Calendar className="h-3 w-3 mr-1" />
+                                      {item.timeline}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
-                        </div>
-                        <div className="text-center text-sm text-gray-500">
-                          Aperçu des {roadmapItems.length} premières étapes...
-                        </div>
-                      </>
-                    ) : (
-                      <div className="text-center py-12">
-                        <Calendar className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                        <p className="text-xl text-gray-600">Roadmap en construction</p>
-                      </div>
-                    )}
+                            ))}
+                          </div>
 
-                    <div className="text-center pt-4">
+                          {roadmapItems.length > 4 && (
+                            <div className="text-center text-sm text-gray-500 pt-2">
+                              + {roadmapItems.length - 4} autres étapes
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="text-center py-16">
+                          <Calendar className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                          <p className="text-xl text-gray-600 font-medium">Roadmap en cours de chargement...</p>
+                          <p className="text-sm text-gray-500 mt-2">Les données de la roadmap seront bientôt disponibles</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Footer */}
+                    <div className="p-6 border-t border-gray-200 bg-gray-50/50">
                       <Button
                         size="lg"
                         onClick={() => handleNavigateToPage('/roadmap')}
-                        className="bg-primary hover:bg-primary/90"
+                        className="w-full bg-primary hover:bg-primary/90 text-white shadow-lg"
                       >
+                        <MapPin className="mr-2 h-5 w-5" />
                         Voir la roadmap complète
                         <ExternalLink className="ml-2 h-4 w-4" />
                       </Button>
@@ -553,95 +610,120 @@ const Presentation = () => {
             {/* Slide 7: Documentation */}
             <CarouselItem>
               <div className="h-[80vh] flex items-center justify-center p-8">
-                <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
-                  <div className="p-12 space-y-8">
-                    <div className="text-center space-y-4">
-                      <h2 className="text-5xl font-display font-bold text-gray-900 flex items-center justify-center gap-4">
-                        <BookOpen className="h-12 w-12 text-primary" />
-                        Documentation Technique
-                      </h2>
-                      <p className="text-2xl text-gray-600">
-                        Guide complet du projet Gaia
-                      </p>
+                <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-hidden">
+                  <div className="h-full flex flex-col">
+                    {/* Header */}
+                    <div className="p-8 pb-6 border-b border-gray-200 bg-gradient-to-r from-primary/5 to-secondary/5">
+                      <div className="text-center space-y-3">
+                        <div className="flex items-center justify-center gap-3">
+                          <BookOpen className="h-10 w-10 text-primary" />
+                          <h2 className="text-4xl font-display font-bold text-gray-900">
+                            Documentation Technique
+                          </h2>
+                        </div>
+                        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                          Spécifications, technologies et architecture du système
+                        </p>
+                      </div>
                     </div>
 
-                    {docSections.length > 0 ? (
-                      <div className="space-y-6">
-                        {docSections.map((section, index) => (
-                          <div key={section.id} className="bg-white/80 p-6 rounded-xl shadow-lg border border-gray-200">
-                            <div className="flex items-start gap-4">
-                              <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white font-bold">
-                                {index + 1}
-                              </div>
-                              <div className="flex-1">
-                                <h3 className="text-xl font-bold text-gray-900 mb-2">{section.title}</h3>
-                                <p className="text-gray-600 line-clamp-3">
-                                  {section.content.replace(/<[^>]*>/g, '').substring(0, 200)}...
-                                </p>
+                    {/* Content */}
+                    <div className="flex-1 overflow-auto p-8">
+                      {docSections.length > 0 ? (
+                        <div className="space-y-4 max-w-5xl mx-auto">
+                          {docSections.slice(0, 5).map((section, index) => (
+                            <div key={section.id} className="bg-white rounded-lg shadow-md border border-gray-200 p-5 hover:shadow-lg transition-shadow">
+                              <div className="flex items-start gap-4">
+                                <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                  {index + 1}
+                                </div>
+                                <div className="flex-1">
+                                  <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
+                                    {section.title}
+                                    <Badge variant="secondary" className="text-xs">
+                                      {section.type === 'rich' ? '📝 Rich' : 
+                                       section.type === 'accordion' ? '📋 Accordion' :
+                                       section.type === 'table' ? '📊 Table' :
+                                       section.type === 'callout' ? '💡 Callout' : '📄 Text'}
+                                    </Badge>
+                                  </h3>
+                                  <p className="text-sm text-gray-600 line-clamp-3 leading-relaxed">
+                                    {section.content.replace(/<[^>]*>/g, '').replace(/\n+/g, ' ').substring(0, 200)}
+                                    {section.content.length > 200 && '...'}
+                                  </p>
+                                </div>
                               </div>
                             </div>
+                          ))}
+                          {docSections.length > 5 && (
+                            <div className="text-center text-sm text-gray-500 pt-2">
+                              + {docSections.length - 5} autres sections disponibles
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
+                          <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200 shadow-md text-center">
+                            <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                              <BookOpen className="h-6 w-6 text-white" />
+                            </div>
+                            <h3 className="text-base font-bold text-blue-900 mb-2">Documentation Complète</h3>
+                            <p className="text-sm text-blue-700">
+                              Spécifications techniques et guide d'utilisation détaillé
+                            </p>
                           </div>
-                        ))}
+
+                          <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border border-green-200 shadow-md text-center">
+                            <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                              <Zap className="h-6 w-6 text-white" />
+                            </div>
+                            <h3 className="text-base font-bold text-green-900 mb-2">Technologies Utilisées</h3>
+                            <p className="text-sm text-green-700">
+                              React, TypeScript, Supabase, IoT et Intelligence Artificielle
+                            </p>
+                          </div>
+
+                          <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl border border-purple-200 shadow-md text-center">
+                            <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                              <TreePine className="h-6 w-6 text-white" />
+                            </div>
+                            <h3 className="text-base font-bold text-purple-900 mb-2">Impact Environnemental</h3>
+                            <p className="text-sm text-purple-700">
+                              Solution 100% écologique avec zéro émission
+                            </p>
+                          </div>
+
+                          <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl border border-orange-200 shadow-md text-center">
+                            <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                              <Sparkles className="h-6 w-6 text-white" />
+                            </div>
+                            <h3 className="text-base font-bold text-orange-900 mb-2">Innovation</h3>
+                            <p className="text-sm text-orange-700">
+                              Technologie de pointe combinant drones et IA
+                            </p>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Info Box */}
+                      <div className="mt-6 bg-gradient-to-r from-primary/10 to-secondary/10 p-5 rounded-xl border border-primary/20 text-center max-w-5xl mx-auto">
+                        <p className="text-sm text-gray-700 leading-relaxed">
+                          La documentation contient tous les détails techniques, les spécifications du drone, 
+                          l'architecture du système, et les résultats de nos tests en conditions réelles.
+                        </p>
                       </div>
-                    ) : (
-                      <div className="grid grid-cols-2 gap-6">
-                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl border-2 border-blue-200 shadow-lg text-center">
-                          <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <BookOpen className="h-8 w-8 text-white" />
-                          </div>
-                          <h3 className="text-xl font-bold text-blue-900 mb-3">Documentation Complète</h3>
-                          <p className="text-blue-700">
-                            Spécifications techniques, architecture du système, et guide d'utilisation détaillé
-                          </p>
-                        </div>
-
-                        <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl border-2 border-green-200 shadow-lg text-center">
-                          <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Zap className="h-8 w-8 text-white" />
-                          </div>
-                          <h3 className="text-xl font-bold text-green-900 mb-3">Technologies Utilisées</h3>
-                          <p className="text-green-700">
-                            React, TypeScript, Supabase, IoT, Intelligence Artificielle, et systèmes embarqués
-                          </p>
-                        </div>
-
-                        <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl border-2 border-purple-200 shadow-lg text-center">
-                          <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <TreePine className="h-8 w-8 text-white" />
-                          </div>
-                          <h3 className="text-xl font-bold text-purple-900 mb-3">Impact Environnemental</h3>
-                          <p className="text-purple-700">
-                            Solution 100% écologique avec zéro émission pour accélérer la reforestation
-                          </p>
-                        </div>
-
-                        <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-2xl border-2 border-orange-200 shadow-lg text-center">
-                          <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Sparkles className="h-8 w-8 text-white" />
-                          </div>
-                          <h3 className="text-xl font-bold text-orange-900 mb-3">Innovation</h3>
-                          <p className="text-orange-700">
-                            Technologie de pointe combinant drones, IA, et développement durable
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-8 rounded-2xl border-2 border-primary/20 text-center">
-                      <p className="text-lg text-gray-700 leading-relaxed">
-                        Découvrez tous les détails techniques, les spécifications du drone, 
-                        l'architecture du système, et les résultats de nos tests en conditions réelles.
-                      </p>
                     </div>
 
-                    <div className="text-center pt-4">
+                    {/* Footer */}
+                    <div className="p-6 border-t border-gray-200 bg-gray-50/50">
                       <Button
                         size="lg"
                         onClick={() => handleNavigateToPage('/documentation')}
-                        className="bg-primary hover:bg-primary/90"
+                        className="w-full bg-primary hover:bg-primary/90 text-white shadow-lg"
                       >
                         <BookOpen className="mr-2 h-5 w-5" />
-                        Consulter la documentation
+                        Consulter la documentation complète
+                        <ExternalLink className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                   </div>
