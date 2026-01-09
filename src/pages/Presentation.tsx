@@ -34,6 +34,10 @@ import {
   Image,
   Camera,
   Cpu,
+  Globe,
+  Target,
+  List,
+  CheckCircle2,
 } from 'lucide-react';
 import { roadmapService, type RoadmapItem } from '@/lib/supabase-roadmap';
 import { sponsorsService, type Sponsor } from '@/lib/supabase-sponsors';
