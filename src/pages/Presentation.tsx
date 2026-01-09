@@ -405,9 +405,9 @@ const Presentation = () => {
                             );
                           })()}
 
-                          {/* Roadmap Items */}
-                          <div className="space-y-3">
-                            {roadmapItems.slice(0, 4).map((item, index) => (
+                          {/* Roadmap Items - Show ALL items in scrollable view */}
+                          <div className="space-y-3 max-h-[450px] overflow-y-auto pr-2">
+                            {roadmapItems.map((item, index) => (
                               <div key={item.id} className="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg transition-shadow">
                                 <div className="flex items-start gap-3">
                                   <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center text-white font-bold text-sm">
@@ -415,7 +415,7 @@ const Presentation = () => {
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2 mb-2 flex-wrap">
-                                      <h3 className="text-base font-bold text-gray-900 truncate">{item.title}</h3>
+                                      <h3 className="text-base font-bold text-gray-900">{item.title}</h3>
                                       <Badge className={`text-xs px-2 py-0.5 ${
                                         item.status === 'completed' ? 'bg-green-500' :
                                         item.status === 'in-progress' ? 'bg-blue-500' : 'bg-gray-500'
@@ -423,28 +423,30 @@ const Presentation = () => {
                                         {item.status === 'completed' ? '✓ Terminé' :
                                          item.status === 'in-progress' ? '⚡ En cours' : '📅 Planifié'}
                                       </Badge>
+                                      <div className="flex items-center text-xs text-gray-500 ml-auto">
+                                        <Calendar className="h-3 w-3 mr-1" />
+                                        {item.timeline}
+                                      </div>
                                     </div>
-                                    <p className="text-sm text-gray-600 line-clamp-2 mb-2">{item.description}</p>
+                                    <p className="text-sm text-gray-600 mb-2">{item.description}</p>
                                     {item.content && (
-                                      <p className="text-xs text-gray-500 line-clamp-1">
-                                        {item.content.replace(/<[^>]*>/g, '').substring(0, 100)}...
-                                      </p>
+                                      <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded border border-gray-100">
+                                        <p className="line-clamp-2">
+                                          {item.content.replace(/<[^>]*>/g, '').substring(0, 150)}
+                                          {item.content.length > 150 && '...'}
+                                        </p>
+                                      </div>
                                     )}
-                                    <div className="flex items-center text-xs text-gray-500 mt-2">
-                                      <Calendar className="h-3 w-3 mr-1" />
-                                      {item.timeline}
-                                    </div>
                                   </div>
                                 </div>
                               </div>
                             ))}
                           </div>
 
-                          {roadmapItems.length > 4 && (
-                            <div className="text-center text-sm text-gray-500 pt-2">
-                              + {roadmapItems.length - 4} autres étapes
-                            </div>
-                          )}
+                          <div className="text-center text-sm text-gray-600 pt-2 bg-primary/5 p-3 rounded-lg">
+                            <CheckCircle2 className="inline h-4 w-4 mr-1 text-primary" />
+                            Affichage de {roadmapItems.length} étape{roadmapItems.length > 1 ? 's' : ''} au total
+                          </div>
                         </div>
                       ) : (
                         <div className="text-center py-16">
@@ -631,35 +633,41 @@ const Presentation = () => {
                     <div className="flex-1 overflow-auto p-8">
                       {docSections.length > 0 ? (
                         <div className="space-y-4 max-w-5xl mx-auto">
-                          {docSections.slice(0, 5).map((section, index) => (
-                            <div key={section.id} className="bg-white rounded-lg shadow-md border border-gray-200 p-5 hover:shadow-lg transition-shadow">
-                              <div className="flex items-start gap-4">
-                                <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                  {index + 1}
-                                </div>
-                                <div className="flex-1">
-                                  <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
-                                    {section.title}
-                                    <Badge variant="secondary" className="text-xs">
-                                      {section.type === 'rich' ? '📝 Rich' : 
-                                       section.type === 'accordion' ? '📋 Accordion' :
-                                       section.type === 'table' ? '📊 Table' :
-                                       section.type === 'callout' ? '💡 Callout' : '📄 Text'}
-                                    </Badge>
-                                  </h3>
-                                  <p className="text-sm text-gray-600 line-clamp-3 leading-relaxed">
-                                    {section.content.replace(/<[^>]*>/g, '').replace(/\n+/g, ' ').substring(0, 200)}
-                                    {section.content.length > 200 && '...'}
-                                  </p>
+                          {/* Show ALL documentation sections in scrollable view */}
+                          <div className="space-y-3 max-h-[450px] overflow-y-auto pr-2">
+                            {docSections.map((section, index) => (
+                              <div key={section.id} className="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg transition-shadow">
+                                <div className="flex items-start gap-4">
+                                  <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    {index + 1}
+                                  </div>
+                                  <div className="flex-1">
+                                    <h3 className="text-base font-bold text-gray-900 mb-2 flex items-center gap-2 flex-wrap">
+                                      {section.title}
+                                      <Badge variant="secondary" className="text-xs">
+                                        {section.type === 'rich' ? '📝 Rich' : 
+                                         section.type === 'accordion' ? '📋 Accordion' :
+                                         section.type === 'table' ? '📊 Table' :
+                                         section.type === 'callout' ? '💡 Callout' :
+                                         section.type === 'checklist' ? '✅ Checklist' : '📄 Text'}
+                                      </Badge>
+                                    </h3>
+                                    <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded border border-gray-100">
+                                      <p className="line-clamp-3 leading-relaxed">
+                                        {section.content.replace(/<[^>]*>/g, '').replace(/\n+/g, ' ').substring(0, 250)}
+                                        {section.content.length > 250 && '...'}
+                                      </p>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
-                          {docSections.length > 5 && (
-                            <div className="text-center text-sm text-gray-500 pt-2">
-                              + {docSections.length - 5} autres sections disponibles
-                            </div>
-                          )}
+                            ))}
+                          </div>
+
+                          <div className="text-center text-sm text-gray-600 pt-2 bg-primary/5 p-3 rounded-lg">
+                            <BookOpen className="inline h-4 w-4 mr-1 text-primary" />
+                            Affichage de {docSections.length} section{docSections.length > 1 ? 's' : ''} au total
+                          </div>
                         </div>
                       ) : (
                         <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
