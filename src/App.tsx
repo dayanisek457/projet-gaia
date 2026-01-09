@@ -8,6 +8,7 @@ import Admin from "./pages/Admin";
 import Documentation from "./pages/Documentation";
 import Partenaires from "./pages/Partenaires";
 import Roadmap from "./pages/Roadmap";
+import Presentation from "./pages/Presentation";
 import GalleryResources from "./pages/GalleryResources";
 import S3Test from "./pages/S3Test";
 import RoadmapTest from "./pages/RoadmapTest";
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/documentation" element={<Documentation />} />
           <Route path="/partenaires" element={<Partenaires />} />
           <Route path="/roadmap" element={<Roadmap />} />
+          <Route path="/presentation" element={<Presentation />} />
           <Route path="/galerie" element={<GalleryResources />} />
           <Route path="/s3test" element={<S3Test />} />
           <Route path="/roadmaptest" element={<RoadmapTest />} />

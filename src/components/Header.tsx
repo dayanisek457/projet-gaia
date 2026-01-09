@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Instagram } from 'lucide-react';
+import { Menu, X, Instagram, Presentation } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
@@ -66,6 +66,19 @@ const Header = () => {
               <Instagram className="h-6 w-6" />
             </a>
             
+            {/* Presentation Mode Button */}
+            <Button 
+              variant="outline" 
+              size="default" 
+              className="btn-hero border-2 border-secondary/30 hover:border-secondary text-secondary hover:bg-secondary hover:text-white font-display font-semibold px-6 py-2.5 rounded-lg text-base"
+              asChild
+            >
+              <Link to="/presentation">
+                <Presentation className="h-4 w-4 mr-2" />
+                Présentation
+              </Link>
+            </Button>
+            
             <Button 
               variant="outline" 
               size="default" 
@@ -125,7 +138,20 @@ const Header = () => {
                 Instagram
               </a>
               
-              <div className="px-4 pt-2">
+              <div className="px-4 pt-2 space-y-2">
+                <Button 
+                  variant="outline" 
+                  size="default" 
+                  className="btn-hero w-full border-2 border-secondary/30 hover:border-secondary text-secondary hover:bg-secondary hover:text-white font-display font-semibold rounded-lg text-base"
+                  asChild
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Link to="/presentation">
+                    <Presentation className="h-4 w-4 mr-2" />
+                    Mode Présentation
+                  </Link>
+                </Button>
+                
                 <Button 
                   variant="outline" 
                   size="default" 
