@@ -31,6 +31,14 @@ import {
   Calendar,
   Sparkles,
   BookOpen,
+  Plane,
+  Target,
+  ArrowRight,
+  CheckCircle2,
+  XCircle,
+  DollarSign,
+  Settings,
+  Package,
 } from 'lucide-react';
 import { roadmapService, type RoadmapItem } from '@/lib/supabase-roadmap';
 import { sponsorsService, type Sponsor } from '@/lib/supabase-sponsors';
@@ -333,7 +341,466 @@ const Presentation = () => {
               </div>
             </CarouselItem>
 
-            {/* Slide 4: Roadmap */}
+            {/* Slide 4: Clarification Stratégique */}
+            <CarouselItem>
+              <div className="h-[80vh] flex items-center justify-center p-8">
+                <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
+                  <div className="p-12 space-y-8">
+                    <div className="text-center space-y-4">
+                      <h2 className="text-5xl font-display font-bold text-gray-900 flex items-center justify-center gap-4">
+                        <Target className="h-12 w-12 text-primary" />
+                        Notre Vision Stratégique
+                      </h2>
+                      <p className="text-2xl text-gray-600 max-w-4xl mx-auto">
+                        Un produit fini pour démontrer le concept
+                      </p>
+                    </div>
+
+                    {/* Vision principale */}
+                    <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-8 rounded-2xl border-2 border-primary/20">
+                      <h3 className="text-2xl font-bold text-primary mb-4 text-center">Notre Approche</h3>
+                      <p className="text-xl text-gray-700 leading-relaxed text-center max-w-3xl mx-auto">
+                        Nous développons un <strong>petit avion radiocommandé de plantation</strong> comme 
+                        produit fini et démonstration de concept. Cette approche nous permet de valider 
+                        la technologie à petite échelle avant un déploiement à plus grande envergure.
+                      </p>
+                    </div>
+
+                    {/* Deux phases */}
+                    <div className="grid grid-cols-2 gap-6">
+                      <div className="bg-white/80 p-8 rounded-xl shadow-lg border-2 border-blue-200">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl">1</div>
+                          <h3 className="text-2xl font-bold text-gray-900">Phase Actuelle</h3>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="flex items-start gap-3">
+                            <CheckCircle2 className="h-6 w-6 text-green-500 flex-shrink-0 mt-1" />
+                            <p className="text-gray-700"><strong>Petit avion RC</strong> - Prototype fonctionnel</p>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <CheckCircle2 className="h-6 w-6 text-green-500 flex-shrink-0 mt-1" />
+                            <p className="text-gray-700"><strong>Tests réels</strong> - Validation du concept</p>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <CheckCircle2 className="h-6 w-6 text-green-500 flex-shrink-0 mt-1" />
+                            <p className="text-gray-700"><strong>Démonstration</strong> - Preuve de faisabilité</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-white/80 p-8 rounded-xl shadow-lg border-2 border-purple-200">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl">2</div>
+                          <h3 className="text-2xl font-bold text-gray-900">Vision Future</h3>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="flex items-start gap-3">
+                            <Sparkles className="h-6 w-6 text-purple-500 flex-shrink-0 mt-1" />
+                            <p className="text-gray-700"><strong>Adaptation</strong> - Systèmes pour gros avions</p>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <Sparkles className="h-6 w-6 text-purple-500 flex-shrink-0 mt-1" />
+                            <p className="text-gray-700"><strong>Industrialisation</strong> - Production à grande échelle</p>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <Sparkles className="h-6 w-6 text-purple-500 flex-shrink-0 mt-1" />
+                            <p className="text-gray-700"><strong>Déploiement mondial</strong> - Impact massif</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-xl border border-green-200 text-center">
+                      <p className="text-lg text-gray-700 leading-relaxed">
+                        <strong>💡 Stratégie :</strong> Commencer petit, prouver le concept, puis passer à l'échelle industrielle
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </CarouselItem>
+
+            {/* Slide 5: Avion RC vs Drone - Justification */}
+            <CarouselItem>
+              <div className="h-[80vh] flex items-center justify-center p-8">
+                <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
+                  <div className="p-12 space-y-8">
+                    <div className="text-center space-y-4">
+                      <h2 className="text-5xl font-display font-bold text-gray-900 flex items-center justify-center gap-4">
+                        <Plane className="h-12 w-12 text-blue-500" />
+                        Pourquoi un Avion RC plutôt qu'un Drone ?
+                      </h2>
+                      <p className="text-2xl text-gray-600 max-w-4xl mx-auto">
+                        Un choix stratégique basé sur le coût et la simplicité
+                      </p>
+                    </div>
+
+                    {/* Comparaison tableau */}
+                    <div className="grid grid-cols-2 gap-8">
+                      {/* Avion RC - Nos avantages */}
+                      <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl border-2 border-green-300 shadow-lg">
+                        <div className="flex items-center gap-3 mb-6">
+                          <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
+                            <Plane className="h-8 w-8 text-white" />
+                          </div>
+                          <h3 className="text-3xl font-bold text-green-900">Avion RC</h3>
+                        </div>
+                        <div className="space-y-4">
+                          <div className="flex items-start gap-3">
+                            <CheckCircle2 className="h-6 w-6 text-green-600 flex-shrink-0 mt-1" />
+                            <div>
+                              <p className="font-bold text-green-900">Coût abordable</p>
+                              <p className="text-sm text-green-700">300-800€ pour un avion complet</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <CheckCircle2 className="h-6 w-6 text-green-600 flex-shrink-0 mt-1" />
+                            <div>
+                              <p className="font-bold text-green-900">Simplicité mécanique</p>
+                              <p className="text-sm text-green-700">Moins de moteurs et capteurs</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <CheckCircle2 className="h-6 w-6 text-green-600 flex-shrink-0 mt-1" />
+                            <div>
+                              <p className="font-bold text-green-900">Autonomie supérieure</p>
+                              <p className="text-sm text-green-700">Vol plané = moins d'énergie</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <CheckCircle2 className="h-6 w-6 text-green-600 flex-shrink-0 mt-1" />
+                            <div>
+                              <p className="font-bold text-green-900">Maintenance simple</p>
+                              <p className="text-sm text-green-700">Pièces standardisées et accessibles</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <CheckCircle2 className="h-6 w-6 text-green-600 flex-shrink-0 mt-1" />
+                            <div>
+                              <p className="font-bold text-green-900">Vitesse et portée</p>
+                              <p className="text-sm text-green-700">Couvre de grandes zones rapidement</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Drone - Limitations */}
+                      <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-2xl border-2 border-orange-300 shadow-lg">
+                        <div className="flex items-center gap-3 mb-6">
+                          <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center">
+                            <Wind className="h-8 w-8 text-white" />
+                          </div>
+                          <h3 className="text-3xl font-bold text-orange-900">Drone Quadricoptère</h3>
+                        </div>
+                        <div className="space-y-4">
+                          <div className="flex items-start gap-3">
+                            <XCircle className="h-6 w-6 text-orange-600 flex-shrink-0 mt-1" />
+                            <div>
+                              <p className="font-bold text-orange-900">Coût élevé</p>
+                              <p className="text-sm text-orange-700">1500-5000€+ pour capacité similaire</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <XCircle className="h-6 w-6 text-orange-600 flex-shrink-0 mt-1" />
+                            <div>
+                              <p className="font-bold text-orange-900">Complexité technique</p>
+                              <p className="text-sm text-orange-700">4+ moteurs, électronique avancée</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <XCircle className="h-6 w-6 text-orange-600 flex-shrink-0 mt-1" />
+                            <div>
+                              <p className="font-bold text-orange-900">Autonomie limitée</p>
+                              <p className="text-sm text-orange-700">15-30 min max (vol stationnaire énergivore)</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <XCircle className="h-6 w-6 text-orange-600 flex-shrink-0 mt-1" />
+                            <div>
+                              <p className="font-bold text-orange-900">Maintenance complexe</p>
+                              <p className="text-sm text-orange-700">Multiples points de défaillance</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <AlertTriangle className="h-6 w-6 text-orange-600 flex-shrink-0 mt-1" />
+                            <div>
+                              <p className="font-bold text-orange-900">Sensibilité au vent</p>
+                              <p className="text-sm text-orange-700">Difficultés en conditions venteuses</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Conclusion */}
+                    <div className="bg-gradient-to-r from-primary to-secondary p-8 rounded-2xl text-white shadow-xl text-center">
+                      <h3 className="text-2xl font-bold mb-4">✓ Notre Décision</h3>
+                      <p className="text-lg leading-relaxed max-w-3xl mx-auto">
+                        L'avion radiocommandé offre le meilleur <strong>rapport coût/efficacité</strong> pour 
+                        notre projet étudiant. Il permet de démontrer le concept avec un budget réaliste 
+                        tout en garantissant des performances supérieures (autonomie, vitesse, simplicité).
+                      </p>
+                    </div>
+
+                    <div className="bg-blue-50 p-6 rounded-xl border border-blue-200 text-center">
+                      <p className="text-gray-700">
+                        <strong>💡 Note :</strong> Les drones restent pertinents pour d'autres applications 
+                        (surveillance, inspection), mais l'avion est optimal pour la reforestation à grande échelle.
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </CarouselItem>
+
+            {/* Slide 6: Tutoriel Palonniers (Rudder Controls) */}
+            <CarouselItem>
+              <div className="h-[80vh] flex items-center justify-center p-8">
+                <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
+                  <div className="p-12 space-y-8">
+                    <div className="text-center space-y-4">
+                      <h2 className="text-5xl font-display font-bold text-gray-900 flex items-center justify-center gap-4">
+                        <Settings className="h-12 w-12 text-blue-500" />
+                        Fonctionnement des Palonniers
+                      </h2>
+                      <p className="text-2xl text-gray-600 max-w-4xl mx-auto">
+                        Les commandes de vol qui contrôlent l'avion
+                      </p>
+                    </div>
+
+                    {/* Description des palonniers */}
+                    <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-2xl border-2 border-blue-200">
+                      <h3 className="text-2xl font-bold text-blue-900 mb-4 text-center">Qu'est-ce qu'un palonnier ?</h3>
+                      <p className="text-lg text-gray-700 leading-relaxed text-center max-w-3xl mx-auto">
+                        Les <strong>palonniers</strong> (ou "control horns" en anglais) sont des leviers fixés sur 
+                        les surfaces mobiles de l'avion (ailerons, gouverne de profondeur, gouverne de direction). 
+                        Ils transforment le mouvement linéaire des servomoteurs en mouvement rotatif des surfaces de contrôle.
+                      </p>
+                    </div>
+
+                    {/* Schéma explicatif avec flèches */}
+                    <div className="grid grid-cols-3 gap-6">
+                      {/* Étape 1 */}
+                      <div className="bg-white p-6 rounded-xl shadow-lg border-2 border-blue-200">
+                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">1</div>
+                        <h4 className="font-bold text-lg text-center mb-3 text-gray-900">Signal Radio</h4>
+                        <div className="flex justify-center mb-3">
+                          <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <Wind className="h-10 w-10 text-blue-600" />
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-600 text-center">
+                          La télécommande envoie un signal radio au récepteur embarqué
+                        </p>
+                        <div className="flex justify-center mt-3">
+                          <ArrowRight className="h-8 w-8 text-blue-500" />
+                        </div>
+                      </div>
+
+                      {/* Étape 2 */}
+                      <div className="bg-white p-6 rounded-xl shadow-lg border-2 border-green-200">
+                        <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">2</div>
+                        <h4 className="font-bold text-lg text-center mb-3 text-gray-900">Servomoteur</h4>
+                        <div className="flex justify-center mb-3">
+                          <div className="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center">
+                            <Settings className="h-10 w-10 text-green-600" />
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-600 text-center">
+                          Le servo reçoit le signal et tire/pousse la tringlerie connectée au palonnier
+                        </p>
+                        <div className="flex justify-center mt-3">
+                          <ArrowRight className="h-8 w-8 text-green-500" />
+                        </div>
+                      </div>
+
+                      {/* Étape 3 */}
+                      <div className="bg-white p-6 rounded-xl shadow-lg border-2 border-purple-200">
+                        <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">3</div>
+                        <h4 className="font-bold text-lg text-center mb-3 text-gray-900">Palonnier & Surface</h4>
+                        <div className="flex justify-center mb-3">
+                          <div className="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <Plane className="h-10 w-10 text-purple-600" />
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-600 text-center">
+                          Le palonnier convertit le mouvement linéaire en rotation de la surface de contrôle
+                        </p>
+                        <div className="flex justify-center mt-3">
+                          <CheckCircle2 className="h-8 w-8 text-purple-500" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Les 3 axes de contrôle */}
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-xl border border-red-200 text-center">
+                        <h4 className="font-bold text-red-900 mb-2">Roulis (Roll)</h4>
+                        <p className="text-sm text-red-700">Ailerons → Inclinaison latérale</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border border-green-200 text-center">
+                        <h4 className="font-bold text-green-900 mb-2">Tangage (Pitch)</h4>
+                        <p className="text-sm text-green-700">Gouverne de profondeur → Montée/Descente</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200 text-center">
+                        <h4 className="font-bold text-blue-900 mb-2">Lacet (Yaw)</h4>
+                        <p className="text-sm text-blue-700">Gouverne de direction → Rotation gauche/droite</p>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-blue-100 to-purple-100 p-6 rounded-xl border-2 border-blue-300 text-center">
+                      <p className="text-lg text-gray-700 leading-relaxed">
+                        <strong>💡 Astuce :</strong> Chaque surface de contrôle a son propre palonnier, permettant 
+                        un contrôle précis et indépendant des 3 axes de vol.
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </CarouselItem>
+
+            {/* Slide 7: Schémas 3D Annotés - Carte d'Histoire */}
+            <CarouselItem>
+              <div className="h-[80vh] flex items-center justify-center p-8">
+                <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
+                  <div className="p-12 space-y-8">
+                    <div className="text-center space-y-4">
+                      <h2 className="text-5xl font-display font-bold text-gray-900 flex items-center justify-center gap-4">
+                        <Package className="h-12 w-12 text-purple-500" />
+                        Architecture Technique 3D
+                      </h2>
+                      <p className="text-2xl text-gray-600 max-w-4xl mx-auto">
+                        Carte d'histoire : de la conception au vol
+                      </p>
+                    </div>
+
+                    {/* Image 3D avec annotations */}
+                    <div className="bg-white p-8 rounded-2xl shadow-lg border-2 border-purple-200">
+                      <div className="relative">
+                        {/* Placeholder pour l'image 3D - Utilisation de l'image existante */}
+                        <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl overflow-hidden border-2 border-gray-300">
+                          <img 
+                            src="/gallery/type_aile2.png" 
+                            alt="Modèle 3D de l'avion Gaia"
+                            className="w-full h-auto"
+                          />
+                        </div>
+                        
+                        {/* Annotations superposées */}
+                        <div className="mt-6 grid grid-cols-2 gap-4">
+                          <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                            <div className="flex items-start gap-3">
+                              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">1</div>
+                              <div>
+                                <h4 className="font-bold text-blue-900">Aile principale</h4>
+                                <p className="text-sm text-blue-700">Profil aérodynamique pour portance optimale</p>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                            <div className="flex items-start gap-3">
+                              <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">2</div>
+                              <div>
+                                <h4 className="font-bold text-green-900">Fuselage</h4>
+                                <p className="text-sm text-green-700">Structure centrale avec compartiment de charge</p>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                            <div className="flex items-start gap-3">
+                              <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">3</div>
+                              <div>
+                                <h4 className="font-bold text-purple-900">Soute à graines</h4>
+                                <p className="text-sm text-purple-700">Système de largage automatisé des seedballs</p>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+                            <div className="flex items-start gap-3">
+                              <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">4</div>
+                              <div>
+                                <h4 className="font-bold text-orange-900">Empennage</h4>
+                                <p className="text-sm text-orange-700">Stabilisateurs et gouvernes de contrôle</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Carte d'histoire - Workflow */}
+                    <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-8 rounded-2xl border-2 border-purple-200">
+                      <h3 className="text-2xl font-bold text-center text-purple-900 mb-6">Parcours du Vol de Plantation</h3>
+                      <div className="grid grid-cols-5 gap-3">
+                        <div className="text-center">
+                          <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">1</div>
+                          <p className="text-xs font-semibold text-gray-800">Décollage</p>
+                          <p className="text-xs text-gray-600">Piste courte</p>
+                        </div>
+                        <div className="flex items-center justify-center">
+                          <ArrowRight className="h-6 w-6 text-purple-400" />
+                        </div>
+                        <div className="text-center">
+                          <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">2</div>
+                          <p className="text-xs font-semibold text-gray-800">Navigation</p>
+                          <p className="text-xs text-gray-600">GPS autonome</p>
+                        </div>
+                        <div className="flex items-center justify-center">
+                          <ArrowRight className="h-6 w-6 text-blue-400" />
+                        </div>
+                        <div className="text-center">
+                          <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">3</div>
+                          <p className="text-xs font-semibold text-gray-800">Largage</p>
+                          <p className="text-xs text-gray-600">Zone ciblée</p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-3 mt-3">
+                        <div className="col-start-2 text-center">
+                          <ArrowRight className="h-6 w-6 text-green-400 mx-auto rotate-180" />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-5 gap-3">
+                        <div className="col-start-3 text-center">
+                          <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">4</div>
+                          <p className="text-xs font-semibold text-gray-800">Retour</p>
+                          <p className="text-xs text-gray-600">Base auto</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Composants clés */}
+                    <div className="grid grid-cols-4 gap-4">
+                      <div className="bg-white p-4 rounded-lg shadow border border-gray-200 text-center">
+                        <Zap className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
+                        <p className="text-xs font-bold">Batterie LiPo</p>
+                        <p className="text-xs text-gray-600">2200-5000mAh</p>
+                      </div>
+                      <div className="bg-white p-4 rounded-lg shadow border border-gray-200 text-center">
+                        <Wind className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+                        <p className="text-xs font-bold">Moteur brushless</p>
+                        <p className="text-xs text-gray-600">800-1000W</p>
+                      </div>
+                      <div className="bg-white p-4 rounded-lg shadow border border-gray-200 text-center">
+                        <Settings className="h-8 w-8 text-gray-500 mx-auto mb-2" />
+                        <p className="text-xs font-bold">5 Servos</p>
+                        <p className="text-xs text-gray-600">Contrôles vol</p>
+                      </div>
+                      <div className="bg-white p-4 rounded-lg shadow border border-gray-200 text-center">
+                        <TreePine className="h-8 w-8 text-green-500 mx-auto mb-2" />
+                        <p className="text-xs font-bold">Soute 2-5kg</p>
+                        <p className="text-xs text-gray-600">500+ graines</p>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </CarouselItem>
+
+            {/* Slide 8: Roadmap */}
             <CarouselItem>
               <div className="h-[80vh] flex items-center justify-center p-8">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
@@ -404,7 +871,7 @@ const Presentation = () => {
               </div>
             </CarouselItem>
 
-            {/* Slide 5: L'Équipe */}
+            {/* Slide 9: L'Équipe */}
             <CarouselItem>
               <div className="h-[80vh] flex items-center justify-center p-8">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
@@ -459,7 +926,7 @@ const Presentation = () => {
               </div>
             </CarouselItem>
 
-            {/* Slide 6: Partenaires */}
+            {/* Slide 10: Partenaires */}
             <CarouselItem>
               <div className="h-[80vh] flex items-center justify-center p-8">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
@@ -539,7 +1006,7 @@ const Presentation = () => {
               </div>
             </CarouselItem>
 
-            {/* Slide 7: Documentation */}
+            {/* Slide 11: Documentation */}
             <CarouselItem>
               <div className="h-[80vh] flex items-center justify-center p-8">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
@@ -618,7 +1085,7 @@ const Presentation = () => {
               </div>
             </CarouselItem>
 
-            {/* Slide 8: Contact & Conclusion */}
+            {/* Slide 12: Contact & Conclusion */}
             <CarouselItem>
               <div className="h-[80vh] flex items-center justify-center p-8">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl flex items-center justify-center">
