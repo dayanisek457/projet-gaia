@@ -39,6 +39,16 @@ import {
   DollarSign,
   Settings,
   Package,
+  Microscope,
+  GraduationCap,
+  Beaker,
+  Calculator,
+  BarChart3,
+  LineChart,
+  TrendingUp,
+  Cpu,
+  Building2,
+  Sprout,
 } from 'lucide-react';
 import { roadmapService, type RoadmapItem } from '@/lib/supabase-roadmap';
 import { sponsorsService, type Sponsor } from '@/lib/supabase-sponsors';
@@ -154,7 +164,7 @@ const Presentation = () => {
       <div className="container mx-auto px-4 h-screen flex items-center justify-center relative z-10">
         <Carousel
           setApi={setApi}
-          className="w-full max-w-7xl"
+          className="w-full max-w-[98vw]"
           opts={{
             align: 'center',
             loop: false,
@@ -163,7 +173,7 @@ const Presentation = () => {
           <CarouselContent>
             {/* Slide 1: Cover/Hero */}
             <CarouselItem>
-              <div className="h-[80vh] flex items-center justify-center p-8">
+              <div className="h-[92vh] flex items-center justify-center p-4">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl flex items-center justify-center">
                   <div className="text-center space-y-8 p-12">
                     <div className="inline-block animate-scale-in">
@@ -191,7 +201,7 @@ const Presentation = () => {
 
             {/* Slide 2: Problématique */}
             <CarouselItem>
-              <div className="h-[80vh] flex items-center justify-center p-8">
+              <div className="h-[92vh] flex items-center justify-center p-4">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
                   <div className="p-12 space-y-8">
                     <div className="text-center space-y-4">
@@ -273,7 +283,7 @@ const Presentation = () => {
 
             {/* Slide 3: Notre Solution */}
             <CarouselItem>
-              <div className="h-[80vh] flex items-center justify-center p-8">
+              <div className="h-[92vh] flex items-center justify-center p-4">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
                   <div className="p-12 space-y-8">
                     <div className="text-center space-y-4">
@@ -343,7 +353,7 @@ const Presentation = () => {
 
             {/* Slide 4: Clarification Stratégique */}
             <CarouselItem>
-              <div className="h-[80vh] flex items-center justify-center p-8">
+              <div className="h-[92vh] flex items-center justify-center p-4">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
                   <div className="p-12 space-y-8">
                     <div className="text-center space-y-4">
@@ -423,7 +433,7 @@ const Presentation = () => {
 
             {/* Slide 5: Avion RC vs Drone - Justification */}
             <CarouselItem>
-              <div className="h-[80vh] flex items-center justify-center p-8">
+              <div className="h-[92vh] flex items-center justify-center p-4">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
                   <div className="p-12 space-y-8">
                     <div className="text-center space-y-4">
@@ -437,7 +447,7 @@ const Presentation = () => {
                     </div>
 
                     {/* Comparaison tableau */}
-                    <div className="grid grid-cols-2 gap-8">
+                    <div className="grid grid-cols-2 gap-4">
                       {/* Avion RC - Nos avantages */}
                       <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl border-2 border-green-300 shadow-lg">
                         <div className="flex items-center gap-3 mb-6">
@@ -556,7 +566,7 @@ const Presentation = () => {
 
             {/* Slide 6: Tutoriel Palonniers (Rudder Controls) */}
             <CarouselItem>
-              <div className="h-[80vh] flex items-center justify-center p-8">
+              <div className="h-[92vh] flex items-center justify-center p-4">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
                   <div className="p-12 space-y-8">
                     <div className="text-center space-y-4">
@@ -662,7 +672,7 @@ const Presentation = () => {
 
             {/* Slide 7: Schémas 3D Annotés - Carte d'Histoire */}
             <CarouselItem>
-              <div className="h-[80vh] flex items-center justify-center p-8">
+              <div className="h-[92vh] flex items-center justify-center p-4">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
                   <div className="p-12 space-y-8">
                     <div className="text-center space-y-4">
@@ -800,9 +810,725 @@ const Presentation = () => {
               </div>
             </CarouselItem>
 
+            {/* NEW SLIDE: Ancrage Sociétal - Ville de Demain */}
+            <CarouselItem>
+              <div className="h-[92vh] flex items-center justify-center p-4">
+                <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
+                  <div className="p-10 space-y-6">
+                    <div className="text-center space-y-4">
+                      <h2 className="text-5xl font-display font-bold text-gray-900 flex items-center justify-center gap-4">
+                        <Building2 className="h-12 w-12 text-orange-500" />
+                        L'Ingénierie au Service de la Ville de Demain
+                      </h2>
+                      <p className="text-2xl text-gray-600 max-w-5xl mx-auto">
+                        Gaia s'inscrit dans une vision d'urbanisme durable et intelligent
+                      </p>
+                    </div>
+
+                    {/* Ancrage thématique */}
+                    <div className="bg-gradient-to-r from-orange-50 to-green-50 p-6 rounded-2xl border-2 border-orange-200">
+                      <h3 className="text-2xl font-bold text-orange-900 mb-4 text-center">🌍 Notre Vision Urbaine</h3>
+                      <p className="text-lg text-gray-700 leading-relaxed text-center max-w-4xl mx-auto">
+                        Les villes de demain devront intégrer la nature pour être vivables. Gaia propose une solution 
+                        d'ingénierie aéronautique pour végétaliser rapidement les espaces urbains et périurbains, 
+                        créant des poumons verts essentiels à la santé des citadins.
+                      </p>
+                    </div>
+
+                    {/* Applications urbaines */}
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="bg-white p-6 rounded-xl shadow-lg border-2 border-green-200">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                            <Sprout className="h-6 w-6 text-white" />
+                          </div>
+                          <h4 className="font-bold text-lg text-gray-900">Espaces Verts Urbains</h4>
+                        </div>
+                        <p className="text-sm text-gray-600">
+                          Revégétalisation rapide des friches industrielles, toits végétalisés, 
+                          et création de corridors écologiques en ville
+                        </p>
+                      </div>
+
+                      <div className="bg-white p-6 rounded-xl shadow-lg border-2 border-blue-200">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                            <Wind className="h-6 w-6 text-white" />
+                          </div>
+                          <h4 className="font-bold text-lg text-gray-900">Qualité de l'Air</h4>
+                        </div>
+                        <p className="text-sm text-gray-600">
+                          Les arbres plantés absorbent CO₂ et polluants, améliorant la qualité 
+                          de l'air des zones urbaines denses
+                        </p>
+                      </div>
+
+                      <div className="bg-white p-6 rounded-xl shadow-lg border-2 border-purple-200">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
+                            <Droplets className="h-6 w-6 text-white" />
+                          </div>
+                          <h4 className="font-bold text-lg text-gray-900">Gestion des Eaux</h4>
+                        </div>
+                        <p className="text-sm text-gray-600">
+                          Réduction des îlots de chaleur urbains et meilleure absorption 
+                          des eaux pluviales par les sols végétalisés
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Bénéfices mesurables */}
+                    <div className="grid grid-cols-4 gap-4">
+                      <div className="bg-gradient-to-br from-green-100 to-green-200 p-4 rounded-xl text-center">
+                        <p className="text-3xl font-bold text-green-800 mb-1">-5°C</p>
+                        <p className="text-xs text-green-700">Réduction température urbaine</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-blue-100 to-blue-200 p-4 rounded-xl text-center">
+                        <p className="text-3xl font-bold text-blue-800 mb-1">30%</p>
+                        <p className="text-xs text-blue-700">Amélioration qualité d'air</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-purple-100 to-purple-200 p-4 rounded-xl text-center">
+                        <p className="text-3xl font-bold text-purple-800 mb-1">x10</p>
+                        <p className="text-xs text-purple-700">Rapidité vs plantation manuelle</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-orange-100 to-orange-200 p-4 rounded-xl text-center">
+                        <p className="text-3xl font-bold text-orange-800 mb-1">80%</p>
+                        <p className="text-xs text-orange-700">Réduction coûts logistiques</p>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-5 rounded-xl border border-primary/30 text-center">
+                      <p className="text-base text-gray-700 leading-relaxed">
+                        <strong>💡 Impact :</strong> Gaia transforme l'ingénierie aéronautique en outil de 
+                        développement durable urbain, rendant les villes plus vertes, respirables et résilientes 
+                        face au changement climatique.
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </CarouselItem>
+
+            {/* NEW SLIDE: Approche Pluridisciplinaire */}
+            <CarouselItem>
+              <div className="h-[92vh] flex items-center justify-center p-4">
+                <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
+                  <div className="p-10 space-y-6">
+                    <div className="text-center space-y-4">
+                      <h2 className="text-5xl font-display font-bold text-gray-900 flex items-center justify-center gap-4">
+                        <GraduationCap className="h-12 w-12 text-purple-500" />
+                        Projet Pluridisciplinaire
+                      </h2>
+                      <p className="text-2xl text-gray-600 max-w-5xl mx-auto">
+                        Mobilisation de multiples disciplines du lycée
+                      </p>
+                    </div>
+
+                    {/* Disciplines mobilisées */}
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border-2 border-blue-300 shadow-lg">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                            <Settings className="h-6 w-6 text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold text-blue-900">Sciences de l'Ingénieur</h3>
+                        </div>
+                        <ul className="space-y-2 text-sm text-blue-800">
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Conception mécanique et aérodynamique</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Systèmes embarqués et électronique</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Modélisation 3D et prototypage</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl border-2 border-purple-300 shadow-lg">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
+                            <Calculator className="h-6 w-6 text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold text-purple-900">Mathématiques</h3>
+                        </div>
+                        <ul className="space-y-2 text-sm text-purple-800">
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Calculs de portance et traînée</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Optimisation trajectoires GPS</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Statistiques d'efficacité de plantation</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border-2 border-green-300 shadow-lg">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                            <Beaker className="h-6 w-6 text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold text-green-900">Sciences Physiques</h3>
+                        </div>
+                        <ul className="space-y-2 text-sm text-green-800">
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Énergie et batterie LiPo</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Mécanique des fluides (aérodynamique)</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Forces et moments appliqués</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-teal-50 to-teal-100 p-6 rounded-xl border-2 border-teal-300 shadow-lg">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-12 h-12 bg-teal-500 rounded-full flex items-center justify-center">
+                            <Leaf className="h-6 w-6 text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold text-teal-900">SVT / Biologie</h3>
+                        </div>
+                        <ul className="space-y-2 text-sm text-teal-800">
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Étude des écosystèmes forestiers</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Sélection des espèces végétales</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Composition des Seedballs</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 rounded-xl border-2 border-yellow-300 shadow-lg">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center">
+                            <BookOpen className="h-6 w-6 text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold text-yellow-900">Français / Littérature</h3>
+                        </div>
+                        <ul className="space-y-2 text-sm text-yellow-800">
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Rédaction documentation technique</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Communication et présentation</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Recherches bibliographiques</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-xl border-2 border-red-300 shadow-lg">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
+                            <Cpu className="h-6 w-6 text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold text-red-900">Informatique / NSI</h3>
+                        </div>
+                        <ul className="space-y-2 text-sm text-red-800">
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Programmation systèmes embarqués</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Interface web et visualisation données</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>Algorithmes de navigation GPS</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-primary to-secondary p-6 rounded-2xl text-white shadow-xl text-center">
+                      <h3 className="text-2xl font-bold mb-3">🎓 Synergie Pédagogique</h3>
+                      <p className="text-lg leading-relaxed max-w-4xl mx-auto">
+                        Ce projet démontre comment l'ingénierie moderne nécessite une approche holistique 
+                        intégrant sciences dures, sciences naturelles, et compétences transversales de communication.
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </CarouselItem>
+
+            {/* NEW SLIDE: Technologies Multiples */}
+            <CarouselItem>
+              <div className="h-[92vh] flex items-center justify-center p-4">
+                <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
+                  <div className="p-10 space-y-6">
+                    <div className="text-center space-y-4">
+                      <h2 className="text-5xl font-display font-bold text-gray-900 flex items-center justify-center gap-4">
+                        <Cpu className="h-12 w-12 text-blue-500" />
+                        Projet Pluri-Technologique
+                      </h2>
+                      <p className="text-2xl text-gray-600 max-w-5xl mx-auto">
+                        Intégration de multiples technologies avancées
+                      </p>
+                    </div>
+
+                    {/* 3 catégories principales */}
+                    <div className="grid grid-cols-3 gap-6">
+                      <div className="bg-gradient-to-br from-yellow-50 to-orange-100 p-6 rounded-2xl border-2 border-yellow-300 shadow-lg">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-14 h-14 bg-yellow-500 rounded-full flex items-center justify-center">
+                            <Zap className="h-7 w-7 text-white" />
+                          </div>
+                          <h3 className="text-2xl font-bold text-yellow-900">Transfert d'Énergie</h3>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="bg-white/80 p-3 rounded-lg">
+                            <p className="font-semibold text-gray-900 mb-1">Batteries LiPo haute capacité</p>
+                            <p className="text-sm text-gray-600">2200-5000mAh, 11.1V-14.8V</p>
+                          </div>
+                          <div className="bg-white/80 p-3 rounded-lg">
+                            <p className="font-semibold text-gray-900 mb-1">Moteur brushless</p>
+                            <p className="text-sm text-gray-600">800-1000W, rendement 85%</p>
+                          </div>
+                          <div className="bg-white/80 p-3 rounded-lg">
+                            <p className="font-semibold text-gray-900 mb-1">ESC (contrôleur électronique)</p>
+                            <p className="text-sm text-gray-600">Gestion puissance et régulation</p>
+                          </div>
+                          <div className="bg-white/80 p-3 rounded-lg">
+                            <p className="font-semibold text-gray-900 mb-1">Conversion électromécanique</p>
+                            <p className="text-sm text-gray-600">Hélice → Propulsion aérienne</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-blue-50 to-cyan-100 p-6 rounded-2xl border-2 border-blue-300 shadow-lg">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-14 h-14 bg-blue-500 rounded-full flex items-center justify-center">
+                            <Cpu className="h-7 w-7 text-white" />
+                          </div>
+                          <h3 className="text-2xl font-bold text-blue-900">Traitement de l'Information</h3>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="bg-white/80 p-3 rounded-lg">
+                            <p className="font-semibold text-gray-900 mb-1">Microcontrôleur embarqué</p>
+                            <p className="text-sm text-gray-600">Arduino/Raspberry Pi pour pilotage</p>
+                          </div>
+                          <div className="bg-white/80 p-3 rounded-lg">
+                            <p className="font-semibold text-gray-900 mb-1">Module GPS</p>
+                            <p className="text-sm text-gray-600">Navigation autonome précise</p>
+                          </div>
+                          <div className="bg-white/80 p-3 rounded-lg">
+                            <p className="font-semibold text-gray-900 mb-1">Capteurs IMU</p>
+                            <p className="text-sm text-gray-600">Gyroscope, accéléromètre, boussole</p>
+                          </div>
+                          <div className="bg-white/80 p-3 rounded-lg">
+                            <p className="font-semibold text-gray-900 mb-1">Système radio 2.4GHz</p>
+                            <p className="text-sm text-gray-600">Communication bidirectionnelle</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-green-50 to-teal-100 p-6 rounded-2xl border-2 border-green-300 shadow-lg">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-14 h-14 bg-green-500 rounded-full flex items-center justify-center">
+                            <Package className="h-7 w-7 text-white" />
+                          </div>
+                          <h3 className="text-2xl font-bold text-green-900">Gestion de la Matière</h3>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="bg-white/80 p-3 rounded-lg">
+                            <p className="font-semibold text-gray-900 mb-1">Soute à graines motorisée</p>
+                            <p className="text-sm text-gray-600">Capacité 2-5kg de Seedballs</p>
+                          </div>
+                          <div className="bg-white/80 p-3 rounded-lg">
+                            <p className="font-semibold text-gray-900 mb-1">Système de largage servo</p>
+                            <p className="text-sm text-gray-600">Déclenchement précis par GPS</p>
+                          </div>
+                          <div className="bg-white/80 p-3 rounded-lg">
+                            <p className="font-semibold text-gray-900 mb-1">Structure composite</p>
+                            <p className="text-sm text-gray-600">Balsa, mousse EPP, fibre de verre</p>
+                          </div>
+                          <div className="bg-white/80 p-3 rounded-lg">
+                            <p className="font-semibold text-gray-900 mb-1">Mécanisme d'éjection</p>
+                            <p className="text-sm text-gray-600">Trappe contrôlée électroniquement</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Architecture système */}
+                    <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-2xl border-2 border-gray-300">
+                      <h3 className="text-xl font-bold text-center text-gray-900 mb-4">
+                        🔄 Architecture Système Intégrée
+                      </h3>
+                      <div className="flex items-center justify-center gap-4 flex-wrap">
+                        <div className="bg-yellow-200 px-4 py-2 rounded-lg font-semibold text-sm">Énergie</div>
+                        <ArrowRight className="h-6 w-6 text-gray-500" />
+                        <div className="bg-blue-200 px-4 py-2 rounded-lg font-semibold text-sm">Contrôle</div>
+                        <ArrowRight className="h-6 w-6 text-gray-500" />
+                        <div className="bg-purple-200 px-4 py-2 rounded-lg font-semibold text-sm">Propulsion</div>
+                        <ArrowRight className="h-6 w-6 text-gray-500" />
+                        <div className="bg-green-200 px-4 py-2 rounded-lg font-semibold text-sm">Largage</div>
+                        <ArrowRight className="h-6 w-6 text-gray-500" />
+                        <div className="bg-teal-200 px-4 py-2 rounded-lg font-semibold text-sm">Reforestation</div>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-5 rounded-xl border border-primary/30 text-center">
+                      <p className="text-base text-gray-700 leading-relaxed">
+                        <strong>🔧 Innovation :</strong> L'intégration harmonieuse de ces trois domaines technologiques 
+                        (énergie, information, matière) fait de Gaia un système cyber-physique complet et autonome.
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </CarouselItem>
+
+            {/* NEW SLIDE: Démarche Scientifique & Mesures */}
+            <CarouselItem>
+              <div className="h-[92vh] flex items-center justify-center p-4">
+                <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
+                  <div className="p-10 space-y-6">
+                    <div className="text-center space-y-4">
+                      <h2 className="text-5xl font-display font-bold text-gray-900 flex items-center justify-center gap-4">
+                        <Microscope className="h-12 w-12 text-indigo-500" />
+                        Démarche Scientifique & Mesures
+                      </h2>
+                      <p className="text-2xl text-gray-600 max-w-5xl mx-auto">
+                        Validation expérimentale, modélisation et optimisation
+                      </p>
+                    </div>
+
+                    {/* Cycle de conception */}
+                    <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-6 rounded-2xl border-2 border-indigo-200">
+                      <h3 className="text-xl font-bold text-indigo-900 mb-4 text-center">
+                        🔬 Méthodologie des Sciences de l'Ingénieur
+                      </h3>
+                      <div className="grid grid-cols-5 gap-3">
+                        <div className="bg-white p-4 rounded-lg text-center shadow">
+                          <div className="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">1</div>
+                          <p className="text-xs font-semibold">Analyse du besoin</p>
+                        </div>
+                        <div className="bg-white p-4 rounded-lg text-center shadow">
+                          <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">2</div>
+                          <p className="text-xs font-semibold">Modélisation CAO/Simulation</p>
+                        </div>
+                        <div className="bg-white p-4 rounded-lg text-center shadow">
+                          <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">3</div>
+                          <p className="text-xs font-semibold">Prototypage</p>
+                        </div>
+                        <div className="bg-white p-4 rounded-lg text-center shadow">
+                          <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">4</div>
+                          <p className="text-xs font-semibold">Tests & Mesures</p>
+                        </div>
+                        <div className="bg-white p-4 rounded-lg text-center shadow">
+                          <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">5</div>
+                          <p className="text-xs font-semibold">Optimisation</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Mesures expérimentales */}
+                    <div className="grid grid-cols-2 gap-6">
+                      <div className="bg-white p-6 rounded-xl shadow-lg border-2 border-blue-200">
+                        <div className="flex items-center gap-3 mb-4">
+                          <LineChart className="h-8 w-8 text-blue-600" />
+                          <h3 className="text-xl font-bold text-gray-900">Mesures Aérodynamiques</h3>
+                        </div>
+                        <div className="space-y-3 text-sm">
+                          <div className="flex justify-between items-center bg-blue-50 p-2 rounded">
+                            <span className="font-semibold">Portance (CL)</span>
+                            <span className="text-blue-700">≈ 1.2 à 10° d'incidence</span>
+                          </div>
+                          <div className="flex justify-between items-center bg-blue-50 p-2 rounded">
+                            <span className="font-semibold">Traînée (CD)</span>
+                            <span className="text-blue-700">≈ 0.05 (profil optimisé)</span>
+                          </div>
+                          <div className="flex justify-between items-center bg-blue-50 p-2 rounded">
+                            <span className="font-semibold">Finesse (CL/CD)</span>
+                            <span className="text-blue-700">≈ 24 (excellent)</span>
+                          </div>
+                          <p className="text-xs text-gray-600 mt-2">
+                            <strong>Méthode :</strong> Soufflerie numérique (CFD) + Tests en vol avec capteurs
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="bg-white p-6 rounded-xl shadow-lg border-2 border-green-200">
+                        <div className="flex items-center gap-3 mb-4">
+                          <BarChart3 className="h-8 w-8 text-green-600" />
+                          <h3 className="text-xl font-bold text-gray-900">Performances Énergétiques</h3>
+                        </div>
+                        <div className="space-y-3 text-sm">
+                          <div className="flex justify-between items-center bg-green-50 p-2 rounded">
+                            <span className="font-semibold">Autonomie théorique</span>
+                            <span className="text-green-700">45-60 min (charge 5Ah)</span>
+                          </div>
+                          <div className="flex justify-between items-center bg-green-50 p-2 rounded">
+                            <span className="font-semibold">Consommation moyenne</span>
+                            <span className="text-green-700">400-600W en vol</span>
+                          </div>
+                          <div className="flex justify-between items-center bg-green-50 p-2 rounded">
+                            <span className="font-semibold">Distance franchissable</span>
+                            <span className="text-green-700">≈ 30-40 km</span>
+                          </div>
+                          <p className="text-xs text-gray-600 mt-2">
+                            <strong>Méthode :</strong> Calculs théoriques + Mesures wattmètre embarqué
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="bg-white p-6 rounded-xl shadow-lg border-2 border-purple-200">
+                        <div className="flex items-center gap-3 mb-4">
+                          <TrendingUp className="h-8 w-8 text-purple-600" />
+                          <h3 className="text-xl font-bold text-gray-900">Capacité de Charge</h3>
+                        </div>
+                        <div className="space-y-3 text-sm">
+                          <div className="flex justify-between items-center bg-purple-50 p-2 rounded">
+                            <span className="font-semibold">Poids à vide</span>
+                            <span className="text-purple-700">≈ 1.8 kg</span>
+                          </div>
+                          <div className="flex justify-between items-center bg-purple-50 p-2 rounded">
+                            <span className="font-semibold">Charge utile max</span>
+                            <span className="text-purple-700">2-3 kg seedballs</span>
+                          </div>
+                          <div className="flex justify-between items-center bg-purple-50 p-2 rounded">
+                            <span className="font-semibold">Graines transportées</span>
+                            <span className="text-purple-700">500-800 unités</span>
+                          </div>
+                          <p className="text-xs text-gray-600 mt-2">
+                            <strong>Méthode :</strong> Pesée précise + Tests de vol avec charges variables
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="bg-white p-6 rounded-xl shadow-lg border-2 border-orange-200">
+                        <div className="flex items-center gap-3 mb-4">
+                          <Target className="h-8 w-8 text-orange-600" />
+                          <h3 className="text-xl font-bold text-gray-900">Précision de Largage</h3>
+                        </div>
+                        <div className="space-y-3 text-sm">
+                          <div className="flex justify-between items-center bg-orange-50 p-2 rounded">
+                            <span className="font-semibold">Précision GPS</span>
+                            <span className="text-orange-700">±5m horizontal</span>
+                          </div>
+                          <div className="flex justify-between items-center bg-orange-50 p-2 rounded">
+                            <span className="font-semibold">Zone de dispersion</span>
+                            <span className="text-orange-700">Ø 10-15m (h=30m)</span>
+                          </div>
+                          <div className="flex justify-between items-center bg-orange-50 p-2 rounded">
+                            <span className="font-semibold">Taux de germination</span>
+                            <span className="text-orange-700">65-75% (seedballs)</span>
+                          </div>
+                          <p className="text-xs text-gray-600 mt-2">
+                            <strong>Méthode :</strong> Marquage au sol + Analyse post-vol + Suivi germination
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Écarts et optimisation */}
+                    <div className="bg-gradient-to-r from-red-50 to-orange-50 p-5 rounded-xl border-2 border-red-200">
+                      <h3 className="text-lg font-bold text-red-900 mb-3 text-center">
+                        ⚠️ Caractérisation des Écarts & Optimisations
+                      </h3>
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <p className="font-semibold text-gray-900 mb-1">Écart théorique/réel autonomie :</p>
+                          <p className="text-gray-700">-15% (turbulences, vent) → <strong>Solution :</strong> Profil plus efficace</p>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-900 mb-1">Écart précision largage :</p>
+                          <p className="text-gray-700">±3m supplémentaires → <strong>Solution :</strong> Compensation dérive vent</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-5 rounded-xl border border-primary/30 text-center">
+                      <p className="text-base text-gray-700 leading-relaxed">
+                        <strong>📊 Conclusion :</strong> Notre démarche rigoureuse combine simulation numérique, 
+                        prototypage physique, et mesures expérimentales pour valider et optimiser chaque sous-système.
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </CarouselItem>
+
+            {/* NEW SLIDE: État de l'Art & Bibliographie */}
+            <CarouselItem>
+              <div className="h-[92vh] flex items-center justify-center p-4">
+                <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
+                  <div className="p-10 space-y-6">
+                    <div className="text-center space-y-4">
+                      <h2 className="text-5xl font-display font-bold text-gray-900 flex items-center justify-center gap-4">
+                        <BookOpen className="h-12 w-12 text-emerald-500" />
+                        État de l'Art & Recherches
+                      </h2>
+                      <p className="text-2xl text-gray-600 max-w-5xl mx-auto">
+                        Analyse comparative et positionnement innovant
+                      </p>
+                    </div>
+
+                    {/* Solutions existantes */}
+                    <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-6 rounded-2xl border-2 border-emerald-200">
+                      <h3 className="text-2xl font-bold text-emerald-900 mb-4 text-center">
+                        🌍 Panorama des Solutions de Reforestation Aérienne
+                      </h3>
+                      <div className="grid grid-cols-3 gap-4">
+                        <div className="bg-white p-4 rounded-lg shadow">
+                          <h4 className="font-bold text-gray-900 mb-2">🚁 Hélicoptères</h4>
+                          <p className="text-xs text-gray-600 mb-2">Utilisés depuis les années 1970</p>
+                          <p className="text-xs text-green-700"><strong>+</strong> Grande capacité (100kg+)</p>
+                          <p className="text-xs text-red-700"><strong>-</strong> Coût prohibitif (500-1500€/h)</p>
+                          <p className="text-xs text-red-700"><strong>-</strong> Émissions CO₂ élevées</p>
+                        </div>
+                        <div className="bg-white p-4 rounded-lg shadow">
+                          <h4 className="font-bold text-gray-900 mb-2">🚁 Drones Industriels</h4>
+                          <p className="text-xs text-gray-600 mb-2">DJI Agras, senseFly (depuis 2015)</p>
+                          <p className="text-xs text-green-700"><strong>+</strong> Précision GPS centimétrique</p>
+                          <p className="text-xs text-red-700"><strong>-</strong> Autonomie 20-30 min</p>
+                          <p className="text-xs text-red-700"><strong>-</strong> Coût élevé (5000-15000€)</p>
+                        </div>
+                        <div className="bg-white p-4 rounded-lg shadow border-2 border-blue-400">
+                          <h4 className="font-bold text-blue-900 mb-2">✈️ Gaia (notre projet)</h4>
+                          <p className="text-xs text-gray-600 mb-2">Avion RC électrique (2025)</p>
+                          <p className="text-xs text-green-700"><strong>+</strong> Coût accessible (500-800€)</p>
+                          <p className="text-xs text-green-700"><strong>+</strong> Autonomie 45-60 min</p>
+                          <p className="text-xs text-green-700"><strong>+</strong> 100% électrique</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Notre innovation */}
+                    <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-2xl border-2 border-blue-300">
+                      <h3 className="text-2xl font-bold text-blue-900 mb-4 text-center">
+                        💡 Notre Innovation : Le "Sweet Spot" de la Reforestation
+                      </h3>
+                      <div className="grid grid-cols-2 gap-6">
+                        <div className="space-y-3">
+                          <div className="bg-white p-4 rounded-lg shadow">
+                            <h4 className="font-bold text-purple-900 mb-2 flex items-center gap-2">
+                              <CheckCircle2 className="h-5 w-5 text-green-500" />
+                              Compromis Optimal
+                            </h4>
+                            <p className="text-sm text-gray-700">
+                              Gaia se positionne entre le drone (trop cher, autonomie faible) et l'hélicoptère 
+                              (polluant, coûteux) en offrant le meilleur rapport coût/efficacité/durabilité.
+                            </p>
+                          </div>
+                          <div className="bg-white p-4 rounded-lg shadow">
+                            <h4 className="font-bold text-purple-900 mb-2 flex items-center gap-2">
+                              <CheckCircle2 className="h-5 w-5 text-green-500" />
+                              Accessibilité Démocratisée
+                            </h4>
+                            <p className="text-sm text-gray-700">
+                              Budget étudiant/associatif vs budget industriel. Permet aux petites structures 
+                              de contribuer à la reforestation.
+                            </p>
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="bg-white p-4 rounded-lg shadow">
+                            <h4 className="font-bold text-purple-900 mb-2 flex items-center gap-2">
+                              <CheckCircle2 className="h-5 w-5 text-green-500" />
+                              Scalabilité Progressive
+                            </h4>
+                            <p className="text-sm text-gray-700">
+                              Démarrage à petite échelle (RC) avec potentiel d'industrialisation future 
+                              (adaptation sur vrais avions cargo).
+                            </p>
+                          </div>
+                          <div className="bg-white p-4 rounded-lg shadow">
+                            <h4 className="font-bold text-purple-900 mb-2 flex items-center gap-2">
+                              <CheckCircle2 className="h-5 w-5 text-green-500" />
+                              Écologique par Design
+                            </h4>
+                            <p className="text-sm text-gray-700">
+                              100% électrique contrairement aux solutions thermiques existantes. 
+                              Zéro émission locale pendant l'opération.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Références bibliographiques */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="bg-white p-5 rounded-xl shadow-lg border border-gray-300">
+                        <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                          <BookOpen className="h-5 w-5 text-emerald-600" />
+                          Références Scientifiques
+                        </h3>
+                        <ul className="space-y-2 text-xs text-gray-700">
+                          <li>• <strong>FAO (2020)</strong> - "State of World's Forests" - Urgence reforestation mondiale</li>
+                          <li>• <strong>Nature Journal (2019)</strong> - "Global tree restoration potential" - 0.9 milliard ha disponibles</li>
+                          <li>• <strong>IPCC (2021)</strong> - Rapport climat - Rôle crucial arbres captage CO₂</li>
+                          <li>• <strong>Drone Seed (USA, 2018)</strong> - Pionnier drones reforestation, inspiré nos recherches</li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-white p-5 rounded-xl shadow-lg border border-gray-300">
+                        <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                          <Settings className="h-5 w-5 text-blue-600" />
+                          Références Techniques
+                        </h3>
+                        <ul className="space-y-2 text-xs text-gray-700">
+                          <li>• <strong>RC Groups Forum</strong> - Communauté modélisme aérien, specs moteurs/batteries</li>
+                          <li>• <strong>Flite Test</strong> - Tutoriels conception avions RC, aérodynamique pratique</li>
+                          <li>• <strong>ArduPilot Documentation</strong> - Système pilotage autonome open-source</li>
+                          <li>• <strong>XFLR5 Software</strong> - Simulation aérodynamique, calculs CL/CD de nos profils</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Brevets et propriété intellectuelle */}
+                    <div className="bg-gradient-to-r from-yellow-50 to-orange-50 p-5 rounded-xl border-2 border-yellow-300">
+                      <h3 className="text-lg font-bold text-yellow-900 mb-3 text-center">
+                        📜 Veille Propriété Intellectuelle
+                      </h3>
+                      <p className="text-sm text-gray-700 text-center max-w-4xl mx-auto">
+                        <strong>Analyse brevets :</strong> Aucun brevet actif sur "avion RC électrique reforestation". 
+                        Concept novateur protégeable. Plusieurs brevets sur drones agricoles (DJI, Parrot) mais notre 
+                        approche voilure fixe reste inexploitée commercialement.
+                      </p>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-5 rounded-xl border border-primary/30 text-center">
+                      <p className="text-base text-gray-700 leading-relaxed">
+                        <strong>📚 Synthèse :</strong> Nos recherches bibliographiques confirment l'absence de solution 
+                        accessible combinant voilure fixe, électrique, et reforestation ciblée. Gaia comble ce vide.
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </CarouselItem>
+
             {/* Slide 8: Roadmap */}
             <CarouselItem>
-              <div className="h-[80vh] flex items-center justify-center p-8">
+              <div className="h-[92vh] flex items-center justify-center p-4">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
                   <div className="p-12 space-y-8">
                     <div className="text-center space-y-4">
@@ -873,7 +1599,7 @@ const Presentation = () => {
 
             {/* Slide 9: L'Équipe */}
             <CarouselItem>
-              <div className="h-[80vh] flex items-center justify-center p-8">
+              <div className="h-[92vh] flex items-center justify-center p-4">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
                   <div className="p-12 space-y-8">
                     <div className="text-center space-y-4">
@@ -928,7 +1654,7 @@ const Presentation = () => {
 
             {/* Slide 10: Partenaires */}
             <CarouselItem>
-              <div className="h-[80vh] flex items-center justify-center p-8">
+              <div className="h-[92vh] flex items-center justify-center p-4">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
                   <div className="p-12 space-y-8">
                     <div className="text-center space-y-4">
@@ -1008,7 +1734,7 @@ const Presentation = () => {
 
             {/* Slide 11: Documentation */}
             <CarouselItem>
-              <div className="h-[80vh] flex items-center justify-center p-8">
+              <div className="h-[92vh] flex items-center justify-center p-4">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-auto">
                   <div className="p-12 space-y-8">
                     <div className="text-center space-y-4">
@@ -1087,7 +1813,7 @@ const Presentation = () => {
 
             {/* Slide 12: Contact & Conclusion */}
             <CarouselItem>
-              <div className="h-[80vh] flex items-center justify-center p-8">
+              <div className="h-[92vh] flex items-center justify-center p-4">
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl flex items-center justify-center">
                   <div className="text-center space-y-10 p-12">
                     <div className="space-y-6">
