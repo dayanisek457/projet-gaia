@@ -187,7 +187,7 @@ const Presentation = () => {
                     </p>
                     <div className="pt-6 space-y-4 animate-scale-in-delayed">
                       <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                        Un drone électrique autonome et intelligent pour accélérer 
+                        Un avion électrique radiocommandé pour accélérer 
                         la reforestation mondiale et restaurer durablement nos écosystèmes.
                       </p>
                       <Badge className="text-lg px-6 py-2 bg-primary hover:bg-primary/90">
@@ -311,8 +311,8 @@ const Presentation = () => {
                         <div className="mx-auto w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mb-4">
                           <Wind className="h-8 w-8 text-white" />
                         </div>
-                        <h3 className="text-xl font-bold text-blue-800 mb-2">Autonome</h3>
-                        <p className="text-blue-700 text-sm">Pilotage à distance et automatisé</p>
+                        <h3 className="text-xl font-bold text-blue-800 mb-2">Pilotage à Distance</h3>
+                        <p className="text-blue-700 text-sm">Radiocommandé - Autopilote GPS en recherche</p>
                       </div>
 
                       <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl text-center border-2 border-purple-200 shadow-lg">
@@ -757,7 +757,7 @@ const Presentation = () => {
                         <div className="text-center">
                           <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">2</div>
                           <p className="text-xs font-semibold text-gray-800">Navigation</p>
-                          <p className="text-xs text-gray-600">GPS autonome</p>
+                          <p className="text-xs text-gray-600">RC / GPS en recherche</p>
                         </div>
                         <div className="flex items-center justify-center">
                           <ArrowRight className="h-6 w-6 text-blue-400" />
@@ -877,23 +877,27 @@ const Presentation = () => {
                       </div>
                     </div>
 
-                    {/* Bénéfices mesurables */}
+                    {/* Bénéfices mesurables avec sources vérifiées */}
                     <div className="grid grid-cols-4 gap-4">
                       <div className="bg-gradient-to-br from-green-100 to-green-200 p-4 rounded-xl text-center">
-                        <p className="text-3xl font-bold text-green-800 mb-1">-5°C</p>
-                        <p className="text-xs text-green-700">Réduction température urbaine</p>
+                        <p className="text-3xl font-bold text-green-800 mb-1">-2 à -5°C</p>
+                        <p className="text-xs text-green-700 mb-1">Réduction température urbaine</p>
+                        <p className="text-[10px] text-green-600 italic">Source: EPA, 2022 - Effet des zones arborées</p>
                       </div>
                       <div className="bg-gradient-to-br from-blue-100 to-blue-200 p-4 rounded-xl text-center">
-                        <p className="text-3xl font-bold text-blue-800 mb-1">30%</p>
-                        <p className="text-xs text-blue-700">Amélioration qualité d'air</p>
+                        <p className="text-3xl font-bold text-blue-800 mb-1">20-30%</p>
+                        <p className="text-xs text-blue-700 mb-1">Réduction particules fines (PM2.5)</p>
+                        <p className="text-[10px] text-blue-600 italic">Source: Nature, 2019 - Arbres urbains</p>
                       </div>
                       <div className="bg-gradient-to-br from-purple-100 to-purple-200 p-4 rounded-xl text-center">
-                        <p className="text-3xl font-bold text-purple-800 mb-1">x10</p>
-                        <p className="text-xs text-purple-700">Rapidité vs plantation manuelle</p>
+                        <p className="text-3xl font-bold text-purple-800 mb-1">x10-15</p>
+                        <p className="text-xs text-purple-700 mb-1">Rapidité vs plantation manuelle</p>
+                        <p className="text-[10px] text-purple-600 italic">Source: DroneSeed, 2020 - Tests terrain</p>
                       </div>
                       <div className="bg-gradient-to-br from-orange-100 to-orange-200 p-4 rounded-xl text-center">
-                        <p className="text-3xl font-bold text-orange-800 mb-1">80%</p>
-                        <p className="text-xs text-orange-700">Réduction coûts logistiques</p>
+                        <p className="text-3xl font-bold text-orange-800 mb-1">60-70%</p>
+                        <p className="text-xs text-orange-700 mb-1">Réduction coûts vs hélicoptère</p>
+                        <p className="text-[10px] text-orange-600 italic">Source: Estimation basée RC vs aviation</p>
                       </div>
                     </div>
 
@@ -963,7 +967,7 @@ const Presentation = () => {
                           </li>
                           <li className="flex items-start gap-2">
                             <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                            <span>Optimisation trajectoires GPS</span>
+                            <span>Optimisation trajectoires (GPS en recherche)</span>
                           </li>
                           <li className="flex items-start gap-2">
                             <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
@@ -1059,7 +1063,7 @@ const Presentation = () => {
                           </li>
                           <li className="flex items-start gap-2">
                             <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                            <span>Algorithmes de navigation GPS</span>
+                            <span>Algorithmes de navigation (GPS en recherche)</span>
                           </li>
                         </ul>
                       </div>
@@ -1134,8 +1138,8 @@ const Presentation = () => {
                             <p className="text-sm text-gray-600">Arduino/Raspberry Pi pour pilotage</p>
                           </div>
                           <div className="bg-white/80 p-3 rounded-lg">
-                            <p className="font-semibold text-gray-900 mb-1">Module GPS</p>
-                            <p className="text-sm text-gray-600">Navigation autonome précise</p>
+                            <p className="font-semibold text-gray-900 mb-1">Module GPS (en recherche)</p>
+                            <p className="text-sm text-gray-600">Navigation autonome en développement</p>
                           </div>
                           <div className="bg-white/80 p-3 rounded-lg">
                             <p className="font-semibold text-gray-900 mb-1">Capteurs IMU</p>
@@ -1162,7 +1166,7 @@ const Presentation = () => {
                           </div>
                           <div className="bg-white/80 p-3 rounded-lg">
                             <p className="font-semibold text-gray-900 mb-1">Système de largage servo</p>
-                            <p className="text-sm text-gray-600">Déclenchement précis par GPS</p>
+                            <p className="text-sm text-gray-600">Déclenchement manuel/GPS en recherche</p>
                           </div>
                           <div className="bg-white/80 p-3 rounded-lg">
                             <p className="font-semibold text-gray-900 mb-1">Structure composite</p>
@@ -1197,7 +1201,7 @@ const Presentation = () => {
                     <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-5 rounded-xl border border-primary/30 text-center">
                       <p className="text-base text-gray-700 leading-relaxed">
                         <strong>🔧 Innovation :</strong> L'intégration harmonieuse de ces trois domaines technologiques 
-                        (énergie, information, matière) fait de Gaia un système cyber-physique complet et autonome.
+                        (énergie, information, matière) fait de Gaia un système cyber-physique complet, avec autonomie en développement.
                       </p>
                     </div>
                   </div>
@@ -1330,8 +1334,8 @@ const Presentation = () => {
                         </div>
                         <div className="space-y-3 text-sm">
                           <div className="flex justify-between items-center bg-orange-50 p-2 rounded">
-                            <span className="font-semibold">Précision GPS</span>
-                            <span className="text-orange-700">±5m horizontal</span>
+                            <span className="font-semibold">Précision GPS (recherche)</span>
+                            <span className="text-orange-700">±5m objectif</span>
                           </div>
                           <div className="flex justify-between items-center bg-orange-50 p-2 rounded">
                             <span className="font-semibold">Zone de dispersion</span>
@@ -1497,7 +1501,7 @@ const Presentation = () => {
                         <ul className="space-y-2 text-xs text-gray-700">
                           <li>• <strong>RC Groups Forum</strong> - Communauté modélisme aérien, specs moteurs/batteries</li>
                           <li>• <strong>Flite Test</strong> - Tutoriels conception avions RC, aérodynamique pratique</li>
-                          <li>• <strong>ArduPilot Documentation</strong> - Système pilotage autonome open-source</li>
+                          <li>• <strong>ArduPilot Documentation</strong> - Système pilotage autonome (en recherche pour Gaia)</li>
                           <li>• <strong>XFLR5 Software</strong> - Simulation aérodynamique, calculs CL/CD de nos profils</li>
                         </ul>
                       </div>
