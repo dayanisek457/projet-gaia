@@ -19,22 +19,16 @@ const CalculsSection = () => {
       title: 'Vitesse maximale avec Pitch Speed',
       description: 'Calcul de la vitesse théorique maximale en utilisant le Pitch Speed de l\'hélice (KV 1400, hélice 8x6)',
       category: 'Aérodynamique',
-      content: `## Introduction
+      content: `## 1. Calcul du Pitch Speed (Vitesse théorique de l'hélice)
 
-Tu as tout à fait raison de douter. Avec les nouvelles précisions (KV 1400 et hélice 8x6), nous pouvons affiner le calcul en utilisant le **"Pitch Speed"** (la vitesse théorique du flux d'air généré par l'hélice).
-
-C'est souvent le facteur limitant pour ce type d'avion, bien avant la puissance brute.
-
-## 1. Calcul du "Pitch Speed" (Vitesse théorique de l'hélice)
-
-Le "Pitch Speed" est la vitesse à laquelle l'avion avancerait si l'hélice se "vissait" dans l'air sans aucun recul (comme une vis dans du bois). L'avion ne peut physiquement pas dépasser cette vitesse en palier.
+Le "Pitch Speed" est la vitesse théorique à laquelle l'avion avancerait si l'hélice se vissait dans l'air sans recul. L'avion ne peut physiquement pas dépasser cette vitesse en palier. C'est le facteur limitant pour ce type d'avion.
 
 **Données :**
 
-* **Voltage sous charge :** Une batterie 11.1V (3S) chute un peu sous l'effort. Prenons une valeur réaliste de **10.5V**.
-* **KV :** 1400 tr/min/V.
-* **Efficacité Moteur :** Un moteur électrique en charge tourne généralement à ~80% de son KV théorique.
-* **Pas de l'hélice (Pitch) :** 6 pouces = 0.1524 m.
+* **Voltage sous charge :** Valeur réaliste: **10.5V**
+* **KV :** 1400 tr/min/V
+* **Efficacité Moteur :** ~80% du KV théorique
+* **Pas de l'hélice (Pitch) :** 6 pouces = 0.1524 m
 
 **Calcul des RPM (Rotations par minute) :**
 
@@ -46,73 +40,72 @@ $$V_{pitch} = \\text{RPM} \\times \\text{Pitch} \\times 60^{-1} = 11760 \\times 
 
 ---
 
-## 2. La réalité aérodynamique (Le facteur "Cessna")
+## 2. Facteurs limitants aérodynamiques
 
-Le calcul ci-dessus (107 km/h) est une vitesse théorique impossible à atteindre en pratique pour un Cessna.
+Le Pitch Speed de 107 km/h est une vitesse théorique impossible à atteindre en pratique.
 
-**Pourquoi ?**
+**Facteurs de réduction :**
 
-1. **Le Glissement (Slip) :** L'hélice n'est pas une vis solide. Dans l'air, elle "patine". Pour qu'une hélice génère de la traction, elle doit tourner plus vite que l'air qui arrive sur elle. En général, la vitesse max réelle se situe entre **75% et 85%** du Pitch Speed.
+1. **Glissement (Slip) :** L'hélice "patine" dans l'air. La vitesse réelle se situe entre **75% et 85%** du Pitch Speed pour générer de la traction.
 
-2. **La Traînée (Drag) :** Tu as un **fuselage large** (15 cm), des **ailes hautes**, et surtout le **train sorti**. C'est un aérofrein permanent.
-   * Un avion de course (fin et lisse) atteindrait 90% du Pitch Speed.
-   * Un "Trainer" style Cessna atteint péniblement 70-75% du Pitch Speed.
+2. **Traînée (Drag) :** Configuration avec fuselage large (15 cm), ailes hautes et train d'atterrissage sorti.
+   * Avion de course (profilé) : 90% du Pitch Speed
+   * Trainer type Cessna : 70-75% du Pitch Speed
 
 ---
 
-## 3. Nouvelle Estimation de la Vitesse Max ($V_{max}$)
+## 3. Estimation de la Vitesse Maximale Réelle
 
-Appliquons un coefficient de "réalité" de 75% (typique pour un trainer aile haute) au Pitch Speed :
+Application d'un coefficient de 75% (typique pour un trainer aile haute) :
 
 $$V_{max} = 0.75 \\times 107 = 80 \\text{ km/h}$$
 
-Si l'avion est très bien construit et léger, tu pourras peut-être toucher les **85 km/h** en piqué léger ou plein gaz vent dans le dos, mais **80 km/h** est le "mur" réaliste.
+Vitesse maximale atteignable : **75 - 85 km/h** selon la qualité de construction.
 
 ---
 
-## 4. Bilan Performance Révisé
+## 4. Bilan Performance
 
-Voici les caractéristiques de vol corrigées avec tes données moteur précises :
+Caractéristiques de vol avec les données moteur (KV 1400, hélice 8x6) :
 
 | Paramètre | Valeur Estimée | Commentaire |
 |-----------|---------------|-------------|
-| **Vitesse Décrochage** | **31 km/h** | Reste inchangée (dépend du poids/surface). |
-| **Vitesse Croisière** | **50 - 60 km/h** | Ce sera ta vitesse confortable à mi-gaz. |
-| **Vitesse Max (Réelle)** | **75 - 82 km/h** | Plafond aérodynamique dû à la traînée et au pas de 6. |
-| **Rapport Poussée/Poids** | **0.8 : 1** | $\\frac{1.96 \\text{ kg}}{2.5 \\text{ kg}} = 0.78$. Très sain. |
+| **Vitesse Décrochage** | **31 km/h** | Dépend du poids/surface |
+| **Vitesse Croisière** | **50 - 60 km/h** | Mi-gaz |
+| **Vitesse Max (Réelle)** | **75 - 82 km/h** | Plafond aérodynamique (pas de 6 pouces) |
+| **Rapport Poussée/Poids** | **0.8 : 1** | $\\frac{1.96 \\text{ kg}}{2.5 \\text{ kg}} = 0.78$ |
 
 ---
 
 ## Conclusion
 
-Tu avais raison : **100 km/h est hors de portée** avec un pas de 6 pouces sur cette cellule. Ton avion volera plutôt autour de **80 km/h à fond**, ce qui est beaucoup plus "maquette" et agréable pour un Cessna de 1.45m.
-
-Avec 2 kg de poussée totale pour 2.5 kg, tu as une motorisation **très saine** : il ne sera pas une fusée de vitesse, mais il aura beaucoup de "couple" pour grimper, décoller court (STOL) et se sortir de situations dangereuses.`
+Avec un pas de 6 pouces, la vitesse maximale se limite à **80 km/h**. La motorisation de 2 kg de poussée totale pour 2.5 kg offre une réserve de puissance confortable pour les montées et décollages courts (STOL).`
     },
     {
       id: 'calc-2',
       title: 'Estimation des vitesses (Cessna 172)',
       description: 'Calcul détaillé de la vitesse de décrochage et de la vitesse maximale pour le modèle Cessna 172',
       category: 'Aérodynamique',
-      content: `## 1. Analyse et Hypothèses Critiques
+      content: `## 1. Analyse et Hypothèses
 
-Il y a un point crucial à clarifier dans tes données : le rapport entre la motorisation et la masse.
-
+Configuration :
 * **Masse totale :** 2.5 kg
-* **Configuration :** Tu as "Nombre de moteurs : 2" et tu indiques "Poussée : 0.98kg" et "Puissance : 288.4W"
+* **Nombre de moteurs :** 2
+* **Poussée par moteur :** 0.98 kg
+* **Puissance par moteur :** 288.4 W
 
-**Interprétation :** Étant donné qu'un avion de 2.5 kg ne volerait pratiquement pas avec seulement 0.98 kg de poussée totale (ratio 0.4), je vais assumer que les valeurs de poussée et de puissance données sont par moteur.
+**Interprétation :** Les valeurs de poussée et de puissance sont par moteur.
 
-* **Poussée Totale estimée :** $0.98 \\text{ kg} \\times 2 = 1.96 \\text{ kg}$ (soit $\\approx 19.2 \\text{ N}$)
-* **Puissance Totale estimée :** $288.4 \\text{ W} \\times 2 = 576.8 \\text{ W}$
+* **Poussée Totale :** $0.98 \\text{ kg} \\times 2 = 1.96 \\text{ kg}$ (soit $\\approx 19.2 \\text{ N}$)
+* **Puissance Totale :** $288.4 \\text{ W} \\times 2 = 576.8 \\text{ W}$
 
-Ce rapport Poussée/Poids de $\\approx 0.8$ et une puissance de $\\approx 230 \\text{ W/kg}$ correspondent parfaitement à un vol réaliste et confortable pour une maquette de type Cessna.
+Rapport Poussée/Poids : $\\approx 0.8$, Puissance : $\\approx 230 \\text{ W/kg}$ - Adapté pour une maquette type Cessna.
 
 ---
 
 ## 2. Calcul de la Vitesse de Décrochage ($V_{stall}$)
 
-C'est la vitesse minimale en dessous de laquelle l'avion tombe. C'est la donnée la plus importante pour l'atterrissage.
+Vitesse minimale en dessous de laquelle l'avion décroche.
 
 **Formule :**
 
@@ -123,33 +116,33 @@ $$V_{stall} = \\sqrt{\\frac{2 \\cdot m \\cdot g}{\\rho \\cdot S \\cdot C_{L_{max
 * $g$ (Gravité) = 9.81 m/s²
 * $\\rho$ (Densité air) = 1.225 kg/m³
 * $S$ (Surface alaire) = 0.55 m²
-* $C_{L_{max}}$ (Coef. de portance max) = 1.007 (donnée fournie)
+* $C_{L_{max}}$ (Coef. portance max) = 1.007
 
 **Calcul :**
 
-Poids ($W$) : $2.5 \\times 9.81 = 24.525 \\text{ N}$
+Poids : $2.5 \\times 9.81 = 24.525 \\text{ N}$
 
 Dénominateur : $1.225 \\times 0.55 \\times 1.007 \\approx 0.678$
 
 $$V_{stall} = \\sqrt{\\frac{2 \\times 24.525}{0.678}} = \\sqrt{\\frac{49.05}{0.678}} = \\sqrt{72.34} \\approx 8.5 \\text{ m/s}$$
 
-**Vitesse de décrochage (Min) :** $\\approx 30.6 \\text{ km/h}$
+**Résultat :** $V_{stall} \\approx 30.6 \\text{ km/h}$
 
 ---
 
 ## 3. Estimation de la Vitesse Maximale ($V_{max}$)
 
-La vitesse maximale est atteinte lorsque la Traînée ($D$) égale la Poussée ($T$).
+Vitesse atteinte lorsque la Traînée ($D$) égale la Poussée ($T$).
 
-Pour un avion type Cessna 172 (ailes hautes, train sorti, fuselage carré), le coefficient de traînée parasite ($C_{D0}$) est assez élevé. Nous allons l'estimer entre 0.045 et 0.055, ce qui est standard pour ce type de modèle RC.
+Coefficient de traînée parasite ($C_{D0}$) : 0.045 - 0.055 pour un Cessna 172 RC (ailes hautes, train sorti, fuselage carré).
 
-**Méthode par l'équilibre Poussée / Traînée :**
+**Méthode par équilibre Poussée/Traînée :**
 
 $$V_{max} = \\sqrt{\\frac{2 \\cdot T}{\\rho \\cdot S \\cdot C_{D0}}}$$
 
 **Données :**
 * $T$ (Poussée totale) = $1.96 \\text{ kg} \\times 9.81 = 19.22 \\text{ N}$
-* $C_{D0}$ (Estimé) = 0.05 (moyen pour un trainer avec train d'atterrissage)
+* $C_{D0}$ = 0.05
 
 **Calcul :**
 
@@ -159,31 +152,29 @@ Dénominateur : $1.225 \\times 0.55 \\times 0.05 \\approx 0.0337$
 
 $$V_{max} = \\sqrt{\\frac{38.44}{0.0337}} = \\sqrt{1140} \\approx 33.7 \\text{ m/s}$$
 
-**Vitesse Maximale (Aérodynamique) :** $\\approx 121 \\text{ km/h}$
+**Résultat théorique :** $V_{max} \\approx 121 \\text{ km/h}$
 
-**Note :** Cette vitesse est théorique. En réalité, tu seras limité par le "Pitch Speed" (la vitesse du pas de l'hélice).
+**Note :** Vitesse limitée par le Pitch Speed de l'hélice.
 
-### Vérification par la Puissance (Check énergétique)
+### Vérification par la Puissance
 
-Si on utilise la puissance disponible (576 W totaux) avec une efficacité d'hélice de 70% ($\\eta = 0.7$), la puissance utile est de $\\approx 400 \\text{ W}$.
+Puissance disponible : 576 W avec efficacité hélice de 70% → Puissance utile : $\\approx 400 \\text{ W}$
 
 $$P_{utile} = \\frac{1}{2} \\rho S C_{D0} v^3$$
 
 $$v = \\sqrt[3]{\\frac{2 \\cdot 400}{1.225 \\cdot 0.55 \\cdot 0.05}} \\approx 28.7 \\text{ m/s} \\approx 103 \\text{ km/h}$$
 
-Ce chiffre (103 km/h) est souvent plus réaliste que le calcul basé sur la poussée statique pure, car la poussée d'une hélice diminue à mesure que l'avion accélère.
+Résultat plus réaliste : **103 km/h** (la poussée d'hélice diminue avec la vitesse).
 
 ---
 
-## 4. Résumé des Performances Estimées
-
-Voici les vitesses prévues pour ton bimoteur de 2.5 kg :
+## 4. Résumé des Performances
 
 | Type de vitesse | Valeur (km/h) | Valeur (m/s) | Notes |
 |----------------|---------------|--------------|-------|
-| **Vitesse de décrochage** | 31 km/h | 8.5 m/s | Ne pas voler en dessous |
-| **Vitesse d'approche** | 40 km/h | 11 m/s | Vitesse idéale pour atterrir ($1.3 \\times V_{stall}$) |
-| **Vitesse de croisière** | 70 - 80 km/h | 20-22 m/s | Vol économique à mi-gaz |
+| **Vitesse de décrochage** | 31 km/h | 8.5 m/s | Limite minimale |
+| **Vitesse d'approche** | 40 km/h | 11 m/s | $1.3 \\times V_{stall}$ |
+| **Vitesse de croisière** | 70 - 80 km/h | 20-22 m/s | Mi-gaz |
 | **Vitesse Maximale** | 100 - 110 km/h | 28-30 m/s | Plein gaz, palier |
 
 ---
@@ -192,18 +183,82 @@ Voici les vitesses prévues pour ton bimoteur de 2.5 kg :
 
 **Charge alaire :** $\\frac{2500 \\text{ g}}{55 \\text{ dm}^2} = 45 \\text{ g/dm}^2$
 
-C'est une charge alaire excellente (plutôt faible) pour cette envergure. L'avion sera très stable, facile à piloter et capable de voler lentement sans décrocher brutalement. C'est un comportement typique de "Trainer".
+Charge alaire faible pour cette envergure. Comportement stable type "Trainer", vol lent sans décrochage brutal.
 
-**Motorisation :** Avec deux moteurs fournissant près de 2 kg de poussée pour 2.5 kg de poids, tu as une réserve de puissance confortable pour des montées franches, mais pas pour du vol 3D vertical illimité (ce qui est normal pour un style Cessna).
+**Motorisation :** Rapport poussée/poids de 0.78 offre une réserve confortable pour montées et manœuvres.
 
 ---
 
-## Ce qui manque pour être précis à 100%
+## Note sur la précision
 
-Pour affiner la vitesse maximale exacte, il manque une donnée clé : **Le pas (pitch) de l'hélice et le KV des moteurs**.
+Données manquantes pour affiner : **pas (pitch) de l'hélice et KV des moteurs**.
 
-* Si le pas est faible (ex: 8x4), l'avion aura beaucoup de couple mais plafonnera vite (ex: 80 km/h max).
-* Si le pas est élevé (ex: 8x6 ou 8x7), il pourra atteindre les 110 km/h calculés ci-dessus.`
+* Pas faible (8x4) : couple élevé, vitesse limitée (~80 km/h)
+* Pas élevé (8x6 ou 8x7) : vitesse jusqu'à 110 km/h`
+    },
+    {
+      id: 'calc-3',
+      title: 'Performances de décollage',
+      description: 'Estimation du temps et de la distance de décollage en fonction du type de piste',
+      category: 'Aérodynamique',
+      content: `## Suffisance de la Poussée
+
+La poussée est largement suffisante.
+
+Pour un avion type "Trainer" (style Cessna), ratio poussée/poids recommandé : 0.5 à 0.6. 
+
+Avec 1.96 kg de poussée totale pour 2.5 kg, ratio de **0.78** - très confortable. Décollage franc et court.
+
+---
+
+## 1. Vitesse Cible de Décollage
+
+Vitesse de décrochage calculée : 31 km/h. 
+
+Pour décoller en sécurité : $\\approx 1.2 \\times V_{stall}$ (autorité aux commandes).
+
+**Vitesse de rotation ($V_r$) :** $\\approx 36$ km/h (soit 10 m/s)
+
+---
+
+## 2. Calcul de l'Accélération
+
+L'avion accélère grâce à la poussée, ralenti par le frottement des roues et la traînée.
+
+**Forces en présence :**
+
+* **Poussée ($T$) :** $\\approx 19.2$ N (moyenne : 18 N en tenant compte de la diminution avec la vitesse)
+* **Freinage (roues + air) :**
+  * Piste bitume : $\\approx 1$ N
+  * Piste herbe : $\\approx 3$ à 4 N (roues petites)
+* **Masse ($m$) :** 2.5 kg
+
+Selon la loi de Newton ($F = m \\cdot a$) :
+
+$$a = \\frac{F_{totale}}{m} = \\frac{18 - 4}{2.5} \\approx 5.6 \\text{ m/s}^2 \\text{ (sur herbe)}$$
+
+---
+
+## 3. Temps et Distance de Décollage
+
+Application de l'accélération constante jusqu'à 10 m/s :
+
+| Type de Piste | Temps de roulage | Distance parcourue |
+|---------------|------------------|---------------------|
+| **Bitume / Dur** | ~ 1.5 secondes | ~ 7 à 9 mètres |
+| **Herbe tondue** | ~ 2.0 secondes | ~ 10 à 15 mètres |
+
+---
+
+## Analyse et Recommandations
+
+**Décollage rapide :** En moins de 3 secondes plein gaz, l'avion sera en l'air.
+
+**Attention au couple :** Avec deux moteurs et accélération brutale, risque de déviation à gauche au sol (effet de couple).
+
+**Technique recommandée :** Montée progressive des gaz sur 2-3 secondes. Permet à la dérive d'être efficace pour maintenir la trajectoire. Décollage plus réaliste avec environ 15-20 mètres de roulage.
+
+**Différentiel moteur :** Si la radio le permet, réglage du différentiel des moteurs pour faciliter la direction au sol.`
     }
   ];
 
