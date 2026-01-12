@@ -9,6 +9,8 @@ import { toast } from 'sonner';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import DOMPurify from 'dompurify';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 const Roadmap = () => {
   const [roadmapItems, setRoadmapItems] = useState<RoadmapItem[]>([]);
@@ -104,7 +106,41 @@ const Roadmap = () => {
 
       // Process in specific order to avoid conflicts
       
-      // 1. Code blocks (protect from other replacements)
+      // 1. Math blocks (LaTeX) - protect from other replacements
+      const mathBlocks: string[] = [];
+      // Display math ($$...$$)
+      html = html.replace(/\$\$([\s\S]*?)\$\$/g, (match, math) => {
+        const placeholder = `__MATH_BLOCK_${mathBlocks.length}__`;
+        try {
+          const rendered = katex.renderToString(math.trim(), {
+            displayMode: true,
+            throwOnError: false,
+            output: 'html'
+          });
+          mathBlocks.push(`<div class="my-6 overflow-x-auto flex justify-center">${rendered}</div>`);
+        } catch (e) {
+          mathBlocks.push(`<div class="my-6 p-4 bg-red-50 border border-red-200 rounded text-red-700">Erreur LaTeX: ${math}</div>`);
+        }
+        return placeholder;
+      });
+      
+      // Inline math ($...$)
+      html = html.replace(/\$([^\$\n]+)\$/g, (match, math) => {
+        const placeholder = `__MATH_BLOCK_${mathBlocks.length}__`;
+        try {
+          const rendered = katex.renderToString(math.trim(), {
+            displayMode: false,
+            throwOnError: false,
+            output: 'html'
+          });
+          mathBlocks.push(`<span class="inline-math">${rendered}</span>`);
+        } catch (e) {
+          mathBlocks.push(`<span class="text-red-700">Erreur: ${math}</span>`);
+        }
+        return placeholder;
+      });
+      
+      // 2. Code blocks (protect from other replacements)
       const codeBlocks: string[] = [];
       html = html.replace(/```([\s\S]*?)```/g, (match, code) => {
         const placeholder = `__CODE_BLOCK_${codeBlocks.length}__`;
@@ -112,10 +148,10 @@ const Roadmap = () => {
         return placeholder;
       });
 
-      // 2. Inline code
+      // 3. Inline code
       html = html.replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-2 py-1 rounded text-sm font-mono text-gray-800">$1</code>');
 
-      // 3. YouTube embeds (before other processing)
+      // 4. YouTube embeds (before other processing)
       html = html.replace(/(?:^|\s)((?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+))(?:\s|$)/g, 
         (match, fullUrl, videoId, offset, string) => {
           if (!validateYouTubeId(videoId)) {
@@ -124,7 +160,7 @@ const Roadmap = () => {
           return `\n<div class="my-6 rounded-lg overflow-hidden shadow-lg"><iframe width="100%" height="400" src="https://www.youtube.com/embed/${videoId}" style="border: 0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full"></iframe></div>\n`;
         });
       
-      // 4. Vimeo embeds
+      // 5. Vimeo embeds
       html = html.replace(/(?:^|\s)((?:https?:\/\/)?(?:www\.)?vimeo\.com\/([0-9]+))(?:\s|$)/g, 
         (match, fullUrl, videoId) => {
           if (!validateVimeoId(videoId)) {
@@ -133,20 +169,20 @@ const Roadmap = () => {
           return `\n<div class="my-6 rounded-lg overflow-hidden shadow-lg"><iframe width="100%" height="400" src="https://player.vimeo.com/video/${videoId}" style="border: 0;" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen class="w-full"></iframe></div>\n`;
         });
 
-      // 5. Images (before links)
+      // 6. Images (before links)
       html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, 
         '<img src="$2" alt="$1" class="max-w-full h-auto rounded-lg shadow-md my-6" loading="lazy" />');
       
-      // 6. Links
+      // 7. Links
       html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, 
         '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary/80 underline font-medium">$1</a>');
 
-      // 7. Headers (process ### before ## before #)
+      // 8. Headers (process ### before ## before #)
       html = html.replace(/^### (.+)$/gm, '<h3 class="text-xl font-semibold mb-3 mt-6 text-gray-900">$1</h3>');
       html = html.replace(/^## (.+)$/gm, '<h2 class="text-2xl font-semibold mb-4 mt-8 text-gray-900">$1</h2>');
       html = html.replace(/^# (.+)$/gm, '<h1 class="text-3xl font-bold mb-6 mt-10 text-gray-900">$1</h1>');
       
-      // 8. Callouts (before regular quotes)
+      // 9. Callouts (before regular quotes)
       html = html.replace(/^> \*\*INFO\*\*:\s*(.+)$/gm, 
         '<div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6 rounded-r-lg"><div class="flex items-start"><div class="flex-shrink-0 text-2xl mr-3">ℹ️</div><div><h4 class="text-sm font-semibold text-blue-900 mb-1">Information</h4><p class="text-sm text-blue-800">$1</p></div></div></div>');
       html = html.replace(/^> \*\*WARNING\*\*:\s*(.+)$/gm, 
@@ -154,28 +190,44 @@ const Roadmap = () => {
       html = html.replace(/^> \*\*SUCCESS\*\*:\s*(.+)$/gm, 
         '<div class="bg-green-50 border-l-4 border-green-500 p-4 my-6 rounded-r-lg"><div class="flex items-start"><div class="flex-shrink-0 text-2xl mr-3">✅</div><div><h4 class="text-sm font-semibold text-green-900 mb-1">Succès</h4><p class="text-sm text-green-800">$1</p></div></div></div>');
       
-      // 9. Regular quotes
+      // 10. Regular quotes
       html = html.replace(/^> (.+)$/gm, '<blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-4 py-2">$1</blockquote>');
       
-      // 10. Separators
+      // 11. Separators
       html = html.replace(/^---$/gm, '<hr class="my-8 border-gray-200">');
       
-      // 11. Task lists (before regular lists)
+      // 12. Task lists (before regular lists)
       html = html.replace(/^- \[ \] (.+)$/gm, 
         '<div class="flex items-center space-x-2 my-2"><input type="checkbox" disabled class="rounded border-gray-300"> <span>$1</span></div>');
       html = html.replace(/^- \[x\] (.+)$/gm, 
         '<div class="flex items-center space-x-2 my-2"><input type="checkbox" checked disabled class="rounded border-gray-300"> <span class="line-through text-gray-500">$1</span></div>');
       
-      // 12. Lists
+      // 13. Lists
       html = html.replace(/^- (.+)$/gm, '<li class="ml-6 my-1 list-disc">$1</li>');
       html = html.replace(/^[0-9]+\. (.+)$/gm, '<li class="ml-6 my-1 list-decimal">$1</li>');
       
-      // 13. Text formatting (bold, italic, underline)
+      // 14. Text formatting (bold, italic, underline)
       html = html.replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-gray-900">$1</strong>');
       html = html.replace(/\*(.+?)\*/g, '<em class="italic">$1</em>');
       html = html.replace(/<u>(.+?)<\/u>/g, '<span class="underline">$1</span>');
       
-      // 14. Accordions/Details
+      // 15. Tables (markdown format)
+      html = html.replace(/\n\|(.+)\|\n\|[-:\s|]+\|\n((?:\|.+\|\n?)+)/g, (match, header, rows) => {
+        const headerCells = header.split('|').filter((c: string) => c.trim()).map((h: string) => 
+          `<th class="px-4 py-2 bg-gray-100 font-semibold text-left border border-gray-300">${h.trim()}</th>`
+        ).join('');
+        
+        const bodyRows = rows.trim().split('\n').map((row: string) => {
+          const cells = row.split('|').filter((c: string) => c.trim()).map((cell: string) => 
+            `<td class="px-4 py-2 border border-gray-300">${cell.trim()}</td>`
+          ).join('');
+          return `<tr>${cells}</tr>`;
+        }).join('');
+        
+        return `\n<div class="overflow-x-auto my-6"><table class="min-w-full border-collapse border border-gray-300 bg-white rounded-lg shadow-sm"><thead><tr>${headerCells}</tr></thead><tbody>${bodyRows}</tbody></table></div>\n`;
+      });
+      
+      // 16. Accordions/Details
       html = html.replace(/<details>([\s\S]*?)<\/details>/g, (match, content) => {
         const summaryMatch = content.match(/<summary>(.+?)<\/summary>/);
         const summary = summaryMatch ? summaryMatch[1] : 'Détails';
@@ -183,12 +235,17 @@ const Roadmap = () => {
         return `<details class="border border-gray-200 rounded-lg p-4 my-6 bg-white"><summary class="font-semibold cursor-pointer hover:text-primary text-gray-900">${summary}</summary><div class="mt-4 pt-4 border-t border-gray-100">${actualContent}</div></details>`;
       });
       
-      // 15. Restore code blocks
+      // 17. Restore code blocks
       codeBlocks.forEach((block, index) => {
         html = html.replace(`__CODE_BLOCK_${index}__`, block);
       });
       
-      // 16. Line breaks (convert double newlines to paragraphs, single to <br>)
+      // 18. Restore math blocks
+      mathBlocks.forEach((block, index) => {
+        html = html.replace(`__MATH_BLOCK_${index}__`, block);
+      });
+      
+      // 19. Line breaks (convert double newlines to paragraphs, single to <br>)
       html = html.replace(/\n\n+/g, '</p><p class="my-4">');
       html = html.replace(/\n/g, '<br>');
       html = `<p class="my-4">${html}</p>`;
@@ -197,7 +254,7 @@ const Roadmap = () => {
       const sanitizedHtml = DOMPurify.sanitize(html, {
         ALLOWED_TAGS: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'br', 'strong', 'em', 'span', 'code', 'pre', 
                        'ul', 'ol', 'li', 'div', 'a', 'img', 'blockquote', 'hr', 'iframe', 'details', 'summary', 
-                       'input', 'label'],
+                       'input', 'label', 'table', 'thead', 'tbody', 'tr', 'th', 'td'],
         ALLOWED_ATTR: ['class', 'href', 'src', 'alt', 'target', 'rel', 'loading', 'width', 'height', 'style', 
                        'allow', 'allowfullscreen', 'type', 'disabled', 'checked'],
         ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
