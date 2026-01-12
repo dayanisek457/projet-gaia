@@ -2,12 +2,14 @@ import { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, FileText, Image as ImageIcon, ExternalLink, Video } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Calendar, FileText, Image as ImageIcon, ExternalLink, Video, Route, Calculator } from 'lucide-react';
 import { s3Manager } from '@/lib/s3';
 import { roadmapService, type RoadmapItem } from '@/lib/supabase-roadmap';
 import { toast } from 'sonner';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import CalculsSection from '@/components/CalculsSection';
 import DOMPurify from 'dompurify';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
@@ -15,6 +17,7 @@ import 'katex/dist/katex.min.css';
 const Roadmap = () => {
   const [roadmapItems, setRoadmapItems] = useState<RoadmapItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('roadmap');
 
   useEffect(() => {
     const initializeData = async () => {
@@ -277,70 +280,84 @@ const Roadmap = () => {
       
       <main className="container mx-auto px-4 py-16">
         {/* Hero Section */}
-        <div className="text-center mb-16 max-w-4xl mx-auto">
+        <div className="text-center mb-12 max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Roadmap du Projet Gaia
           </h1>
           <p className="text-xl text-gray-600 leading-relaxed">
             Découvrez les étapes clés du développement de Gaia, notre solution innovante de reforestation autonome. 
-            Suivez notre progression et les prochaines fonctionnalités à venir.
+            Suivez notre progression et les calculs techniques associés.
           </p>
         </div>
 
-        {/* Progress Overview */}
-        {!loading && roadmapItems.length > 0 && (() => {
-          const completedCount = roadmapItems.filter(item => item.status === 'completed').length;
-          const inProgressCount = roadmapItems.filter(item => item.status === 'in-progress').length;
-          const totalCount = roadmapItems.length;
-          const completionPercentage = Math.round((completedCount / totalCount) * 100);
-          const progressPercentage = Math.round(((completedCount + inProgressCount * 0.5) / totalCount) * 100);
-          
-          return (
-            <div className="max-w-4xl mx-auto mb-12">
-              <Card className="border-2 border-primary/20 shadow-xl bg-gradient-to-br from-white to-primary/5">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Progression Globale</h3>
-                    <span className="text-3xl font-bold text-primary">{progressPercentage}%</span>
-                  </div>
-                  
-                  {/* Progress Bar */}
-                  <div className="relative h-6 bg-gray-200 rounded-full overflow-hidden mb-6">
-                    <div 
-                      className="absolute top-0 left-0 h-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-1000 ease-out"
-                      style={{ width: `${completionPercentage}%` }}
-                    ></div>
-                    <div 
-                      className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-400 to-blue-500 transition-all duration-1000 ease-out"
-                      style={{ width: `${progressPercentage}%` }}
-                    ></div>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-xs font-semibold text-white drop-shadow-lg">
-                        {completedCount} terminé{completedCount > 1 ? 's' : ''} • {inProgressCount} en cours • {totalCount - completedCount - inProgressCount} planifié{totalCount - completedCount - inProgressCount > 1 ? 's' : ''}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  {/* Stats */}
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="text-center p-3 bg-green-50 rounded-lg border border-green-200">
-                      <div className="text-2xl font-bold text-green-700">{completedCount}</div>
-                      <div className="text-xs text-green-600 font-medium">Terminés</div>
-                    </div>
-                    <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-200">
-                      <div className="text-2xl font-bold text-blue-700">{inProgressCount}</div>
-                      <div className="text-xs text-blue-600 font-medium">En cours</div>
-                    </div>
-                    <div className="text-center p-3 bg-gray-50 rounded-lg border border-gray-200">
-                      <div className="text-2xl font-bold text-gray-700">{totalCount - completedCount - inProgressCount}</div>
-                      <div className="text-xs text-gray-600 font-medium">Planifiés</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          );
-        })()}
+        {/* Tabs for Roadmap and Calculs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12">
+            <TabsTrigger value="roadmap" className="flex items-center gap-2">
+              <Route className="w-4 h-4" />
+              Avancée du Projet
+            </TabsTrigger>
+            <TabsTrigger value="calculs" className="flex items-center gap-2">
+              <Calculator className="w-4 h-4" />
+              Calculs Techniques
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="roadmap" className="mt-0">
+            {/* Progress Overview */}
+            {!loading && roadmapItems.length > 0 && (() => {
+              const completedCount = roadmapItems.filter(item => item.status === 'completed').length;
+              const inProgressCount = roadmapItems.filter(item => item.status === 'in-progress').length;
+              const totalCount = roadmapItems.length;
+              const completionPercentage = Math.round((completedCount / totalCount) * 100);
+              const progressPercentage = Math.round(((completedCount + inProgressCount * 0.5) / totalCount) * 100);
+              
+              return (
+                <div className="max-w-4xl mx-auto mb-12">
+                  <Card className="border-2 border-primary/20 shadow-xl bg-gradient-to-br from-white to-primary/5">
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-semibold text-gray-900">Progression Globale</h3>
+                        <span className="text-3xl font-bold text-primary">{progressPercentage}%</span>
+                      </div>
+                      
+                      {/* Progress Bar */}
+                      <div className="relative h-6 bg-gray-200 rounded-full overflow-hidden mb-6">
+                        <div 
+                          className="absolute top-0 left-0 h-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-1000 ease-out"
+                          style={{ width: `${completionPercentage}%` }}
+                        ></div>
+                        <div 
+                          className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-400 to-blue-500 transition-all duration-1000 ease-out"
+                          style={{ width: `${progressPercentage}%` }}
+                        ></div>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-xs font-semibold text-white drop-shadow-lg">
+                            {completedCount} terminé{completedCount > 1 ? 's' : ''} • {inProgressCount} en cours • {totalCount - completedCount - inProgressCount} planifié{totalCount - completedCount - inProgressCount > 1 ? 's' : ''}
+                          </span>
+                        </div>
+                      </div>
+                      
+                      {/* Stats */}
+                      <div className="grid grid-cols-3 gap-4">
+                        <div className="text-center p-3 bg-green-50 rounded-lg border border-green-200">
+                          <div className="text-2xl font-bold text-green-700">{completedCount}</div>
+                          <div className="text-xs text-green-600 font-medium">Terminés</div>
+                        </div>
+                        <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-200">
+                          <div className="text-2xl font-bold text-blue-700">{inProgressCount}</div>
+                          <div className="text-xs text-blue-600 font-medium">En cours</div>
+                        </div>
+                        <div className="text-center p-3 bg-gray-50 rounded-lg border border-gray-200">
+                          <div className="text-2xl font-bold text-gray-700">{totalCount - completedCount - inProgressCount}</div>
+                          <div className="text-xs text-gray-600 font-medium">Planifiés</div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              );
+            })()}
 
         {loading ? (
           <div className="flex justify-center items-center py-20">
@@ -455,6 +472,12 @@ const Roadmap = () => {
             </div>
           </div>
         )}
+          </TabsContent>
+
+          <TabsContent value="calculs" className="mt-0">
+            <CalculsSection />
+          </TabsContent>
+        </Tabs>
       </main>
       
       <Footer />
