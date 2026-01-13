@@ -180,7 +180,7 @@ const Presentation = () => {
 <img 
   src="/logo.png" 
   alt="Site logo" 
-  className="h-24 w-24 mx-auto mb-6" 
+  className="h-24 mx-auto mb-6" 
 />                    
                     </div>
                     <h1 className="text-7xl md:text-8xl font-display font-black bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-fade-in-up">
