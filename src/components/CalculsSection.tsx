@@ -259,6 +259,97 @@ Application de l'accélération constante jusqu'à 10 m/s :
 **Technique recommandée :** Montée progressive des gaz sur 2-3 secondes. Permet à la dérive d'être efficace pour maintenir la trajectoire. Décollage plus réaliste avec environ 15-20 mètres de roulage.
 
 **Différentiel moteur :** Si la radio le permet, réglage du différentiel des moteurs pour faciliter la direction au sol.`
+    },
+    {
+      id: 'calc-4',
+      title: 'Ratio Poids/Puissance',
+      description: 'Analyse du rapport puissance/masse pour déterminer les capacités de vol',
+      category: 'Performance',
+      content: `## Indicateur Universel en RC
+
+Ratio Poids/Puissance : indicateur universel pour déterminer les capacités de l'avion.
+
+**Formule :**
+
+$$\\frac{\\text{Puissance totale (W)}}{\\text{Masse (kg)}}$$
+
+**Calcul :**
+
+$$\\frac{576 \\text{ W}}{2.5 \\text{ kg}} \\approx 230 \\text{ W/kg}$$
+
+---
+
+## Classification des Performances
+
+| Ratio (W/kg) | Type de vol | Capacités |
+|--------------|-------------|-----------|
+| **150 W/kg** | Vol pépère | Réaliste, stable |
+| **250 W/kg** | Vol sportif | Looping faciles |
+| **400 W/kg** | Voltige/3D | Acrobatie avancée |
+
+---
+
+## Conclusion
+
+Ratio de **230 W/kg** : Zone "Sport", adaptée pour un Cessna puissant avec bonnes capacités de manœuvre.`
+    },
+    {
+      id: 'calc-5',
+      title: 'Autonomie et capacité batterie',
+      description: 'Calcul de l\'autonomie de vol en fonction de la capacité batterie',
+      category: 'Électrique',
+      content: `## 1. Capacité Utilisable
+
+Règle de sécurité : utilisation de 80% maximum de la capacité LiPo.
+
+**Batterie 1400 mAh :**
+
+$$\\text{Capacité utilisable} = 1400 \\text{ mAh} \\times 0.80 = 1120 \\text{ mAh} = 1.12 \\text{ Ah}$$
+
+---
+
+## 2. Autonomie Plein Gaz
+
+Consommation totale : 52 Ampères (deux moteurs).
+
+$$\\text{Temps} = \\frac{\\text{Capacité}}{\\text{Courant}} = \\frac{1.12 \\text{ Ah}}{52 \\text{ A}} \\approx 0.0215 \\text{ h} = 1.3 \\text{ min}$$
+
+**Résultat :** 1 minute 18 secondes plein gaz.
+
+---
+
+## 3. Autonomie Vol Mixte
+
+Consommation moyenne mi-gaz : 20-25A.
+
+$$\\text{Temps} = \\frac{1.12 \\text{ Ah}}{22.5 \\text{ A}} \\approx 0.05 \\text{ h} = 3 \\text{ min}$$
+
+**Résultat :** Moins de 3 minutes en vol mixte.
+
+---
+
+## Analyse Critique
+
+**Problème identifié :** Autonomie de 2 min 45s insuffisante. Risque de coupure batterie lors d'une remise des gaz (go-around).
+
+**Impact centrage :** Batterie 1400 mAh (~120-150g) trop légère. Risque de centrage arrière avec moteurs puissants.
+
+---
+
+## Recommandation
+
+**Batterie recommandée :** 3300-5000 mAh (3S) pour bimoteur 2.5 kg consommant 50A+.
+
+**Exemple avec 4000 mAh :**
+* Poids : ~350g (améliore le centrage avant)
+* Autonomie mixte : 8-10 minutes
+* Marge de sécurité confortable
+
+| Capacité | Poids | Autonomie Mixte | Remarque |
+|----------|-------|-----------------|----------|
+| **1400 mAh** | ~120-150g | ~3 min | Insuffisant, risqué |
+| **4000 mAh** | ~350g | 8-10 min | Recommandé, confortable |
+| **5000 mAh** | ~450g | 10-13 min | Optimal pour vol prolongé |`
     }
   ];
 
