@@ -177,7 +177,11 @@ const Presentation = () => {
                 <Card className="w-full h-full bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm border-2 border-white/50 shadow-2xl flex items-center justify-center">
                   <div className="text-center space-y-8 p-12">
                     <div className="inline-block animate-scale-in">
-                      <TreePine className="h-24 w-24 text-primary mx-auto mb-6" />
+<img 
+  src="/logo.png" 
+  alt="Site logo" 
+  className="h-24 w-24 mx-auto mb-6" 
+/>                    
                     </div>
                     <h1 className="text-7xl md:text-8xl font-display font-black bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-fade-in-up">
                       Gaia
