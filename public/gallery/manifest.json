@@ -14,6 +14,21 @@
       "src": "/gallery/IMG_20251219_085708.jpg",
       "alt": "Backend du site web",
       "size": "small"
+    },
+    {
+      "src": "/gallery/Capture d’écran (23).png",
+      "alt": "Design 3D initiale de l'aile",
+      "size": "small"
+    },
+    {
+      "src": "/gallery/WhatsApp Image 2026-01-13 at 15.15.29.jpeg",
+      "alt": "Impression 3D de l'aileron aile gauche",
+      "size": "large"
+    },
+    {
+      "src": "/gallery/IMG_20260113_170657.jpg",
+      "alt": "Test d'un code Arduino pour démarrer le moteur",
+      "size": "medium"
     }
   ],
   "_instructions": {
