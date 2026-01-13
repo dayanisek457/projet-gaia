@@ -792,7 +792,7 @@ const Presentation = () => {
                       <div className="bg-white p-4 rounded-lg shadow border border-gray-200 text-center">
                         <Wind className="h-8 w-8 text-blue-500 mx-auto mb-2" />
                         <p className="text-xs font-bold">Moteur brushless</p>
-                        <p className="text-xs text-gray-600">800-1000W</p>
+                        <p className="text-xs text-gray-600">500-600W</p>
                       </div>
                       <div className="bg-white p-4 rounded-lg shadow border border-gray-200 text-center">
                         <Settings className="h-8 w-8 text-gray-500 mx-auto mb-2" />
@@ -1108,11 +1108,11 @@ const Presentation = () => {
                         <div className="space-y-3">
                           <div className="bg-white/80 p-3 rounded-lg">
                             <p className="font-semibold text-gray-900 mb-1">Batteries LiPo haute capacité</p>
-                            <p className="text-sm text-gray-600">2200-5000mAh, 11.1V-14.8V</p>
+                            <p className="text-sm text-gray-600">1300-4000mAh, 11.1V/3S</p>
                           </div>
                           <div className="bg-white/80 p-3 rounded-lg">
                             <p className="font-semibold text-gray-900 mb-1">Moteur brushless</p>
-                            <p className="text-sm text-gray-600">800-1000W, rendement 85%</p>
+                            <p className="text-sm text-gray-600">500-600W, rendement 85%</p>
                           </div>
                           <div className="bg-white/80 p-3 rounded-lg">
                             <p className="font-semibold text-gray-900 mb-1">ESC (contrôleur électronique)</p>
@@ -1283,7 +1283,7 @@ const Presentation = () => {
                           </div>
                           <div className="flex justify-between items-center bg-green-50 p-2 rounded">
                             <span className="font-semibold">Consommation moyenne</span>
-                            <span className="text-green-700">400-600W en vol</span>
+                            <span className="text-green-700">500-600W en vol</span>
                           </div>
                           <div className="flex justify-between items-center bg-green-50 p-2 rounded">
                             <span className="font-semibold">Distance franchissable</span>
