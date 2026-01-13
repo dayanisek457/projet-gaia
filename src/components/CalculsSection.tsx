@@ -376,6 +376,11 @@ Pour le vol en palier : $L = m \\cdot g$
 
 $$S = \\frac{m \\cdot g}{\\frac{1}{2} \\rho V^2 C_L}$$
 
+**Avec les paramètres de l'avion :**
+* Masse : $m = 2.5$ kg
+* Vitesse de croisière : $V \approx 15$ m/s
+* $g = 9.81$ m/s²
+
 **Résultat :** $S = 0.55$ m²
 
 ---
