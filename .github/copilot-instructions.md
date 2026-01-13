@@ -14,7 +14,7 @@ This is a React + TypeScript + Vite web application for Lycée Saint Joseph Dijo
 - **Build**: `npm run build` (production build)
 - **Build (dev mode)**: `npm run build:dev` (development mode build)
 - **Lint**: `npm run lint` (runs ESLint)
-- **Preview**: `npm preview` (preview production build)
+- **Preview**: `npm run preview` (preview production build)
 
 ### Package Manager
 - This project uses `npm` with `package-lock.json`
