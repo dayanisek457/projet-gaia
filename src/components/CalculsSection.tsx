@@ -350,6 +350,65 @@ $$\\text{Temps} = \\frac{1.12 \\text{ Ah}}{22.5 \\text{ A}} \\approx 0.05 \\text
 | **1400 mAh** | ~120-150g | ~3 min | Insuffisant, risqué |
 | **4000 mAh** | ~350g | 8-10 min | Recommandé, confortable |
 | **5000 mAh** | ~450g | 10-13 min | Optimal pour vol prolongé |`
+    },
+    {
+      id: 'calc-6',
+      title: 'Dimensionnement des ailes',
+      description: 'Calcul de la surface alaire et des dimensions d\'aile (envergure, corde) pour profil NACA 5414',
+      category: 'Aérodynamique',
+      content: `## Données de base
+
+* **Longueur fuselage :** 1.1 m
+* **Profil d'aile :** NACA 5414
+* **Coefficient de portance :** $C_L = 1.0$
+* **Densité de l'air :** $\\rho = 1.225$ kg/m³
+* **Allongement (AR) :** 6
+
+---
+
+## 1. Calcul de la Surface Alaire ($S$)
+
+Formule de portance :
+
+$$L = \\frac{1}{2} \\rho V^2 S C_L$$
+
+Pour le vol en palier : $L = m \\cdot g$
+
+$$S = \\frac{m \\cdot g}{\\frac{1}{2} \\rho V^2 C_L}$$
+
+**Résultat :** $S = 0.55$ m²
+
+---
+
+## 2. Calcul de l'Envergure ($b$)
+
+Relation avec l'allongement :
+
+$$b = \\sqrt{S \\cdot AR} = \\sqrt{0.55 \\times 6}$$
+
+$$b = \\sqrt{3.3} \\approx 1.8 \\text{ m}$$
+
+**Avec marge de sécurité :** $b \\approx 1.7$ m
+
+---
+
+## 3. Calcul de la Corde Moyenne ($c$)
+
+$$c = \\frac{S}{b} = \\frac{0.55}{1.7} \\approx 0.32 \\text{ m} = 32 \\text{ cm}$$
+
+**Résultat final :** $c \\approx 30$ cm
+
+---
+
+## Résumé des Dimensions
+
+| Paramètre | Valeur | Unité |
+|-----------|--------|-------|
+| **Surface alaire (S)** | 0.55 | m² |
+| **Envergure (b)** | 1.7 | m |
+| **Corde moyenne (c)** | 30 | cm |
+| **Allongement (AR)** | 6 | - |
+| **Profil** | NACA 5414 | - |`
     }
   ];
 
