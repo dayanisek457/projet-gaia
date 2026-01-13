@@ -801,8 +801,8 @@ const Presentation = () => {
                       </div>
                       <div className="bg-white p-4 rounded-lg shadow border border-gray-200 text-center">
                         <TreePine className="h-8 w-8 text-green-500 mx-auto mb-2" />
-                        <p className="text-xs font-bold">Soute 2-5kg</p>
-                        <p className="text-xs text-gray-600">500+ graines</p>
+                        <p className="text-xs font-bold">Soute 100-150g</p>
+                        <p className="text-xs text-gray-600">2750+ graines</p>
                       </div>
                     </div>
                   </div>
@@ -1134,15 +1134,11 @@ const Presentation = () => {
                         </div>
                         <div className="space-y-3">
                           <div className="bg-white/80 p-3 rounded-lg">
-                            <p className="font-semibold text-gray-900 mb-1">Microcontrôleur embarqué</p>
-                            <p className="text-sm text-gray-600">Arduino/Raspberry Pi pour pilotage</p>
-                          </div>
-                          <div className="bg-white/80 p-3 rounded-lg">
                             <p className="font-semibold text-gray-900 mb-1">Module GPS (en recherche)</p>
                             <p className="text-sm text-gray-600">Navigation autonome en développement</p>
                           </div>
                           <div className="bg-white/80 p-3 rounded-lg">
-                            <p className="font-semibold text-gray-900 mb-1">Capteurs IMU</p>
+                            <p className="font-semibold text-gray-900 mb-1">Capteurs IMU (en recherche)</p>
                             <p className="text-sm text-gray-600">Gyroscope, accéléromètre, boussole</p>
                           </div>
                           <div className="bg-white/80 p-3 rounded-lg">
@@ -1162,19 +1158,15 @@ const Presentation = () => {
                         <div className="space-y-3">
                           <div className="bg-white/80 p-3 rounded-lg">
                             <p className="font-semibold text-gray-900 mb-1">Soute à graines motorisée</p>
-                            <p className="text-sm text-gray-600">Capacité 2-5kg de Seedballs</p>
+                            <p className="text-sm text-gray-600">Capacité 150g de graines</p>
                           </div>
                           <div className="bg-white/80 p-3 rounded-lg">
                             <p className="font-semibold text-gray-900 mb-1">Système de largage servo</p>
                             <p className="text-sm text-gray-600">Déclenchement manuel/GPS en recherche</p>
                           </div>
                           <div className="bg-white/80 p-3 rounded-lg">
-                            <p className="font-semibold text-gray-900 mb-1">Structure composite</p>
-                            <p className="text-sm text-gray-600">Balsa, mousse EPP, fibre de verre</p>
-                          </div>
-                          <div className="bg-white/80 p-3 rounded-lg">
                             <p className="font-semibold text-gray-900 mb-1">Mécanisme d'éjection</p>
-                            <p className="text-sm text-gray-600">Trappe contrôlée électroniquement</p>
+                            <p className="text-sm text-gray-600">Largage contrôlé électroniquement</p>
                           </div>
                         </div>
                       </div>
@@ -1287,7 +1279,7 @@ const Presentation = () => {
                         <div className="space-y-3 text-sm">
                           <div className="flex justify-between items-center bg-green-50 p-2 rounded">
                             <span className="font-semibold">Autonomie théorique</span>
-                            <span className="text-green-700">45-60 min (charge 5Ah)</span>
+                            <span className="text-green-700">45-60 min (charge 4Ah)</span>
                           </div>
                           <div className="flex justify-between items-center bg-green-50 p-2 rounded">
                             <span className="font-semibold">Consommation moyenne</span>
@@ -1315,15 +1307,12 @@ const Presentation = () => {
                           </div>
                           <div className="flex justify-between items-center bg-purple-50 p-2 rounded">
                             <span className="font-semibold">Charge utile max</span>
-                            <span className="text-purple-700">2-3 kg seedballs</span>
+                            <span className="text-purple-700">150g de graines</span>
                           </div>
                           <div className="flex justify-between items-center bg-purple-50 p-2 rounded">
                             <span className="font-semibold">Graines transportées</span>
-                            <span className="text-purple-700">500-800 unités</span>
+                            <span className="text-purple-700">2750+ environ</span>
                           </div>
-                          <p className="text-xs text-gray-600 mt-2">
-                            <strong>Méthode :</strong> Pesée précise + Tests de vol avec charges variables
-                          </p>
                         </div>
                       </div>
 
