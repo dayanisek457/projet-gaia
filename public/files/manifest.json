@@ -1,10 +1,10 @@
 {
   "files": [
     {
-      "name": "Document d'exemple",
-      "path": "/files/example-document.txt",
+      "name": "Avion 3D",
+      "path": "/files/3d_avion.docx",
       "type": "Document texte",
-      "size": "1 KB"
+      "size": "2 MB"
     },
     {
       "name": "Présentation du Projet",
