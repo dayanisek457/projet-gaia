@@ -1,7 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calculator } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Calculator, Download } from 'lucide-react';
 import { renderMarkdownWithMath } from '@/utils/markdown';
+import { generateCalculationsExcel } from '@/utils/excelExport';
+import { toast } from 'sonner';
 
 interface Calculation {
   id: string;
@@ -12,6 +15,20 @@ interface Calculation {
 }
 
 const CalculsSection = () => {
+  const handleExcelDownload = () => {
+    try {
+      generateCalculationsExcel();
+      toast.success('Fichier Excel téléchargé avec succès!', {
+        description: 'Vous pouvez maintenant modifier les valeurs des variables dans Excel.'
+      });
+    } catch (error) {
+      console.error('Erreur lors de la génération du fichier Excel:', error);
+      toast.error('Erreur lors de la génération du fichier Excel', {
+        description: 'Veuillez réessayer ou contacter le support.'
+      });
+    }
+  };
+
   // Static calculation data - can be moved to database later if needed
   const calculations: Calculation[] = [
     {
@@ -425,10 +442,17 @@ $$c = \\frac{S}{b} = \\frac{0.55}{1.7} \\approx 0.32 \\text{ m} = 32 \\text{ cm}
           <Calculator className="w-8 h-8 text-white" />
         </div>
         <h2 className="text-3xl font-bold text-gray-900 mb-4">Calculs Techniques</h2>
-        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+        <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-6">
           Retrouvez ici tous les calculs aérodynamiques et techniques effectués pour le projet Gaia. 
           Chaque calcul est structuré avec les données, formules et conclusions détaillées.
         </p>
+        <Button 
+          onClick={handleExcelDownload}
+          className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 mx-auto"
+        >
+          <Download className="w-5 h-5" />
+          Télécharger le tableau Excel des calculs
+        </Button>
       </div>
 
       {/* Calculations List */}
