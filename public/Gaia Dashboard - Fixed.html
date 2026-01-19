@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaia Dashboard - Calculs Aérodynamiques</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .inputs-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .inputs-panel h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #555;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .input-help {
+            font-size: 0.85em;
+            color: #888;
+            margin-top: 3px;
+        }
+
+        .section-divider {
+            height: 2px;
+            background: #f0f0f0;
+            margin: 20px 0;
+        }
+
+        .section-title {
+            font-weight: 700;
+            color: #667eea;
+            margin-top: 20px;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .results-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .result-card h3 {
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+
+        .result-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .result-unit {
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        .result-description {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+            line-height: 1.4;
+        }
+
+        .result-warning {
+            background: #fff3cd;
+            border-left-color: #ffc107;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #ffc107;
+        }
+
+        .warning-text {
+            color: #856404;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .category-label {
+            display: inline-block;
+            background: #f0f0f0;
+            color: #666;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
+
+        .performance-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .performance-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+
+        .btn-reset {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-reset:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-export {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-export:hover {
+            background: #764ba2;
+        }
+
+        .formula-box {
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: #555;
+            font-family: 'Courier New', monospace;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛩️ Gaia Dashboard</h1>
+            <p>Calculs aérodynamiques en temps réel - Modifiez les paramètres et voyez les résultats instantanément</p>
+        </div>
+
+        <div class="content">
+            <!-- INPUTS PANEL -->
+            <div class="inputs-panel">
+                <h2>Paramètres de l'Avion</h2>
+
+                <!-- Moteur & Hélice -->
+                <div class="section-title">⚙️ Moteur & Hélice</div>
+                <div class="input-group">
+                    <label>Voltage sous charge (V)</label>
+                    <input type="number" id="voltage" value="10.5" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label>KV Moteur (tr/min/V)</label>
+                    <input type="number" id="kv" value="1400" step="50">
+                </div>
+                <div class="input-group">
+                    <label>Efficacité Moteur (%)</label>
+                    <input type="number" id="motorEfficiency" value="80" step="1" max="100">
+                    <div class="input-help">Typiquement 75-85%</div>
+                </div>
+                <div class="input-group">
+                    <label>Pas de l'hélice (pouces)</label>
+                    <input type="number" id="propPitch" value="6" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label>Nombre de moteurs</label>
+                    <input type="number" id="numMotors" value="2" step="1" min="1">
+                </div>
+                <div class="input-group">
+                    <label>Poussée par moteur (kg)</label>
+                    <input type="number" id="thrustPerMotor" value="0.98" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label>Puissance par moteur (W)</label>
+                    <input type="number" id="powerPerMotor" value="288.4" step="10">
+                </div>
+
+                <div class="section-divider"></div>
+
+                <!-- Avion -->
+                <div class="section-title">✈️ Caractéristiques Avion</div>
+                <div class="input-group">
+                    <label>Masse totale (kg)</label>
+                    <input type="number" id="mass" value="2.5" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label>Surface alaire (m²)</label>
+                    <input type="number" id="wingArea" value="0.55" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>Envergure (m)</label>
+                    <input type="number" id="wingspan" value="1.7" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label>Corde moyenne (m)</label>
+                    <input type="number" id="chord" value="0.32" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>CL max (coefficient portance)</label>
+                    <input type="number" id="clMax" value="1.007" step="0.05">
+                </div>
+                <div class="input-group">
+                    <label>CD0 (coefficient traînée)</label>
+                    <input type="number" id="cd0" value="0.05" step="0.005">
+                </div>
+                <div class="input-group">
+                    <label>Efficacité hélice (%)</label>
+                    <input type="number" id="propEfficiency" value="70" step="5" max="100">
+                </div>
+
+                <div class="section-divider"></div>
+
+                <!-- Batterie -->
+                <div class="section-title">🔋 Batterie</div>
+                <div class="input-group">
+                    <label>Capacité batterie (mAh)</label>
+                    <input type="number" id="batteryCapacity" value="1400" step="100">
+                </div>
+                <div class="input-group">
+                    <label>Utilisation max (%)</label>
+                    <input type="number" id="batteryUsage" value="80" step="5" max="100">
+                </div>
+                <div class="input-group">
+                    <label>Courant total (A) - plein gaz</label>
+                    <input type="number" id="currentFull" value="52" step="1">
+                </div>
+                <div class="input-group">
+                    <label>Courant moyen (A) - mi-gaz</label>
+                    <input type="number" id="currentMid" value="22.5" step="1">
+                </div>
+
+                <div class="section-divider"></div>
+
+                <!-- Environnement -->
+                <div class="section-title">🌍 Environnement</div>
+                <div class="input-group">
+                    <label>Densité air (kg/m³)</label>
+                    <input type="number" id="airDensity" value="1.225" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>Gravité (m/s²)</label>
+                    <input type="number" id="gravity" value="9.81" step="0.01">
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-reset" onclick="resetValues()">↺ Réinitialiser</button>
+                    <button class="btn-export" onclick="exportResults()">📊 Exporter</button>
+                </div>
+            </div>
+
+            <!-- RESULTS PANEL -->
+            <div class="results-panel" id="resultsPanel">
+                <!-- Les cartes de résultats seront générées ici -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tous les inputs
+        const inputs = {
+            voltage: document.getElementById('voltage'),
+            kv: document.getElementById('kv'),
+            motorEfficiency: document.getElementById('motorEfficiency'),
+            propPitch: document.getElementById('propPitch'),
+            numMotors: document.getElementById('numMotors'),
+            thrustPerMotor: document.getElementById('thrustPerMotor'),
+            powerPerMotor: document.getElementById('powerPerMotor'),
+            mass: document.getElementById('mass'),
+            wingArea: document.getElementById('wingArea'),
+            wingspan: document.getElementById('wingspan'),
+            chord: document.getElementById('chord'),
+            clMax: document.getElementById('clMax'),
+            cd0: document.getElementById('cd0'),
+            propEfficiency: document.getElementById('propEfficiency'),
+            batteryCapacity: document.getElementById('batteryCapacity'),
+            batteryUsage: document.getElementById('batteryUsage'),
+            currentFull: document.getElementById('currentFull'),
+            currentMid: document.getElementById('currentMid'),
+            airDensity: document.getElementById('airDensity'),
+            gravity: document.getElementById('gravity')
+        };
+
+        // Valeurs par défaut pour reset
+        const defaultValues = {
+            voltage: 10.5,
+            kv: 1400,
+            motorEfficiency: 80,
+            propPitch: 6,
+            numMotors: 2,
+            thrustPerMotor: 0.98,
+            powerPerMotor: 288.4,
+            mass: 2.5,
+            wingArea: 0.55,
+            wingspan: 1.7,
+            chord: 0.32,
+            clMax: 1.007,
+            cd0: 0.05,
+            propEfficiency: 70,
+            batteryCapacity: 1400,
+            batteryUsage: 80,
+            currentFull: 52,
+            currentMid: 22.5,
+            airDensity: 1.225,
+            gravity: 9.81
+        };
+
+        function getValues() {
+            const vals = {};
+            for (let key in inputs) {
+                vals[key] = parseFloat(inputs[key].value) || 0;
+            }
+            return vals;
+        }
+
+        function calculateAll() {
+            const v = getValues();
+            const results = {};
+
+            // Calcul 1: Pitch Speed & Vitesse Max
+            const rpm = v.voltage * v.kv * (v.motorEfficiency / 100);
+            const pitchMeters = v.propPitch * 0.0254; // pouces en mètres
+            const pitchSpeed = (rpm * pitchMeters) / 60; // m/s
+            const pitchSpeedKmh = pitchSpeed * 3.6;
+            const maxSpeedRealistic = pitchSpeedKmh * 0.75; // 75% slip factor
+
+            results.rpm = rpm.toFixed(0);
+            results.pitchSpeedMs = pitchSpeed.toFixed(2);
+            results.pitchSpeedKmh = pitchSpeedKmh.toFixed(1);
+            results.maxSpeedRealistic = maxSpeedRealistic.toFixed(1);
+
+            // Calcul 2: Vitesse de décrochage
+            const weight = v.mass * v.gravity;
+            const denominator = v.airDensity * v.wingArea * v.clMax;
+            const stallSpeedMs = Math.sqrt((2 * weight) / denominator);
+            const stallSpeedKmh = stallSpeedMs * 3.6;
+            const approachSpeed = stallSpeedKmh * 1.3;
+
+            results.stallSpeedMs = stallSpeedMs.toFixed(2);
+            results.stallSpeedKmh = stallSpeedKmh.toFixed(1);
+            results.approachSpeed = approachSpeed.toFixed(1);
+
+            // Calcul 3: Vitesse max par traînée
+            const totalThrust = v.thrustPerMotor * v.numMotors * v.gravity;
+            const maxSpeedDragMs = Math.sqrt((2 * totalThrust) / (v.airDensity * v.wingArea * v.cd0));
+            const maxSpeedDragKmh = maxSpeedDragMs * 3.6;
+
+            results.maxSpeedDragMs = maxSpeedDragMs.toFixed(2);
+            results.maxSpeedDragKmh = maxSpeedDragKmh.toFixed(1);
+
+            // Calcul 4: Vitesse max par puissance
+            const totalPower = v.powerPerMotor * v.numMotors;
+            const usablePower = totalPower * (v.propEfficiency / 100);
+            const maxSpeedPowerMs = Math.cbrt((2 * usablePower) / (v.airDensity * v.wingArea * v.cd0));
+            const maxSpeedPowerKmh = maxSpeedPowerMs * 3.6;
+
+            results.totalPower = totalPower.toFixed(1);
+            results.usablePower = usablePower.toFixed(1);
+            results.maxSpeedPowerMs = maxSpeedPowerMs.toFixed(2);
+            results.maxSpeedPowerKmh = maxSpeedPowerKmh.toFixed(1);
+
+            // Calcul 5: Ratio Poids/Puissance
+            const weightToPowerRatio = (totalPower / v.mass).toFixed(1);
+            results.weightToPowerRatio = weightToPowerRatio;
+
+            // Calcul 6: Décollage
+            const rotationSpeedKmh = stallSpeedKmh * 1.2;
+            const rotationSpeedMs = rotationSpeedKmh / 3.6;
+            const frictionForce = v.mass * 1.5; // Friction approximée: 1.5 m/s² de décélération
+            const acceleration = (totalThrust - frictionForce) / v.mass;
+            const takeoffTime = rotationSpeedMs / acceleration;
+            const takeoffDistance = 0.5 * acceleration * takeoffTime * takeoffTime;
+
+            results.rotationSpeedKmh = rotationSpeedKmh.toFixed(1);
+            results.takeoffTime = takeoffTime.toFixed(2);
+            results.takeoffDistance = takeoffDistance.toFixed(1);
+
+            // Calcul 7: Autonomie batterie
+            const usableCapacity = (v.batteryCapacity * v.batteryUsage) / 100; // mAh
+            const autonomyFullThrottleMin = ((usableCapacity / 1000) / v.currentFull * 60).toFixed(2); // Convertir mAh en Ah, puis en minutes
+            const autonomyMixedMin = ((usableCapacity / 1000) / v.currentMid * 60).toFixed(2); // Convertir mAh en Ah, puis en minutes
+
+            results.usableCapacity = usableCapacity.toFixed(0);
+            results.autonomyFullThrottleMin = autonomyFullThrottleMin;
+            results.autonomyMixedMin = autonomyMixedMin;
+
+            // Calcul 8: Allongement & charge alaire
+            const aspectRatio = (v.wingspan * v.wingspan) / v.wingArea;
+            const wingLoading = (v.mass / v.wingArea).toFixed(2);
+
+            results.aspectRatio = aspectRatio.toFixed(1);
+            results.wingLoading = wingLoading;
+
+            // Calcul 9: Poussée/Poids
+            const thrustToWeightRatio = (v.thrustPerMotor * v.numMotors / v.mass).toFixed(2);
+            results.thrustToWeightRatio = thrustToWeightRatio;
+
+            // Calcul 10: Vitesse croisière (mi-gaz)
+            const cruiseSpeedKmh = (maxSpeedRealistic * 0.65).toFixed(1);
+            results.cruiseSpeedKmh = cruiseSpeedKmh;
+
+            return results;
+        }
+
+        function createResultCard(title, value, unit, description, formula = '', warning = '') {
+            const card = document.createElement('div');
+            card.className = 'result-card' + (warning ? ' result-warning' : '');
+            
+            let html = `
+                <h3>${title}</h3>
+                <div class="result-value">${value}</div>
+                <div class="result-unit">${unit}</div>
+                <div class="result-description">${description}</div>
+            `;
+            
+            if (formula) {
+                html += `<div class="formula-box">${formula}</div>`;
+            }
+            
+            if (warning) {
+                html += `<div class="warning-text">⚠️ ${warning}</div>`;
+            }
+            
+            card.innerHTML = html;
+            return card;
+        }
+
+        function updateResults() {
+            const results = calculateAll();
+            const panel = document.getElementById('resultsPanel');
+            panel.innerHTML = '';
+
+            // Vitesse max (finale, prenant le minimum des 3 limites)
+            const v = getValues();
+            const maxSpeedFinal = Math.min(
+                parseFloat(results.maxSpeedRealistic),
+                parseFloat(results.maxSpeedPowerKmh)
+            );
+            
+            panel.appendChild(createResultCard(
+                '🎯 Vitesse Maximale',
+                maxSpeedFinal.toFixed(1),
+                'km/h',
+                'Vitesse max atteignable en vol horizontal (limitée par hélice et puissance)',
+                '',
+                maxSpeedFinal < 70 ? 'Vitesse faible - vérifier les paramètres' : ''
+            ));
+
+            // RPM
+            panel.appendChild(createResultCard(
+                '⚡ Régime Moteur (RPM)',
+                results.rpm,
+                'tr/min',
+                `À ${v.voltage}V avec KV ${v.kv} et efficacité ${v.motorEfficiency}%`
+            ));
+
+            // Pitch Speed
+            panel.appendChild(createResultCard(
+                '🌀 Pitch Speed (Théorique)',
+                results.pitchSpeedKmh,
+                'km/h',
+                `Vitesse théorique sans glissement (Pitch: ${v.propPitch}")`
+            ));
+
+            // Vitesse max avec slip
+            panel.appendChild(createResultCard(
+                '🔧 Vitesse Max (Hélice)',
+                results.maxSpeedRealistic,
+                'km/h',
+                'Vitesse max hélice (75% du Pitch Speed) - limitée par glissement'
+            ));
+
+            // Vitesse max par puissance
+            panel.appendChild(createResultCard(
+                '⚙️ Vitesse Max (Puissance)',
+                results.maxSpeedPowerKmh,
+                'km/h',
+                `Calculée avec ${results.totalPower}W total (${v.propEfficiency}% efficacité)`
+            ));
+
+            // Décrochage
+            panel.appendChild(createResultCard(
+                '📉 Vitesse de Décrochage',
+                results.stallSpeedKmh,
+                'km/h',
+                'Vitesse minimale pour maintenir le vol',
+                `V_stall = √(2mg / (ρ × S × CL_max))`
+            ));
+
+            // Approche
+            panel.appendChild(createResultCard(
+                '🛬 Vitesse d\'Approche',
+                results.approachSpeed,
+                'km/h',
+                'Recommandée pour l\'approche (1.3 × Vstall)',
+                '',
+                ''
+            ));
+
+            // Croisière
+            panel.appendChild(createResultCard(
+                '✈️ Vitesse de Croisière',
+                results.cruiseSpeedKmh,
+                'km/h',
+                'Vol stable à mi-gaz (65% de V_max)'
+            ));
+
+            // Rotation
+            panel.appendChild(createResultCard(
+                '🚀 Vitesse de Rotation',
+                results.rotationSpeedKmh,
+                'km/h',
+                'Vitesse pour décoller en sécurité (1.2 × Vstall)'
+            ));
+
+            // Décollage
+            panel.appendChild(createResultCard(
+                '📏 Distance de Décollage',
+                results.takeoffDistance,
+                'm',
+                `En ${results.takeoffTime}s environ`
+            ));
+
+            // Autonomie
+            panel.appendChild(createResultCard(
+                '⏱️ Autonomie Plein Gaz',
+                results.autonomyFullThrottleMin,
+                'min',
+                `${results.usableCapacity} mAh utilisables à ${v.currentFull}A`,
+                '',
+                parseFloat(results.autonomyFullThrottleMin) < 2 ? 'CRITIQUE - Autonomie insuffisante!' : ''
+            ));
+
+            // Autonomie mixte
+            panel.appendChild(createResultCard(
+                '⏱️ Autonomie Vol Mixte',
+                results.autonomyMixedMin,
+                'min',
+                `Mi-gaz à ${v.currentMid}A`
+            ));
+
+            // Ratio Poids/Puissance
+            panel.appendChild(createResultCard(
+                '💪 Ratio Poids/Puissance',
+                results.weightToPowerRatio,
+                'W/kg',
+                results.weightToPowerRatio > 250 ? 'Vol sportif - bonnes manœuvres' : 'Vol stable - moins acrobatique'
+            ));
+
+            // Thrust/Weight
+            panel.appendChild(createResultCard(
+                '🔨 Ratio Poussée/Poids',
+                results.thrustToWeightRatio,
+                'ratio',
+                'Idéal: 0.5-0.6 pour trainer, 0.78 = très confortable'
+            ));
+
+            // Charge alaire
+            panel.appendChild(createResultCard(
+                '📐 Charge Alaire',
+                results.wingLoading,
+                'kg/m²',
+                `Surface: ${v.wingArea}m², Envergure: ${v.wingspan}m`
+            ));
+
+            // Allongement
+            panel.appendChild(createResultCard(
+                '📊 Allongement (AR)',
+                results.aspectRatio,
+                'ratio',
+                'Allongement de l\'aile - plus élevé = meilleure efficacité'
+            ));
+
+            // Puissance totale
+            panel.appendChild(createResultCard(
+                '⚡ Puissance Totale',
+                results.totalPower,
+                'W',
+                `${results.usablePower}W utilisables (${v.propEfficiency}% efficacité hélice)`
+            ));
+        }
+
+        function resetValues() {
+            for (let key in inputs) {
+                inputs[key].value = defaultValues[key];
+            }
+            updateResults();
+        }
+
+        function exportResults() {
+            const results = calculateAll();
+            let text = 'GAIA - Export Calculs Aérodynamiques\n';
+            text += new Date().toLocaleString() + '\n\n';
+            text += '=== PARAMÈTRES ===\n';
+            for (let key in inputs) {
+                text += `${key}: ${inputs[key].value}\n`;
+            }
+            text += '\n=== RÉSULTATS ===\n';
+            for (let key in results) {
+                text += `${key}: ${results[key]}\n`;
+            }
+            
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Gaia_Calculs_${new Date().toISOString().slice(0,10)}.txt`;
+            a.click();
+        }
+
+        // Événements
+        for (let key in inputs) {
+            inputs[key].addEventListener('input', updateResults);
+        }
+
+        // Initialisation
+        updateResults();
+    </script>
+</body>
+</html>
