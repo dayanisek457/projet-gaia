@@ -10,8 +10,9 @@ import RoadmapManager from '@/components/RoadmapManager';
 import DocumentationManager from '@/components/DocumentationManager';
 import TaskBoard from '@/components/TaskBoard';
 import SponsorsManager from '@/components/SponsorsManager';
+import PhysicsCalculator from '@/components/PhysicsCalculator';
 import Login from '@/components/Login';
-import { Settings, Database, Shield, TestTube, LogOut, FileText, ClipboardList, Users } from 'lucide-react';
+import { Settings, Database, Shield, TestTube, LogOut, FileText, ClipboardList, Users, Calculator } from 'lucide-react';
 import { toast } from 'sonner';
 import { authService, AuthUser } from '@/lib/supabase-auth';
 
@@ -177,6 +178,7 @@ const Admin = () => {
     { id: 'tasks', label: 'Tâches', icon: ClipboardList },
     { id: 'sponsors', label: 'Sponsors', icon: Users },
     { id: 'documentation', label: 'Documentation', icon: FileText },
+    { id: 'calculator', label: 'Calculateur', icon: Calculator },
   ];
 
   return (
@@ -461,6 +463,41 @@ const Admin = () => {
                   </Button>
                 </CardContent>
               </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Calculator className="h-5 w-5" />
+                    <span>Calculateur Physique</span>
+                  </CardTitle>
+                  <CardDescription>
+                    Calculs aérodynamiques en temps réel
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Type:</span>
+                      <span className="text-xs">Calculs aérodynamiques</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Format:</span>
+                      <Badge variant="default">Intégré</Badge>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Fonctionnalités:</span>
+                      <span className="text-xs">Temps réel, Export</span>
+                    </div>
+                  </div>
+                  <Button 
+                    onClick={() => setActiveTab('calculator')} 
+                    className="w-full mt-4"
+                    size="sm"
+                  >
+                    Ouvrir le calculateur
+                  </Button>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Instructions */}
@@ -504,6 +541,10 @@ const Admin = () => {
 
         {activeTab === 'documentation' && (
           <DocumentationManager key={`docs-${sessionKey}`} />
+        )}
+
+        {activeTab === 'calculator' && (
+          <PhysicsCalculator key={`calculator-${sessionKey}`} />
         )}
       </main>
     </div>
