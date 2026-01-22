@@ -12,20 +12,17 @@ Ce guide explique comment construire l'application Android Gaia depuis le projet
 ### Installation Rapide sur GitHub Codespace
 
 ```bash
-# 1. Installer Java JDK 21
-sudo apt-get update
-sudo apt-get install -y openjdk-21-jdk
+# 1. Configuration de l'environnement (détecte et configure automatiquement l'Android SDK)
+npm run android:env
 
-# 2. Configurer Java 21
-export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
-export PATH=$JAVA_HOME/bin:$PATH
-
-# 3. Vérifier l'installation
+# 2. Vérifier l'installation
 java -version
 
-# 4. Installer les dépendances npm (si pas déjà fait)
-npm install
+# 3. Construire l'APK
+npm run android:build
 ```
+
+**Note**: Le script `android:env` détecte automatiquement si un Android SDK est déjà installé sur le système (comme sur GitHub Codespace) et l'utilise. Si aucun SDK n'est trouvé, il en installe un nouveau.
 
 ## 📦 Construction de l'APK
 
@@ -125,6 +122,23 @@ npm run android:build
 
 ## 🔍 Dépannage
 
+### Erreur: SDK location not found (Android SDK manquant)
+
+Si vous obtenez l'erreur "SDK location not found", cela signifie que l'Android SDK n'est pas configuré:
+
+```bash
+# Solution: Exécuter le script de configuration d'environnement
+npm run android:env
+```
+
+Ce script va:
+- Installer Java 21 si nécessaire
+- Détecter ou installer l'Android SDK
+- Créer le fichier `local.properties` avec le chemin du SDK
+- Installer les composants Android requis
+
+**Note**: Sur GitHub Codespace, l'Android SDK est généralement déjà pré-installé et sera automatiquement détecté.
+
 ### Erreur: `JAVA_HOME` non défini ou mauvaise version de Java
 
 Le projet requiert Java 21. Configurez-le ainsi:
@@ -139,6 +153,11 @@ export PATH=$JAVA_HOME/bin:$PATH
 
 # Vérifier la version
 java -version  # Devrait afficher "21.0.x"
+```
+
+Ou plus simplement, exécutez:
+```bash
+npm run android:env
 ```
 
 ### Erreur: Permission denied sur les scripts

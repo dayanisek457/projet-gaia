@@ -53,8 +53,13 @@ Trois scripts principaux créés:
 #### `scripts/setup-android-env.sh`
 - Configuration automatique de l'environnement GitHub Codespace
 - Installation de Java 21
-- Configuration de JAVA_HOME
+- **Détection automatique de l'Android SDK**:
+  - Utilise le SDK pré-installé sur GitHub Codespace si disponible
+  - Sinon, télécharge et installe l'Android SDK
+  - Crée automatiquement le fichier `local.properties`
+- Configuration de JAVA_HOME et ANDROID_HOME
 - Installation des dépendances npm
+- Installation des composants Android SDK requis (platform-tools, build-tools, API 35)
 
 #### `scripts/generate-keystore.sh`
 - Génération interactive d'un keystore
