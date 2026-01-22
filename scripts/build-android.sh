@@ -23,7 +23,7 @@ fi
 echo "🔍 Vérification de Java..."
 if ! command -v java &> /dev/null; then
     echo -e "${RED}❌ Java n'est pas installé${NC}"
-    echo "   Installez Java 21 avec: sudo apt-get install -y openjdk-21-jdk"
+    echo "   Exécutez d'abord: npm run android:env"
     exit 1
 fi
 
@@ -41,11 +41,41 @@ if [ "$JAVA_VERSION" != "21" ]; then
         echo -e "${GREEN}✅ Java 21 configuré${NC}"
     else
         echo -e "${RED}❌ Java 21 n'est pas installé${NC}"
-        echo "   Installez-le avec: sudo apt-get install -y openjdk-21-jdk"
+        echo "   Exécutez d'abord: npm run android:env"
         exit 1
     fi
 else
     echo -e "${GREEN}✅ Java 21 détecté${NC}"
+fi
+echo ""
+
+# Vérifier et configurer Android SDK
+echo "🔍 Vérification du Android SDK..."
+if [ -z "$ANDROID_HOME" ] && [ -d "$HOME/android-sdk" ]; then
+    export ANDROID_HOME="$HOME/android-sdk"
+    export ANDROID_SDK_ROOT="$ANDROID_HOME"
+    export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
+    echo -e "${GREEN}✅ Android SDK configuré${NC}"
+elif [ -z "$ANDROID_HOME" ]; then
+    echo -e "${RED}❌ Android SDK n'est pas installé${NC}"
+    echo "   Exécutez d'abord: npm run android:env"
+    exit 1
+else
+    echo -e "${GREEN}✅ Android SDK détecté${NC}"
+fi
+
+# Vérifier/créer le fichier local.properties
+LOCAL_PROPS="android/local.properties"
+if [ ! -f "$LOCAL_PROPS" ]; then
+    echo "   Création du fichier local.properties..."
+    echo "sdk.dir=$ANDROID_HOME" > "$LOCAL_PROPS"
+    echo -e "${GREEN}✅ Fichier local.properties créé${NC}"
+elif ! grep -q "sdk.dir" "$LOCAL_PROPS"; then
+    echo "   Mise à jour du fichier local.properties..."
+    echo "sdk.dir=$ANDROID_HOME" >> "$LOCAL_PROPS"
+    echo -e "${GREEN}✅ Fichier local.properties mis à jour${NC}"
+else
+    echo -e "${GREEN}✅ Fichier local.properties configuré${NC}"
 fi
 echo ""
 
