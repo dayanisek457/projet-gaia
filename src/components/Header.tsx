@@ -1,11 +1,13 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Instagram, Presentation } from 'lucide-react';
+import { Menu, X, Instagram, Presentation, Smartphone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  const ANDROID_APP_URL = 'https://github.com/dayanisek457/projet-gaia/releases/download/Android/Gaia_app_v1.apk';
 
   const navigation = [
     { name: 'Accueil', href: '/#home', isRoute: false },
@@ -87,6 +89,18 @@ const Header = () => {
             >
               <Link to="/documentation">Doc</Link>
             </Button>
+            
+            <Button 
+              variant="outline" 
+              size="default" 
+              className="btn-hero border-2 border-green-600/30 hover:border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-display font-semibold px-6 py-2.5 rounded-lg text-base"
+              asChild
+            >
+              <a href={ANDROID_APP_URL} download>
+                <Smartphone className="h-4 w-4 mr-2" />
+                App Android
+              </a>
+            </Button>
           </nav>
 
           {/* Mobile menu button */}
@@ -160,6 +174,19 @@ const Header = () => {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <Link to="/documentation">Documentation</Link>
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  size="default" 
+                  className="btn-hero w-full border-2 border-green-600/30 hover:border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-display font-semibold rounded-lg text-base"
+                  asChild
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <a href={ANDROID_APP_URL} download>
+                    <Smartphone className="h-4 w-4 mr-2" />
+                    Télécharger l'App Android
+                  </a>
                 </Button>
               </div>
             </div>
