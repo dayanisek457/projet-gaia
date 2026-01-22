@@ -27,7 +27,8 @@ if ! command -v java &> /dev/null; then
     exit 1
 fi
 
-JAVA_VERSION=$(java -version 2>&1 | head -n 1 | cut -d'"' -f2 | cut -d'.' -f1)
+# Extraction robuste de la version Java (supporte 21, 21.0.1, etc.)
+JAVA_VERSION=$(java -version 2>&1 | head -n 1 | grep -oP 'version "?\K[0-9]+' | head -n 1)
 if [ "$JAVA_VERSION" != "21" ]; then
     echo -e "${YELLOW}⚠️  Java $JAVA_VERSION détecté, mais Java 21 est requis${NC}"
     
@@ -49,8 +50,7 @@ echo ""
 
 # Étape 1: Build de l'application web
 echo "📦 Étape 1/4: Construction de l'application web..."
-npm run build
-if [ $? -ne 0 ]; then
+if ! npm run build; then
     echo -e "${RED}❌ Erreur lors du build web${NC}"
     exit 1
 fi
@@ -59,8 +59,7 @@ echo ""
 
 # Étape 2: Synchronisation avec Capacitor
 echo "🔄 Étape 2/4: Synchronisation avec Capacitor..."
-npx cap sync android
-if [ $? -ne 0 ]; then
+if ! npx cap sync android; then
     echo -e "${RED}❌ Erreur lors de la synchronisation${NC}"
     exit 1
 fi
@@ -87,8 +86,7 @@ echo ""
 # Étape 4: Construction de l'APK
 echo "🔨 Étape 4/4: Construction de l'APK Android ($BUILD_TYPE)..."
 cd android
-./gradlew clean $GRADLE_TASK
-if [ $? -ne 0 ]; then
+if ! ./gradlew clean $GRADLE_TASK; then
     echo -e "${RED}❌ Erreur lors de la construction de l'APK${NC}"
     exit 1
 fi
