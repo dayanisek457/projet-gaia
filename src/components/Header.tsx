@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  const ANDROID_APP_URL = 'https://github.com/dayanisek457/projet-gaia/releases/download/Android/Gaia_app_v1.apk';
 
   const navigation = [
     { name: 'Accueil', href: '/#home', isRoute: false },
@@ -94,7 +96,7 @@ const Header = () => {
               className="btn-hero border-2 border-green-600/30 hover:border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-display font-semibold px-6 py-2.5 rounded-lg text-base"
               asChild
             >
-              <a href="https://github.com/dayanisek457/projet-gaia/releases/download/Android/Gaia_app_v1.apk" download>
+              <a href={ANDROID_APP_URL} download>
                 <Smartphone className="h-4 w-4 mr-2" />
                 App Android
               </a>
@@ -181,7 +183,7 @@ const Header = () => {
                   asChild
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <a href="https://github.com/dayanisek457/projet-gaia/releases/download/Android/Gaia_app_v1.apk" download>
+                  <a href={ANDROID_APP_URL} download>
                     <Smartphone className="h-4 w-4 mr-2" />
                     Télécharger l'App Android
                   </a>
