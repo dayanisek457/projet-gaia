@@ -82,15 +82,26 @@ else
     echo "   Téléchargement des outils Android SDK..."
     mkdir -p "$ANDROID_SDK_ROOT/cmdline-tools"
     
+    # Créer un répertoire temporaire sécurisé pour le téléchargement
+    TEMP_DIR=$(mktemp -d)
+    
     # Télécharger les command-line tools (version Linux)
-    cd /tmp
-    wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
+    echo "   Téléchargement depuis dl.google.com..."
+    wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O "$TEMP_DIR/cmdline-tools.zip"
+    
+    # Vérifier que le fichier a été téléchargé
+    if [ ! -f "$TEMP_DIR/cmdline-tools.zip" ] || [ ! -s "$TEMP_DIR/cmdline-tools.zip" ]; then
+        echo -e "${RED}❌ Erreur lors du téléchargement du SDK Android${NC}"
+        rm -rf "$TEMP_DIR"
+        exit 1
+    fi
     
     # Extraire dans le bon dossier
-    unzip -q cmdline-tools.zip
-    mv cmdline-tools "$ANDROID_SDK_ROOT/cmdline-tools/latest"
-    rm cmdline-tools.zip
-    cd - > /dev/null
+    unzip -q "$TEMP_DIR/cmdline-tools.zip" -d "$TEMP_DIR"
+    mv "$TEMP_DIR/cmdline-tools" "$ANDROID_SDK_ROOT/cmdline-tools/latest"
+    
+    # Nettoyer le répertoire temporaire
+    rm -rf "$TEMP_DIR"
     
     echo -e "${GREEN}✅ Android SDK command-line tools installés${NC}"
 fi
@@ -110,6 +121,10 @@ elif [ -f "$ANDROID_HOME/tools/bin/sdkmanager" ]; then
 fi
 
 if [ -n "$SDKMANAGER" ]; then
+    # Informer l'utilisateur de l'acceptation des licences
+    echo "   Acceptation des licences Android SDK..."
+    echo "   (Ceci accepte automatiquement les licences Android SDK requises)"
+    
     # Accepter les licences automatiquement
     yes | "$SDKMANAGER" --licenses > /dev/null 2>&1 || true
     
@@ -135,9 +150,16 @@ fi
 if ! grep -q "# Android SDK pour build" ~/.bashrc; then
     echo "" >> ~/.bashrc
     echo "# Android SDK pour build" >> ~/.bashrc
-    echo "export ANDROID_HOME=\"\$HOME/android-sdk\"" >> ~/.bashrc
-    echo "export ANDROID_SDK_ROOT=\"\$ANDROID_HOME\"" >> ~/.bashrc
-    echo "export PATH=\"\$ANDROID_HOME/cmdline-tools/latest/bin:\$ANDROID_HOME/platform-tools:\$PATH\"" >> ~/.bashrc
+    echo "# Détection automatique du SDK Android" >> ~/.bashrc
+    echo "if [ -d \"/usr/local/lib/android/sdk\" ]; then" >> ~/.bashrc
+    echo "    export ANDROID_HOME=\"/usr/local/lib/android/sdk\"" >> ~/.bashrc
+    echo "elif [ -d \"\$HOME/android-sdk\" ]; then" >> ~/.bashrc
+    echo "    export ANDROID_HOME=\"\$HOME/android-sdk\"" >> ~/.bashrc
+    echo "fi" >> ~/.bashrc
+    echo "if [ -n \"\$ANDROID_HOME\" ]; then" >> ~/.bashrc
+    echo "    export ANDROID_SDK_ROOT=\"\$ANDROID_HOME\"" >> ~/.bashrc
+    echo "    export PATH=\"\$ANDROID_HOME/cmdline-tools/latest/bin:\$ANDROID_HOME/platform-tools:\$PATH\"" >> ~/.bashrc
+    echo "fi" >> ~/.bashrc
     echo -e "${GREEN}✅ ANDROID_HOME configuré dans .bashrc${NC}"
 else
     echo -e "${GREEN}✅ ANDROID_HOME déjà configuré${NC}"
