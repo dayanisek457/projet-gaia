@@ -25,14 +25,23 @@ fi
 # 2. Configuration de JAVA_HOME
 echo ""
 echo "🔧 Étape 2/3: Configuration de JAVA_HOME..."
-export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+
+# Trouver le chemin Java 21 de manière portable (multi-architecture)
+JAVA_21_PATH=$(find /usr/lib/jvm -maxdepth 1 -name "java-21-openjdk*" 2>/dev/null | head -n 1)
+
+if [ -z "$JAVA_21_PATH" ]; then
+    echo -e "${YELLOW}⚠️  Impossible de trouver Java 21. Vérifiez l'installation.${NC}"
+    exit 1
+fi
+
+export JAVA_HOME="$JAVA_21_PATH"
 export PATH=$JAVA_HOME/bin:$PATH
 
-# Ajouter au .bashrc pour persistance
-if ! grep -q "JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64" ~/.bashrc; then
+# Ajouter au .bashrc pour persistance (avec recherche dynamique)
+if ! grep -q "# Java 21 pour Android build" ~/.bashrc; then
     echo "" >> ~/.bashrc
     echo "# Java 21 pour Android build" >> ~/.bashrc
-    echo "export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64" >> ~/.bashrc
+    echo "export JAVA_HOME=\"\$(find /usr/lib/jvm -maxdepth 1 -name 'java-21-openjdk*' 2>/dev/null | head -n 1)\"" >> ~/.bashrc
     echo "export PATH=\$JAVA_HOME/bin:\$PATH" >> ~/.bashrc
     echo -e "${GREEN}✅ JAVA_HOME configuré dans .bashrc${NC}"
 else

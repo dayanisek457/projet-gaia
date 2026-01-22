@@ -28,14 +28,15 @@ if ! command -v java &> /dev/null; then
 fi
 
 # Extraction robuste de la version Java (supporte 21, 21.0.1, etc.)
-JAVA_VERSION=$(java -version 2>&1 | head -n 1 | grep -oP 'version "?\K[0-9]+' | head -n 1)
+JAVA_VERSION=$(java -version 2>&1 | head -n 1 | sed -n 's/.*version "\?\([0-9]*\).*/\1/p')
 if [ "$JAVA_VERSION" != "21" ]; then
     echo -e "${YELLOW}⚠️  Java $JAVA_VERSION détecté, mais Java 21 est requis${NC}"
     
-    # Essayer de trouver et configurer Java 21
-    if [ -d "/usr/lib/jvm/java-21-openjdk-amd64" ]; then
-        echo "   Configuration de Java 21..."
-        export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+    # Essayer de trouver et configurer Java 21 (multi-architecture)
+    JAVA_21_PATH=$(find /usr/lib/jvm -maxdepth 1 -name "java-21-openjdk*" 2>/dev/null | head -n 1)
+    if [ -n "$JAVA_21_PATH" ] && [ -d "$JAVA_21_PATH" ]; then
+        echo "   Configuration de Java 21 depuis $JAVA_21_PATH..."
+        export JAVA_HOME="$JAVA_21_PATH"
         export PATH=$JAVA_HOME/bin:$PATH
         echo -e "${GREEN}✅ Java 21 configuré${NC}"
     else
