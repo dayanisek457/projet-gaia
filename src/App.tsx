@@ -10,6 +10,7 @@ import Partenaires from "./pages/Partenaires";
 import Roadmap from "./pages/Roadmap";
 import Presentation from "./pages/Presentation";
 import GalleryResources from "./pages/GalleryResources";
+import GaiaAI from "./pages/GaiaAI";
 import S3Test from "./pages/S3Test";
 import RoadmapTest from "./pages/RoadmapTest";
 import TaskBoardTest from "./pages/TaskBoardTest";
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/roadmap" element={<Roadmap />} />
           <Route path="/presentation" element={<Presentation />} />
           <Route path="/galerie" element={<GalleryResources />} />
+          <Route path="/gaia-ai" element={<GaiaAI />} />
           <Route path="/s3test" element={<S3Test />} />
           <Route path="/roadmaptest" element={<RoadmapTest />} />
           <Route path="/taskboardtest" element={<TaskBoardTest />} />
