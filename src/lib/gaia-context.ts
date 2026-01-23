@@ -28,13 +28,111 @@ class GaiaContextService {
       let context = `# Projet Gaia - Lycée Saint Joseph Dijon
 
 ## À propos du Projet Gaia
-Le Projet Gaia est une application web de reforestation intelligente développée pour le Lycée Saint Joseph à Dijon. 
-C'est une application React + TypeScript + Vite avec une interface d'administration complète et un support Android.
 
-### Technologies utilisées
+### Vue d'ensemble
+Le Projet Gaia est un projet innovant de reforestation intelligente développé par des élèves de Sciences de l'Ingénieur du Lycée Saint-Joseph à Dijon pour l'année 2025-2026. 
+
+**Slogan**: "L'avenir de la reforestation intelligente"
+
+### Problématique
+Comment utiliser les technologies aériennes pour accélérer la reforestation et restaurer durablement les écosystèmes dégradés face à l'urgence climatique mondiale ?
+
+### La Solution Gaia
+Un avion électrique radiocommandé pour accélérer la reforestation mondiale et restaurer durablement nos écosystèmes.
+
+**Description technique**: Un avion 100% électrique intelligent avec batterie haute capacité, muni d'une soute pour larguer des Seedballs (billes de graines enrobées).
+
+### Défis environnementaux adressés
+
+1. **Déforestation massive**
+   - Le Sahara avance de 5-10 km/an dans les forêts tropicales
+   - Perte continue de biodiversité
+
+2. **Montée des eaux**
+   - Plus d'1 milliard de personnes devront migrer d'ici 2050
+   - Impact sur les populations côtières
+
+3. **Dérèglement climatique**
+   - Urgence d'agir face aux changements globaux
+   - Nécessité de solutions rapides et efficaces
+
+4. **Solutions coûteuses**
+   - Méthodes actuelles onéreuses et polluantes
+   - Besoin d'alternatives économiques et écologiques
+
+### Avantages du Projet Gaia
+
+**Économiques**:
+- Coûts réduits : 60 000€ pour 50 000 arbres
+- Coût par arbre : ~1,20€
+- Économie de 90% vs avion commercial (500 000€)
+- Réduction de 85% vs hélicoptère (400 000€)
+
+**Écologiques**:
+- Empreinte carbone minimale (100% électrique)
+- Pas de pollution sonore
+- Respectueux de la faune locale
+- Contribution directe à la lutte contre le changement climatique
+
+**Techniques**:
+- Précision GPS du largage
+- Autonomie de vol étendue
+- Maintenance simplifiée
+- Technologie accessible et reproductible
+
+**Sociaux**:
+- Création d'emplois locaux
+- Formation des communautés
+- Sensibilisation environnementale
+- Projet éducatif et inspirant
+
+### Spécifications Techniques
+
+**Avion**:
+- Type: Avion électrique radiocommandé
+- Motorisation: 100% électrique
+- Batterie: Haute capacité pour autonomie optimale
+- Soute: Système de largage de Seedballs
+- Guidage: GPS précis
+- Contrôle: Radiocommandé
+
+**Seedballs**:
+- Graines enrobées d'un mélange protecteur
+- Conception pour favoriser la germination
+- Adaptation aux terrains difficiles
+- Protection contre les prédateurs
+
+### Technologies de l'Application Web
+
 - **Frontend**: React 18, TypeScript, Vite 5, Tailwind CSS, shadcn/ui
 - **Backend**: Supabase, PostgreSQL avec Row Level Security
 - **Mobile**: Capacitor 6, Android SDK
+- **Déploiement**: Vercel pour le web, APK pour Android
+
+### Fonctionnalités de l'Application
+
+1. **Page d'accueil**: Présentation du projet, équipe, contact
+2. **Documentation**: Système de documentation interactive avec différents types de contenu
+3. **Roadmap**: Affichage de la feuille de route du projet avec statuts
+4. **Galerie**: Ressources images et médias du projet
+5. **Partenaires**: Liste des sponsors et partenaires
+6. **Mode Présentation**: Présentation en plein écran avec slides
+7. **Admin**: Interface d'administration complète
+8. **Gaia AI**: Chatbot intelligent (cette fonctionnalité!)
+
+### Équipe et Contact
+
+**Établissement**: Lycée Saint-Joseph Dijon
+**Filière**: Sciences de l'Ingénieur
+**Année**: 2025-2026
+**Instagram**: @projet_gaia_stjo
+
+### Application Mobile
+
+Une application Android est disponible en téléchargement (APK).
+- Support: Android 6.0+ (API 23)
+- Target: Android 15 (API 35)
+- Taille: ~17 MB
 
 ## Documentation du Projet
 

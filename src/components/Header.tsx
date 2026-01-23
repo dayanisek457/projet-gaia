@@ -1,7 +1,6 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Instagram, Presentation, Smartphone } from 'lucide-react';
+import { Menu, X, Instagram, Presentation, Smartphone, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
@@ -93,12 +92,13 @@ const Header = () => {
             <Button 
               variant="outline" 
               size="default" 
-              className="btn-hero border-2 border-green-600/30 hover:border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-display font-semibold px-6 py-2.5 rounded-lg text-base"
+              className="btn-hero border-2 border-green-600/30 hover:border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-display font-semibold px-3 py-2.5 rounded-lg text-base"
               asChild
+              title="Télécharger l'application Android"
             >
               <a href={ANDROID_APP_URL} download>
-                <Smartphone className="h-4 w-4 mr-2" />
-                App Android
+                <Download className="h-4 w-4" />
+                <Smartphone className="h-4 w-4" />
               </a>
             </Button>
           </nav>
