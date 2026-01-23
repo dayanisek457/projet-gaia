@@ -96,7 +96,11 @@ const Header = () => {
               asChild
               title="Télécharger l'application Android"
             >
-              <a href={ANDROID_APP_URL} download>
+              <a 
+                href={ANDROID_APP_URL} 
+                download
+                aria-label="Télécharger l'application Android"
+              >
                 <Download className="h-4 w-4" />
                 <Smartphone className="h-4 w-4" />
               </a>

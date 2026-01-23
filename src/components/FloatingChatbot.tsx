@@ -95,7 +95,7 @@ export const FloatingChatbot = () => {
         setContext(ctx);
       } catch (err) {
         console.error('Failed to load context:', err);
-        setError('Contexte non chargé');
+        setError('Impossible de charger le contexte du projet. Veuillez réessayer.');
       }
     };
 
@@ -187,7 +187,7 @@ Règles importantes:
       setIsStreaming(false);
     } catch (err) {
       console.error('Error sending message:', err);
-      setError('Erreur lors de l\'envoi');
+      setError('Une erreur est survenue lors de l\'envoi du message. Veuillez réessayer.');
       toast.error('Erreur de communication');
       setMessages((prev) => prev.filter((m) => m.role !== 'assistant' || m.content));
     } finally {
