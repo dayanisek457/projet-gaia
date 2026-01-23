@@ -41,7 +41,7 @@ export const ChatInput = ({
         rows={1}
         className="resize-none min-h-[40px] max-h-[200px]"
         lang="fr"
-        spellCheck="true"
+        spellCheck={true}
       />
       <Button
         onClick={handleSubmit}

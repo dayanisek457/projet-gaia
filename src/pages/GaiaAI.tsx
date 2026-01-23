@@ -229,7 +229,7 @@ Règles importantes:
                         key={message.id}
                         role={message.role}
                         content={message.content}
-                        isStreaming={isStreaming && message.id === messages[messages.length - 1]?.id}
+                        isStreaming={isStreaming && message.role === 'assistant' && message.id === messages[messages.length - 1]?.id}
                       />
                     ))}
                   </div>

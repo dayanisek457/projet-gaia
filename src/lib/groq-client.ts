@@ -12,7 +12,9 @@ class GroqService {
   constructor() {
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
     if (!supabaseUrl) {
-      throw new Error('VITE_SUPABASE_URL is not defined in environment variables');
+      console.error('VITE_SUPABASE_URL is not defined');
+      this.edgeFunctionUrl = '';
+      return;
     }
     
     // Construct the Edge Function URL
@@ -29,14 +31,24 @@ class GroqService {
     messages: ChatMessage[],
     onChunk: (text: string) => void
   ): Promise<void> {
+    if (!this.edgeFunctionUrl) {
+      throw new Error('Groq service not properly configured. Please check environment variables.');
+    }
+
     try {
       const { data: { session } } = await supabase.auth.getSession();
+      
+      // Use session token if available, otherwise use anon key
+      const authToken = session?.access_token || import.meta.env.VITE_SUPABASE_ANON_KEY;
+      if (!authToken) {
+        throw new Error('No authentication token available');
+      }
       
       const response = await fetch(this.edgeFunctionUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session?.access_token || import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Authorization': `Bearer ${authToken}`,
         },
         body: JSON.stringify({ messages }),
       });
