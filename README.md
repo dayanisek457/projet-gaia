@@ -103,6 +103,24 @@ Pour plus de détails sur le build Android, consultez [ANDROID_BUILD_GUIDE.md](.
 - [GALLERY_SETUP.md](./GALLERY_SETUP.md) - Configuration de la galerie
 - [SPONSORS_SETUP.md](./SPONSORS_SETUP.md) - Gestion des sponsors
 - [ROADMAP_ORDERING_GUIDE.md](./ROADMAP_ORDERING_GUIDE.md) - Ordre de la roadmap
+- [GAIA_AI_SETUP.md](./GAIA_AI_SETUP.md) - Configuration du chatbot Gaia AI
+
+## 🤖 Gaia AI Chatbot
+
+Le projet inclut **Gaia AI**, un chatbot intelligent qui répond aux questions sur le projet en utilisant l'API Groq avec streaming en temps réel.
+
+### Fonctionnalités
+- 💬 Interface de chat moderne et intuitive
+- ⚡ Streaming en temps réel des réponses
+- 📚 Accès à toute la documentation et la roadmap
+- 🇫🇷 Réponses en français
+- 🔒 Sécurisé via Supabase Edge Functions
+
+### Accès
+Le chatbot est accessible à `/gaia-ai` une fois l'application démarrée.
+
+### Configuration
+Consultez [GAIA_AI_SETUP.md](./GAIA_AI_SETUP.md) pour les instructions complètes de configuration.
 
 ## 🤝 Contribution
 
